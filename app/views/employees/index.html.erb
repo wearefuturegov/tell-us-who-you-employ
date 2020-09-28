@@ -1,0 +1,28 @@
+<h1>Employees page</h1>
+
+<% if @employees.any? %>
+<table>
+    <thead>
+        <tr>
+            <th>Last name</th>
+            <th>Other names</th>
+            <th>Role</th>
+            <th>Employed from</th>
+            <th>Employed to</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @employees.each do |e| %>
+            <tr>
+                <td><%= e.last_name %></td>
+                <td><%= e.other_names %></td>
+                <td><%= e.role %></td>
+                <td><%= e.employed_from %></td>
+                <td><%= e.employed_to %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<% else %>
+    <p>No employees to show</p>
+<% end %>

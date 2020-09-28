@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  last_name: MyString
+  other_names: MyString
+  role: MyString
+  employed_from: 2020-09-28
+  employed_to: 2020-09-28
+
+two:
+  last_name: MyString
+  other_names: MyString
+  role: MyString
+  employed_from: 2020-09-28
+  employed_to: 2020-09-28
