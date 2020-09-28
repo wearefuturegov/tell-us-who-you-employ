@@ -19,7 +19,10 @@
                 <td><%= e.role %></td>
                 <td><%= e.employed_from %></td>
                 <td><%= e.employed_to %></td>
-                <td><%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
+                <td>
+                    <%= link_to "Change", employee_path(e) %>
+                    <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
+                </td>
             </tr>
         <% end %>
     </tbody>

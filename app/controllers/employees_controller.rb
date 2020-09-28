@@ -5,9 +5,6 @@ class EmployeesController < ApplicationController
     def index
     end
 
-    def show
-    end
-
     def new
         @employee = Employee.new
     end
@@ -21,7 +18,15 @@ class EmployeesController < ApplicationController
         end
     end
 
+    def show
+    end
+
     def update
+        if @employee.update(employee_params)
+            redirect_to employees_path
+        else
+            render "show"
+        end
     end
 
     def destroy
