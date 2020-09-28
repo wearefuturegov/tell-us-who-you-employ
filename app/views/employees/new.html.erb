@@ -1,0 +1,22 @@
+<%= link_to "Back to list", employees_path %>
+
+<%= form_for @employee do |f| %>
+
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+    
+    <%= f.label :other_names %>
+    <%= f.text_field :other_names %>
+    
+    <%= f.label :role %>
+    <%= f.text_field :role %>
+    
+    <%= f.label :employed_from %>
+    <%= f.date_field :employed_from %>
+    
+    <%= f.label :employed_to %>
+    <%= f.date_field :employed_to %>
+
+    <%= f.button %>
+
+<% end %>

@@ -19,6 +19,7 @@
                 <td><%= e.role %></td>
                 <td><%= e.employed_from %></td>
                 <td><%= e.employed_to %></td>
+                <td><%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
             </tr>
         <% end %>
     </tbody>
@@ -26,3 +27,5 @@
 <% else %>
     <p>No employees to show</p>
 <% end %>
+
+<%= link_to "Add new employee", new_employee_path %>
