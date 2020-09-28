@@ -1,0 +1,15 @@
+<%= form_tag do %>
+
+    <fieldset>
+        <legend>Do you have a listing in the service directory</legend>
+
+        <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes" %>
+        <%= label_tag "eligible_yes", "Yes" %>
+
+        <%= radio_button_tag :eligible, :no, false, id: "eligible_no" %>
+        <%= label_tag "eligible_no", "No or not sure"%>
+
+    </fieldset>
+
+    <%= button_tag "Next" %>
+<% end %>
