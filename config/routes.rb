@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post "eligibility", to: "flow#check_eligibility"
 
   get '/auth/:provider/callback', to: 'sessions#create'
+  get '/auth/failure', to: redirect('/')
 
   resources :employees, except: :edit
 
