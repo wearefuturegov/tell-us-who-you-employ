@@ -33,4 +33,8 @@
 
 <%= link_to "Add new employee", new_employee_path %>
 
-<%= link_to "Finish and send", confirmation_path %>
+<%= form_tag finish_path do %>
+    <%= check_box_tag :confirm_validity %>
+    <%= label_tag :confirm_validity, "I confirm this is all right"%>
+    <%= button_tag "Finish and send" %>
+<% end %>

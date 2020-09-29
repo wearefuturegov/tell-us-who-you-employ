@@ -1,4 +1,5 @@
 class EmployeesController < ApplicationController
+    before_action :authenticate_user!
     before_action :set_employees, only: :index
     before_action :set_employee, only: [:show, :destroy]
 

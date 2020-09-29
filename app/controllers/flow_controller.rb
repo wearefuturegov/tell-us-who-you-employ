@@ -7,10 +7,15 @@ class FlowController < ApplicationController
 
     def check_eligibility
         if params[:eligible] === "yes"
-            redirect_to employees_path
+            redirect_to "/auth/google_oauth2"
         end
     end
 
-    def confirmation
+    def finish
+        if params[:confirm_validity]
+            session[:user] = nil
+        else
+            redirect_to employees_path
+        end
     end
 end
