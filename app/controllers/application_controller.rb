@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-
+    before_action :set_paper_trail_whodunnit
+    
     private
 
     def current_user
