@@ -1,7 +1,13 @@
 <%= form_tag do %>
 
     <fieldset>
-        <legend>Do you have a listing in the service directory</legend>
+        <legend>
+            <h1>Is your childcare service listed on our directory?</h1>
+        </legend>
+
+        <% if notice.present? %>
+            <p><strong><%= notice %></strong></p>
+        <% end %>
 
         <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes" %>
         <%= label_tag "eligible_yes", "Yes" %>
