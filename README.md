@@ -1,24 +1,33 @@
-# README
+# Tell us who you employ
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails app and OAuth consumer, backed by a PostgreSQL database.
 
-Things you may want to cover:
+It allows users to review and update details of who they employ, for compliance reasons.
 
-* Ruby version
+For Buckinghamshire Council's family information team.
 
-* System dependencies
+It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity provider, but can theoretically use any OAuth 2.0 provider.
 
-* Configuration
+## Running it locally
 
-* Database creation
+```
+bundle install
+rails db:setup
+rails s
+```
 
-* Database initialization
+## Config
 
-* How to run the test suite
+You need to set the following environment variables for it to work:
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+OAUTH_SERVER
+OAUTH_CLIENT_ID
+OAUTH_SECRET
+```
 
-* Deployment instructions
+Locally, you can use a `.env` file in the project root.
 
-* ...
+## Running it on the web
+
+Suitable for Heroku and other 12-factor compliant hosting.
