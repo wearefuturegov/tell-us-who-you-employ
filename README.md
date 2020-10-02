@@ -6,7 +6,7 @@ It allows users to review and update details of who they employ, for compliance 
 
 For Buckinghamshire Council's family information team.
 
-It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity provider, but can theoretically use any OAuth 2.0 provider.
+It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity provider, but could be adapted to use any OAuth 2.0 provider.
 
 ## Running it locally
 
