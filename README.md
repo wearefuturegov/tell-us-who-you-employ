@@ -11,6 +11,7 @@ It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity prov
 ## Running it locally
 
 ```
+npm install
 bundle install
 rails db:setup
 rails s
