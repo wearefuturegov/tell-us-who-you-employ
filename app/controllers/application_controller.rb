@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
     private
 
     def current_user
-        @current_user ||= session[:user]
+        @current_user ||= session[:uid]
     end
 
     def authenticate_user!
-        unless session[:user]
+        unless session[:uid]
             redirect_to start_path
         end
     end

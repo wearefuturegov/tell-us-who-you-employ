@@ -1,0 +1,7 @@
+.page-title{
+    font-size: 2.5rem;
+    margin-top: -20px !important;
+    @media screen and (min-width: $breakpoint-m){
+        margin-top: -30px !important;
+    }
+}

@@ -4,7 +4,7 @@
 
         <fieldset>
             <legend>
-                <h1>Is your childcare service listed on our directory?</h1>
+                <h1 class="page-title">Is your childcare service listed on our directory?</h1>
             </legend>
 
             <% if notice.present? %>
@@ -13,12 +13,15 @@
 
             <div class="field radio">
                 <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input" %>
-                <%= label_tag "eligible_yes", "Yes", class: "radio__label" %>
+                <%= label_tag "eligible_yes", class: "radio__label radio__label--with-explanation" do %>
+                    <p><strong>Yes</strong></p>
+                    <p>Explanatory text here</p>
+                <% end %>
             </div>
             
-            <div class="field">
+            <div class="field radio">
                 <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input" %>
-                <%= label_tag "eligible_no", "No or not sure", class: "radio__label"%>
+                <%= label_tag "eligible_no", "No or not sure", class: "radio__label" %>
             </div>
         </fieldset>
 
