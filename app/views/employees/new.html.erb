@@ -1,3 +1,6 @@
-<%= link_to "Back to list", employees_path %>
+<% content_for :header do %>
+    <%= link_to "Back to list", employees_path, class: "go-back" %>
+    <h1 class="page-header__title">Add a new employee</h1>
+<% end %>
 
 <%= render "form" %>

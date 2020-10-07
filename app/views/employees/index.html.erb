@@ -1,49 +1,60 @@
-<h1>Update your employees</h1>
-
-<p>You can edit or add new employees here.</p>
-
-<p>Only delete records if they are mistakes. If someone leaves your organisation, add the date they left.</p>
-
-<% if @employees.any? %>
-<table>
-    <thead>
-        <tr>
-            <th>Last name</th>
-            <th>Other names</th>
-            <th>Role</th>
-            <th>Employed from</th>
-            <th>Employed to</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% @employees.each do |e| %>
-            <tr>
-                <td><%= e.last_name %></td>
-                <td><%= e.other_names %></td>
-                <td><%= e.role %></td>
-                <td><%= e.employed_from %></td>
-                <td><%= e.employed_to %></td>
-                <td>
-                    <%= link_to "Change", employee_path(e) %>
-                    <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
-                </td>
-            </tr>
-        <% end %>
-    </tbody>
-</table>
-<% else %>
-    <p>No employees to show</p>
+<% content_for :header do %>
+    <h1 class="page-header__title">Your employees</h1>
 <% end %>
 
-<%= link_to "Add new employee", new_employee_path %>
+<% if @employees.any? %>
+    <table>
+        <thead>
+            <tr>
+                <th>Last name</th>
+                <th>Other names</th>
+                <th>Role</th>
+                <th>Employed from</th>
+                <th>Employed to</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @employees.each do |e| %>
+                <tr>
+                    <td><%= e.last_name %></td>
+                    <td><%= e.other_names %></td>
+                    <td><%= e.role %></td>
+                    <td><%= e.employed_from %></td>
+                    <td>
+                        <% if e.employed_to %>
+                            <%= e.employed_to %>
+                        <% else %>
+                            —
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= link_to "Change", employee_path(e) %>
+                        <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <%= link_to "Add new employee", new_employee_path, class: "button button--secondary button--add" %>
+<% else %>
+    <%= link_to "Add your first employee", new_employee_path, class: "button button--secondary button--add" %>
+<% end %>
+
 
 <%= form_tag finish_path do %>
+    <h2>Ready to continue?</h2>
+
+    <p>If these records are accurate, carry on.</p>
 
     <% if notice.present? %>
         <p><strong><%= notice %></strong></p>
     <% end %>
 
-    <%= check_box_tag :confirm_validity %>
-    <%= label_tag :confirm_validity, "These records are complete to the best of my knowledge"%>
-    <%= button_tag "Finish and send" %>
+    <div class="field checkbox">
+        <%= check_box_tag :confirm_validity, true, false, class: "checkbox__input" %>
+        <%= label_tag :confirm_validity, "These records are complete to the best of my knowledge", class: "checkbox__label"%>
+    </div>
+    <div class="form-actions">
+        <%= button_tag "Finish and send", class: "button" %>
+    </div>
 <% end %>

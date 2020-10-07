@@ -1,21 +1,29 @@
-<%= form_tag do %>
+<div class="with-sidebar">
 
-    <fieldset>
-        <legend>
-            <h1>Is your childcare service listed on our directory?</h1>
-        </legend>
+    <%= form_tag do %>
 
-        <% if notice.present? %>
-            <p><strong><%= notice %></strong></p>
-        <% end %>
+        <fieldset>
+            <legend>
+                <h1>Is your childcare service listed on our directory?</h1>
+            </legend>
 
-        <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes" %>
-        <%= label_tag "eligible_yes", "Yes" %>
+            <% if notice.present? %>
+                <p><strong><%= notice %></strong></p>
+            <% end %>
 
-        <%= radio_button_tag :eligible, :no, false, id: "eligible_no" %>
-        <%= label_tag "eligible_no", "No or not sure"%>
+            <div class="field radio">
+                <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input" %>
+                <%= label_tag "eligible_yes", "Yes", class: "radio__label" %>
+            </div>
+            
+            <div class="field">
+                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input" %>
+                <%= label_tag "eligible_no", "No or not sure", class: "radio__label"%>
+            </div>
+        </fieldset>
 
-    </fieldset>
-
-    <%= button_tag "Next" %>
-<% end %>
+        <div class="form-actions">
+            <%= button_tag "Continue", class: "button" %>
+        </div>
+    <% end %>
+</div>

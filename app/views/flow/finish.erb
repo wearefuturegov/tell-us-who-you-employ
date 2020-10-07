@@ -1,3 +1,21 @@
-<h1>Your records have been updated</h1>
+<% content_for :title do %>Confirmation | <% end %>
 
-<p>You're done</p>
+<% content_for :header do %>
+    <div class="confirmation-panel two-thirds">
+        <h1 class="confirmation-panel__heading">Your records have been updated</h1>
+    </div>
+<% end %>
+
+<div class="two-thirds confirmation-body">
+
+    <h2>What happens next</h2>
+
+    <p>We'll email you if we have any questions about your employee records.</p>
+
+    <p>You can make changes to these records at any time. You need to update these records at least once a term.</p>
+
+    <h2>If you have questions</h2>
+
+    <p>You can <a href="#">contact us</a> to ask about the process.</p>
+
+</div>

@@ -1,7 +1,7 @@
 class EmployeesController < ApplicationController
     before_action :authenticate_user!
     before_action :set_employees, only: :index
-    before_action :set_employee, only: [:show, :destroy]
+    before_action :set_employee, only: [:show, :update, :destroy]
 
     def index
     end
@@ -52,7 +52,8 @@ class EmployeesController < ApplicationController
             :other_names,
             :role,
             :employed_from,
-            :employed_to
+            :employed_to,
+            :currently_employed
         )
     end
 end
