@@ -1,23 +1,31 @@
-<h1>Tell us who you employ</h1>
+<% content_for :header do %>
+    <h1 class="page-header__title">Tell us who you employ</h1>
+<% end %>
 
-<p>Use this service to:</p>
+<div class="with-sidebar">
+    <main>
+        <p>Use this service to:</p>
 
-<ul>
-    <li>Give us the personal details of the people you employ.</li>
-    <li>Confirm that the details we currently hold are still up to date</li>
-</ul>
+        <ul>
+            <li>Give us the personal details of the people you employ.</li>
+            <li>Confirm that the details we currently hold are still up to date</li>
+        </ul>
 
-<p>If you’re an Ofsted-registered childminder, or represent an organisation that provides childcare in Buckinghamshire, you need to give us up-to-date records of the people you employ.</p>
+        <p>If you’re an Ofsted-registered childminder, or represent an organisation that provides childcare in Buckinghamshire, you need to give us up-to-date records of the people you employ.</p>
 
-<h2>How often should I update my records</h2>
+        <h2>How often should I update my records?</h2>
 
-<p>You should check your records at least twice a year. Normally this is at the start of each academic term.</p>
+        <p>You should check your records at least twice a year. Normally this is at the start of each academic term.</p>
 
-<p>You are encouraged to keep your up to date whenever your employees change.</p>
+        <p>You are encouraged to keep your up to date whenever your employees change.</p>
 
-<%= link_to "Start now", eligibility_path %>
+        <div class="form-actions">
+        <%= link_to "Start now", eligibility_path, class: "button" %>
+</div>
+        <h2>Before you start</h2>
 
-<h2>Before you start</h2>
+        <p>You’ll need the account details you use to manage your listing in Buckinghamshire’s service directory.</p>
 
-You’ll need the account details you use to manage your listing in Buckinghamshire’s service directory.
-If you don’t have an account, you’ll need to register first.
+        <p>If you don’t have an account, you’ll need to <a href="#">register first</a>.</p>
+    </main>
+</div>

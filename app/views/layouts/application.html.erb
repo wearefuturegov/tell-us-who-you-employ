@@ -1,15 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tell us who you employ | Buckinghamshire Council</title>
+    <title>
+      <%= yield :title %>
+      Tell us who you employ | Buckinghamshire Council
+    </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= favicon_link_tag 'favicon.ico' %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <div class="site-header__masthead">
+          <%= link_to image_tag("logo.svg", alt: "Buckinghamshire Council", class: "site-header__logo"), "https://buckinghamshire.gov.uk", class: "site-header__logo-link" %>
+        </div>
+        <!-- <div class="site-header__actions"></div> -->
+        <nav class="site-header__service-name-holder">
+          <%= link_to "Tell us who you employ", root_path, class: "site-header__service-name"%>
+          <span class="site-header__phase-tag">Beta</span>
+        </nav>
+      </div>
+    </header>
+
+    <div class="pre-header">
+    <ul class="breadcrumbs container">
+      <li class="breadcrumbs__crumb"><a href="#">Home</a></li>
+      <li class="breadcrumbs__crumb"><a href="#">Families and children</a></li>
+      <li class="breadcrumbs__crumb">Childcare</li>
+    </ul>
+    </div>
+
+    <div class="page-content">
+      <div class="container">
+        <header class="page-header">
+              <% if notice || alert %>
+                  <div role="alert" class="alert">
+                    <%= notice %>
+                    <%= alert %>
+                  </div>
+              <% end %>
+              <%= yield :header %>
+        </header>
+
+        <%= yield %>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container">
+          2020 Buckinghamshire Council
+      </div>
+    </footer>
+
   </body>
 </html>

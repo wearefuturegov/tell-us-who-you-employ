@@ -1,0 +1,25 @@
+.pre-header{
+    padding: 20px;
+}
+
+.breadcrumbs{
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+
+    &__crumb{
+        padding-left: 0px;
+
+        &:after{
+            content: "/";
+            margin: 0px 10px;
+            color: $grey3;
+        }
+
+        &:last-child:after{
+            content: none;
+        }
+    }
+}
