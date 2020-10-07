@@ -7,22 +7,21 @@
                 <h1 class="page-title">Is your childcare service listed on our directory?</h1>
             </legend>
 
-            <% if notice.present? %>
-                <p><strong><%= notice %></strong></p>
-            <% end %>
-
-            <div class="field radio">
+            <div class="field radio radio--with-hint">
                 <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input" %>
-                <%= label_tag "eligible_yes", class: "radio__label radio__label--with-explanation" do %>
-                    <p><strong>Yes</strong></p>
-                    <p>Explanatory text here</p>
+                <%= label_tag "eligible_yes", class: "radio__label " do %>
+                    <p>Yes</p>
+                    <p class="radio__hint">You'll be sent to sign in using your email address and password.</p>
+                <% end %>
+            </div>
+
+            <div class="field radio radio--with-hint">
+                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input" %>
+                <%= label_tag "eligible_no", class: "radio__label " do %>
+                    <p>No</p>
                 <% end %>
             </div>
             
-            <div class="field radio">
-                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input" %>
-                <%= label_tag "eligible_no", "No or not sure", class: "radio__label" %>
-            </div>
         </fieldset>
 
         <div class="form-actions">
