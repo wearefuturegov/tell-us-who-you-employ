@@ -12,6 +12,7 @@ class EmployeesController < ApplicationController
 
     def create
         @employee = Employee.new(employee_params)
+        @employee.organisation_id = session[:organisation_id]
         if @employee.save
             redirect_to employees_path
         else
@@ -53,7 +54,8 @@ class EmployeesController < ApplicationController
             :role,
             :employed_from,
             :employed_to,
-            :currently_employed
+            :currently_employed,
+            :service_id,
         )
     end
 end
