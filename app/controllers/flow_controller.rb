@@ -9,8 +9,11 @@ class FlowController < ApplicationController
         if params[:eligible] === "yes"
             redirect_to "/auth/outpost"
         else
-            redirect_to eligibility_path, notice: "You can't proceed without an account. Register for one first"
+            redirect_to ineligible_path
         end
+    end
+
+    def ineligible
     end
 
     def finish

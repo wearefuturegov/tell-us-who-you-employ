@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   get "start", to: "flow#start", as: "start"
   get "eligibility", to: "flow#eligibility", as: "eligibility"
   post "eligibility", to: "flow#check_eligibility"
-
+  get "ineligible", to: "flow#ineligible", as: "ineligible"
+  
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/auth/failure', to: redirect('/')
 
