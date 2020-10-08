@@ -3,41 +3,43 @@
 <% end %>
 
 <% if @employees.any? %>
-    <table>
-        <thead>
-            <tr>
-                <th>Last name</th>
-                <th>Other names</th>
-                <th>Role</th>
-                <th>Employed at</th>
-                <th>Employed from</th>
-                <th>Employed to</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @employees.each do |e| %>
+    <div class="table-holder">
+        <table>
+            <thead>
                 <tr>
-                    <td><%= e.last_name %></td>
-                    <td><%= e.other_names %></td>
-                    <td><%= e.role %></td>
-
-                    <td><%= session[:services].select{|s| s["id"] === e.service_id }.first["name"] %></td>
-                    <td><%= e.employed_from %></td>
-                    <td>
-                        <% if e.employed_to %>
-                            <%= e.employed_to %>
-                        <% else %>
-                            —
-                        <% end %>
-                    </td>
-                    <td>
-                        <%= link_to "Change", employee_path(e) %>
-                        <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " } %>
-                    </td>
+                    <th>Last name</th>
+                    <th>Other names</th>
+                    <th>Role</th>
+                    <th>Employed at</th>
+                    <th>Employed from</th>
+                    <th>Employed to</th>
                 </tr>
-            <% end %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% @employees.each do |e| %>
+                    <tr>
+                        <td><%= e.last_name %></td>
+                        <td><%= e.other_names %></td>
+                        <td><%= e.role %></td>
+
+                        <td><%= service_name_by_id(e.service_id) %></td>
+                        <td><%= e.employed_from %></td>
+                        <td>
+                            <% if e.employed_to %>
+                                <%= e.employed_to %>
+                            <% else %>
+                                —
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= link_to "Change", employee_path(e), class: "table-action" %>
+                            <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " }, class: "table-action" %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
     <%= link_to "Add new employee", new_employee_path, class: "button button--secondary button--add" %>
 <% else %>
     <%= link_to "Add your first employee", new_employee_path, class: "button button--secondary button--add" %>
@@ -49,13 +51,9 @@
 
     <p>If these records are accurate, carry on.</p>
 
-    <% if notice.present? %>
-        <p><strong><%= notice %></strong></p>
-    <% end %>
-
     <div class="field checkbox">
-        <%= check_box_tag :confirm_validity, true, false, class: "checkbox__input" %>
-        <%= label_tag :confirm_validity, "These records are complete to the best of my knowledge", class: "checkbox__label"%>
+        <%= check_box_tag :confirm_validity, true, false, class: "checkbox__input", required: true %>
+        <%= label_tag :confirm_validity, "These records are complete to the best of my knowledge", class: "checkbox__label" %>
     </div>
     <div class="form-actions">
         <%= button_tag "Finish and send", class: "button" %>

@@ -30,3 +30,15 @@ $max-width: 1000px;
 @import "breadcrumbs";
 @import "radio";
 @import "page-title";
+
+
+
+
+.table-action{
+    margin-left: 10px;
+}
+
+.table-holder{
+    width: 100%;
+    overflow-x: scroll;
+}
