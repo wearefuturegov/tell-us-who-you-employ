@@ -40,7 +40,7 @@ class EmployeesController < ApplicationController
     private
 
     def set_employees
-        @employees = Employee.all
+        @employees = Employee.where(organisation_id: session[:organisation_id])
     end
 
     def set_employee
