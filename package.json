@@ -2,6 +2,6 @@
   "name": "tell-us-who-you-employ",
   "private": true,
   "dependencies": {
-    "bucks-fis-design-library": "^1.0.1"
+    "bucks-fis-design-library": "^1.0.7"
   }
 }
