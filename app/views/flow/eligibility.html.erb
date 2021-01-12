@@ -8,15 +8,15 @@
             </legend>
 
             <div class="field radio radio--with-hint">
-                <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input" %>
-                <%= label_tag "eligible_yes", class: "radio__label " do %>
+                <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input", required: true %>
+                <%= label_tag "eligible_yes", class: "radio__label" do %>
                     <p>Yes</p>
                     <p class="radio__hint">You'll be sent to sign in using your email address and password.</p>
                 <% end %>
             </div>
 
             <div class="field radio radio--with-hint">
-                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input" %>
+                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input", required: true %>
                 <%= label_tag "eligible_no", class: "radio__label " do %>
                     <p>No</p>
                 <% end %>

@@ -29,6 +29,10 @@ OAUTH_SECRET
 
 Locally, you can use a `.env` file in the project root.
 
+If you're using it with Outpost, you can get these from `/oauth/applications` while logged in as an administrator.
+
+The redirect URI ends in `.../auth/outpost/callback`.
+
 ## Running it on the web
 
 Suitable for Heroku and other 12-factor compliant hosting.
