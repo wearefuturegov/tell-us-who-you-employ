@@ -1,9 +1,8 @@
 class Employee < ApplicationRecord
     has_paper_trail
     
-    validates_presence_of :last_name, :employed_from
+    validates_presence_of :last_name, :employed_from, :date_of_birth, :street_address, :postal_code
     validate :employed_to_or_currently_employed
-
 
     def employed_to_or_currently_employed
         unless currently_employed || employed_to
@@ -13,5 +12,4 @@ class Employee < ApplicationRecord
             errors.add(:base, "Current employees can't have a finish date")
         end
     end
-
 end

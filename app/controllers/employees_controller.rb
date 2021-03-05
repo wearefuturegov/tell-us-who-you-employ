@@ -51,11 +51,21 @@ class EmployeesController < ApplicationController
         params.require(:employee).permit(
             :last_name,
             :other_names,
+            :street_address,
+            :postal_code,
+            :date_of_birth,
+
+            :service_id,
             :role,
             :employed_from,
             :employed_to,
             :currently_employed,
-            :service_id,
+
+            :has_dbs_check,
+            :dbs_expires_at,
+            :has_first_aid_training,
+            :first_aid_expires_at,
+            :qualifications => []
         )
     end
 end
