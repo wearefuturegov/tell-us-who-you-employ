@@ -64,3 +64,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'omniauth-oauth2'
 gem 'paper_trail'
+gem "sentry-ruby"
+gem "sentry-rails"
