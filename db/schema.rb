@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_202707) do
+ActiveRecord::Schema.define(version: 2021_03_05_113820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(version: 2020_10_07_202707) do
     t.boolean "currently_employed"
     t.integer "service_id"
     t.integer "organisation_id"
+    t.string "street_address"
+    t.string "postal_code"
+    t.date "date_of_birth"
+    t.boolean "has_dbs_check"
+    t.date "dbs_expires_at"
+    t.boolean "has_first_aid_training"
+    t.date "first_aid_expires_at"
+    t.string "qualifications", array: true
   end
 
   create_table "versions", force: :cascade do |t|

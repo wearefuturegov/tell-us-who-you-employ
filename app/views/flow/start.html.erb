@@ -1,19 +1,16 @@
 <% content_for :preheader do%>
     <div class="pre-header">
       <ul class="breadcrumbs container">
-        <li class="breadcrumbs__crumb"><a href="#">Home</a></li>
-        <li class="breadcrumbs__crumb"><a href="#">Families and children</a></li>
-        <li class="breadcrumbs__crumb">Childcare</li>
+        <li class="breadcrumbs__crumb"><a href="https://familyinfo.buckinghamshire.gov.uk/">Home</a></li>
+        <li class="breadcrumbs__crumb"><a href="https://familyinfo.buckinghamshire.gov.uk/childcare-and-early-years/">Childcare and early years</a></li>
       </ul>
     </div>
 <% end %>
 
-<% content_for :header do %>
-    <h1 class="page-header__title">Tell us who you employ</h1>
-<% end %>
+<div class="two-thirds">
 
-<div class="with-sidebar">
-    <main>
+        <h1 class="page-title">Tell us who you employ</h1>
+
         <p>Use this service to:</p>
 
         <ul>
@@ -32,7 +29,7 @@
         <div class="form-actions">
         <%= link_to "Start now", eligibility_path, class: "button" %>
         </div>
-        
+  
         <h2>Before you start</h2>
 
         <p>You’ll need the account details you use to manage your service in the Family Information Service’s directory.</p>

@@ -25,20 +25,24 @@ $max-width: 1000px;
 @import "bucks-fis-design-library/notices";
 @import "bucks-fis-design-library/errors";
 @import "bucks-fis-design-library/confirmation";
-
+@import "bucks-fis-design-library/radios";
 
 @import "breadcrumbs";
-@import "radio";
+// @import "radio";
 @import "page-title";
 
-
-
-
-.table-action{
-    margin-left: 10px;
+.table-action {
+  margin-left: 10px;
 }
 
-.table-holder{
-    width: 100%;
-    overflow-x: scroll;
+.table-holder {
+  width: 100%;
+  overflow-x: auto;
+}
+
+a {
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
 }
