@@ -34,6 +34,8 @@ jobs:
       - name: Setup database
         env:
           RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
         run: |
           bundle exec rails db:drop
           bundle exec rails db:create
