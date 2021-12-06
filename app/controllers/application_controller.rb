@@ -1,15 +1,15 @@
 class ApplicationController < ActionController::Base
-    before_action :set_paper_trail_whodunnit
-    
-    private
+  before_action :set_paper_trail_whodunnit
 
-    def current_user
-        @current_user ||= session[:uid]
-    end
+  private
 
-    def authenticate_user!
-        unless session[:uid]
-            redirect_to start_path
-        end
+  def current_user
+    @current_user ||= session[:uid]
+  end
+
+  def authenticate_user!
+    unless session[:uid]
+      redirect_to start_path
     end
+  end
 end
