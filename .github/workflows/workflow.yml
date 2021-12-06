@@ -21,9 +21,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
@@ -35,8 +32,6 @@ jobs:
       - name: Setup database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
         run: |
           bundle exec rails db:drop
           bundle exec rails db:create
