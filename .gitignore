@@ -26,7 +26,11 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-
+# Ignore env file
 .env
 
+# Ignore coverage report
 /coverage
+
+# Ignore seeds
+/lib/seeds
