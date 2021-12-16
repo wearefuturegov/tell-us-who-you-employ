@@ -37,6 +37,11 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:migrate
 
+      - name: Compile assets
+        env:
+          RAILS_ENV: test
+        run: bundle exec rails assets:precompile
+
       - name: Run tests
         env:
           RAILS_ENV: test
