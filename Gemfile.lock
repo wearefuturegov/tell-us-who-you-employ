@@ -85,6 +85,7 @@ GEM
     execjs (2.7.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
+    ffaker (2.20.0)
     ffi (1.13.1)
     ffi (1.13.1-x64-mingw32)
     globalid (0.4.2)
@@ -95,6 +96,8 @@ GEM
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
     jwt (2.2.2)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -270,7 +273,9 @@ DEPENDENCIES
   capybara (>= 2.15)
   coffee-rails (~> 4.2)
   dotenv-rails
+  ffaker
   jbuilder (~> 2.5)
+  launchy
   listen (>= 3.0.5, < 3.2)
   mimemagic!
   omniauth-oauth2
