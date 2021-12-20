@@ -133,13 +133,19 @@ RSpec.feature 'Managing employees' do
         expect(page).to have_content employed_to
       end
 
-      scenario 'you must fill in valid employee details' do
+      scenario 'you cannot update records with invalid employee details' do
         click_link 'Change'
 
         fill_in :employee_employed_to, with: employed_to
 
         click_button 'Continue'
         expect(page).to have_content "Current employees can't have a finish date"
+      end
+
+      scenario 'you can delete records' do
+        expect(page).to have_content employee.last_name
+        click_link 'Remove'
+        expect(page).to_not have_content employee.last_name
       end
     end
   end
