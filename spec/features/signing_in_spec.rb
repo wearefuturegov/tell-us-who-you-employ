@@ -5,6 +5,15 @@ RSpec.feature 'Signing in' do
     OmniAuth.config.test_mode = true
   end
 
+  scenario 'choosing "No" when asked about listed services takes you to a register link' do
+    visit root_path
+    click_link 'Start now'
+    choose 'No'
+    click_button 'Continue'
+    expect(page).to have_content 'You need an account to continue'
+    expect(page).to have_link 'Register'
+  end
+
   scenario 'shows a friendly error if the user is not associated with an org' do
     OmniAuth.config.add_mock(:outpost, {
       uid: 12345,
