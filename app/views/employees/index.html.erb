@@ -33,7 +33,7 @@
             </td>
             <td>
               <%= link_to "Change", employee_path(e), class: "table-action" %>
-              <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? Only employees who " }, class: "table-action" %>
+              <%= link_to "Remove", employee_path(e), method: :delete, data: { confirm: "Are you sure? You should only delete records if they are mistakes. If someone leaves your organisation, add the date they left." }, class: "table-action" %>
             </td>
           </tr>
         <% end %>
