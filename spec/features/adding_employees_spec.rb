@@ -10,6 +10,7 @@ RSpec.feature 'Adding employees' do
       },
       extra: {
         raw_info: {
+          organisation_id: 1234,
           organisation: {
             id: 1234,
             services: [
