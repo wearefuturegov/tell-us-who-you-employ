@@ -83,6 +83,11 @@ GEM
       railties (>= 3.2, < 6.1)
     erubi (1.9.0)
     execjs (2.7.0)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffaker (2.20.0)
@@ -273,6 +278,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   coffee-rails (~> 4.2)
   dotenv-rails
+  factory_bot_rails
   ffaker
   jbuilder (~> 2.5)
   launchy
@@ -301,4 +307,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.2.31
+   2.2.33
