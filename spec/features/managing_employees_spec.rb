@@ -30,6 +30,14 @@ RSpec.feature 'Managing employees' do
   end
 
   context 'creating employees' do
+    let(:last_name) { FFaker::Name.last_name }
+    let(:other_names) { FFaker::Name.first_name }
+    let(:address) { FFaker::AddressUK.street_address }
+    let(:postcode) { FFaker::AddressUK.postcode }
+    let(:dob) { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
+    let(:employed_from) { FFaker::Time.date(year_range: 25) }
+    let(:role) { FFaker::Job.title }
+
     before do
       visit root_path
       click_link 'Start now'
@@ -40,14 +48,6 @@ RSpec.feature 'Managing employees' do
     end
 
     context 'with valid employee details' do
-      let(:last_name) { FFaker::Name.last_name }
-      let(:other_names) { FFaker::Name.first_name }
-      let(:address) { FFaker::AddressUK.street_address }
-      let(:postcode) { FFaker::AddressUK.postcode }
-      let(:dob) { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
-      let(:employed_from) { FFaker::Time.date(year_range: 25) }
-      let(:role) { FFaker::Job.title }
-
       before do
         fill_in :employee_last_name, with: last_name
         fill_in :employee_other_names, with: other_names
@@ -77,6 +77,24 @@ RSpec.feature 'Managing employees' do
       scenario 'you must confirm before you can finish' do
         click_button 'Finish and send'
         expect(page).to have_content 'You must confirm these records'
+      end
+    end
+
+    context 'with invalid employee details' do
+      before do
+        fill_in :employee_last_name, with: last_name
+        fill_in :employee_other_names, with: other_names
+        fill_in :employee_street_address, with: address
+        fill_in :employee_postal_code, with: postcode
+        fill_in :employee_date_of_birth, with: dob
+        fill_in :employee_role, with: role
+        check :employee_currently_employed
+
+        click_button 'Continue'
+      end
+
+      it 'shows you the errors' do
+        expect(page).to have_content "Employed from can't be blank"
       end
     end
   end
