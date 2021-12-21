@@ -73,11 +73,15 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_content other_names
           expect(page).to have_content role
           expect(page).to have_content service_name
+        end
 
+        scenario 'having submitted the records you are signed out' do
           check :confirm_validity
           click_button 'Finish and send'
-
           expect(page).to have_content 'Your records have been updated'
+          visit employees_path
+          expect(page).to_not have_content last_name
+          expect(page).to have_link 'Start now'
         end
 
         scenario 'you must confirm before you can finish' do
