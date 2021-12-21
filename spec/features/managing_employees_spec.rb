@@ -33,6 +33,12 @@ RSpec.feature 'Managing employees' do
           }
         }
       })
+
+      visit root_path
+      click_link 'Start now'
+      choose 'Yes'
+      click_button 'Continue'
+      click_button 'Sign in'
     end
 
     context 'creating employees' do
@@ -45,11 +51,6 @@ RSpec.feature 'Managing employees' do
       let(:role) { FFaker::Job.title }
 
       before do
-        visit root_path
-        click_link 'Start now'
-        choose 'Yes'
-
-        click_button 'Continue'
         click_link 'Add your first employee'
       end
 
@@ -117,8 +118,8 @@ RSpec.feature 'Managing employees' do
         visit root_path
         click_link 'Start now'
         choose 'Yes'
-
         click_button 'Continue'
+        click_button 'Sign in'
       end
 
       scenario 'you can update employee records' do

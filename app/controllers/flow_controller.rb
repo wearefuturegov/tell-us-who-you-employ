@@ -7,10 +7,13 @@ class FlowController < ApplicationController
 
   def check_eligibility
     if params[:eligible] === "yes"
-      redirect_to "/auth/outpost"
+      redirect_to eligible_path
     else
       redirect_to ineligible_path
     end
+  end
+
+  def eligible
   end
 
   def ineligible
