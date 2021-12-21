@@ -1,31 +1,28 @@
 <div class="with-sidebar">
+  <%= form_tag do %>
+    <fieldset>
+      <legend>
+        <h1 class="page-title">Is your childcare service listed on our directory?</h1>
+      </legend>
 
-    <%= form_tag do %>
+      <div class="field radio radio--with-hint">
+        <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input", required: true %>
+        <%= label_tag "eligible_yes", class: "radio__label" do %>
+          <p>Yes</p>
+        <% end %>
+      </div>
 
-        <fieldset>
-            <legend>
-                <h1 class="page-title">Is your childcare service listed on our directory?</h1>
-            </legend>
+      <div class="field radio radio--with-hint">
+        <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input", required: true %>
+        <%= label_tag "eligible_no", class: "radio__label " do %>
+          <p>No</p>
+        <% end %>
+      </div>
 
-            <div class="field radio radio--with-hint">
-                <%= radio_button_tag :eligible, :yes, false, id: "eligible_yes", class: "radio__input", required: true %>
-                <%= label_tag "eligible_yes", class: "radio__label" do %>
-                    <p>Yes</p>
-                    <p class="radio__hint">You'll be sent to sign in using your email address and password.</p>
-                <% end %>
-            </div>
+    </fieldset>
 
-            <div class="field radio radio--with-hint">
-                <%= radio_button_tag :eligible, :no, false, id: "eligible_no", class: "radio__input", required: true %>
-                <%= label_tag "eligible_no", class: "radio__label " do %>
-                    <p>No</p>
-                <% end %>
-            </div>
-            
-        </fieldset>
-
-        <div class="form-actions">
-            <%= button_tag "Continue", class: "button" %>
-        </div>
-    <% end %>
+    <div class="form-actions">
+      <%= button_tag "Continue", class: "button" %>
+    </div>
+  <% end %>
 </div>
