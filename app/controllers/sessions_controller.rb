@@ -15,7 +15,6 @@ class SessionsController < ApplicationController
     session[:organisation_id] = org_id
     session[:services] = services
     session[:uid] = auth_hash.uid
-    session[:user_email] = auth_hash.info.email
 
     redirect_to employees_path
   end

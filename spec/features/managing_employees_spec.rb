@@ -41,6 +41,10 @@ RSpec.feature 'Managing employees' do
       click_button 'Sign in'
     end
 
+    after do
+      OmniAuth.config.test_mode = false
+    end
+
     context 'creating employees' do
       let(:last_name) { FFaker::Name.last_name }
       let(:other_names) { FFaker::Name.first_name }
