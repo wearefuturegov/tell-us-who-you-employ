@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 2021_03_05_113820) do
   enable_extension "plpgsql"
 
   create_table "employees", force: :cascade do |t|
-    t.string "surname"
-    t.string "first_names"
+    t.string "last_name"
+    t.string "other_names"
     t.string "role"
     t.date "employed_from"
     t.date "employed_to"
