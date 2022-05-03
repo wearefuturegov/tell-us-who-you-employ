@@ -1,7 +1,6 @@
 require 'csv'
 
 skills_mapping = {
-  "Food Hygiene": "Food hygiene",
   "Paediatric First Aid": "Paediatric first aid (PFA)",
   "Level 2": "Level 2",
   "Level 3": "Level 3",
