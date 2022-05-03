@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :employee do
-    last_name { FFaker::Name.last_name }
-    other_names { FFaker::Name.first_name }
+    surname { FFaker::Name.last_name }
+    forenames { FFaker::Name.first_name }
     street_address { FFaker::AddressUK.street_address }
     postal_code { FFaker::AddressUK.postcode }
     date_of_birth { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
