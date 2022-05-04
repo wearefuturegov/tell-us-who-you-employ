@@ -56,7 +56,7 @@ class EmployeesController < ApplicationController
       :date_of_birth,
 
       :service_id,
-      :role,
+      :job_title,
       :employed_from,
       :employed_to,
       :currently_employed,
@@ -65,7 +65,8 @@ class EmployeesController < ApplicationController
       :dbs_expires_at,
       :has_first_aid_training,
       :first_aid_expires_at,
-      :qualifications => []
+      :qualifications => [],
+      :roles => []
     )
   end
 end
