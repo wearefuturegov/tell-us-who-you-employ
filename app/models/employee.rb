@@ -2,7 +2,7 @@ class Employee < ApplicationRecord
   has_paper_trail
 
   attr_accessor :skip_validations
-  validates_presence_of :last_name, :employed_from, :date_of_birth, :street_address, :postal_code, unless: :skip_validations
+  validates_presence_of :last_name, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, unless: :skip_validations
 
   def employed_to_or_currently_employed
