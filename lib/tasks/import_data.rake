@@ -16,7 +16,7 @@ qualifications_mapping = {
   "EYC Full & Relevant - Level 3": "Level 3",
   "EYC Full & Relevant - Level 4": "Level 4",
   "EYC Full & Relevant - Level 5": "Level 5",
-  "EYC Full & Relevant - Level 6": "EYC"
+  "EYC Full & Relevant - Level 6": "EYC",
   "EYPS (Level 6)": "EYPS",
   "QTS (Level 6)": "QTS",
 }
