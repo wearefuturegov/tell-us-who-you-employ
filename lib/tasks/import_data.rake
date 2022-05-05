@@ -10,7 +10,8 @@ skills_mapping = {
   "Level 6 (EYPS/QTS)": "Level 6 (EYPS/QTS)",
   "GCSE x 1": "One GCSE",
   "GCSE x 2": "Two GCSEs",
-  "GCSE x 3": "Three or more GCSEs"
+  "GCSE x 3": "Three or more GCSEs",
+  "Food Hygiene": "has_food_hygiene"
 }
 
 # Only the easy ones in here
