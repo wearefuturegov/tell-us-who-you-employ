@@ -10,8 +10,7 @@ skills_mapping = {
   "Level 6 (EYPS/QTS)": "Level 6 (EYPS/QTS)",
   "GCSE x 1": "One GCSE",
   "GCSE x 2": "Two GCSEs",
-  "GCSE x 3": "Three or more GCSEs",
-  "Food Hygiene": "has_food_hygiene"
+  "GCSE x 3": "Three or more GCSEs"
 }
 
 # Only the easy ones in here
@@ -108,7 +107,8 @@ task :import_employee_data => :environment do
         postal_code: row['ha_postcode'],
         has_dbs_check: dbs_checked,
         dbs_expires_at: row['dbs_date'],
-        qualifications: skills_for_import
+        qualifications: skills_for_import,
+        has_food_hygiene: row['skill'].include?('Food Hygiene')
       )
 
       employee.skip_validations = true
