@@ -1,17 +1,12 @@
 require 'csv'
 
 skills_mapping = {
-  "Food Hygiene": "Food hygiene",
   "Paediatric First Aid": "Paediatric first aid (PFA)",
   "Level 2": "Level 2",
   "Level 3": "Level 3",
   "Level 4": "Level 4",
   "Level 5": "Level 5",
   "Level 6": "Level 6",
-  "Level 6 (EYPS/QTS)": "Level 6 (EYPS/QTS)",
-  "GCSE x 1": "One GCSE",
-  "GCSE x 2": "Two GCSEs",
-  "GCSE x 3": "Three or more GCSEs"
 }
 
 # Only the easy ones in here
@@ -20,6 +15,9 @@ qualifications_mapping = {
   "EYC Full & Relevant - Level 3": "Level 3",
   "EYC Full & Relevant - Level 4": "Level 4",
   "EYC Full & Relevant - Level 5": "Level 5",
+  "EYC Full & Relevant - Level 6": "EYC",
+  "EYPS (Level 6)": "EYPS",
+  "QTS (Level 6)": "QTS",
 }
 
 
@@ -59,29 +57,6 @@ task :import_employee_data => :environment do
         # For the easy ones, just add them in
         skills_for_import.push mapped_qual and next if mapped_qual
 
-        # Level 6
-        if ['EYC Full & Relevant - Level 6', 'QTS (Level 6)', 'EYPS (Level 6)'].include? q
-          next if skills_for_import.include? 'Level 6'
-          next if skills_for_import.include? 'Level 6 (EYPS/QTS)'
-          skills_for_import.push 'Level 6'
-        end
-      end
-
-      # GCSEs
-      gcse_quals = 0
-      gcse_quals += 1 if row['qualification']&.include? 'English'
-      gcse_quals += 1 if row['qualification']&.include? 'Maths'
-      gcse_quals += 1 if row['qualification']&.include? 'Science'
-
-      if gcse_quals > 0
-        gcse = skills_mapping["GCSE x #{gcse_quals}".to_sym]
-        unless skills_for_import.include? gcse
-          # There might already be a GCSE qual in the skills to import, we just
-          # need to make sure it matches the one we have in the qualifications
-          # field.
-          skills_for_import -= ["One GCSE", "Two GCSEs", "Three or more GCSEs"]
-          skills_for_import.push gcse
-        end
       end
 
       # DBS check fields
@@ -103,8 +78,8 @@ task :import_employee_data => :environment do
       end
 
       employee = Employee.new(
-        last_name: row['surname'],
-        other_names: row['forenames'],
+        surname: row['surname'],
+        forenames: row['forenames'],
         job_title: row['job_title'],
         employed_from: row['start_date'],
         employed_to: row['end_date'],
@@ -118,6 +93,7 @@ task :import_employee_data => :environment do
         dbs_expires_at: row['dbs_date'],
         qualifications: skills_for_import,
         roles: rol_for_importing
+        has_food_hygiene: row['skill'].include?('Food Hygiene')
       )
 
       employee.skip_validations = true

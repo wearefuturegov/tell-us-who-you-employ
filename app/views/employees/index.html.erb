@@ -7,8 +7,8 @@
     <table>
       <thead>
         <tr>
-          <th>Last name</th>
-          <th>Other names</th>
+          <th>Surname</th>
+          <th>Forenames</th>
           <th>Job title</th>
           <th>Employed at</th>
           <th>Employed from</th>
@@ -18,8 +18,8 @@
       <tbody>
         <% @employees.each do |e| %>
           <tr>
-            <td><%= e.last_name %></td>
-            <td><%= e.other_names %></td>
+            <td><%= e.surname %></td>
+            <td><%= e.forenames %></td>
             <td><%= e.job_title %></td>
 
             <td><%= service_name_by_id(e.service_id) %></td>

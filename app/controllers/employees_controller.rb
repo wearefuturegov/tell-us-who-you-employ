@@ -49,8 +49,8 @@ class EmployeesController < ApplicationController
 
   def employee_params
     params.require(:employee).permit(
-      :last_name,
-      :other_names,
+      :surname,
+      :forenames,
       :street_address,
       :postal_code,
       :date_of_birth,
@@ -65,8 +65,10 @@ class EmployeesController < ApplicationController
       :dbs_expires_at,
       :has_first_aid_training,
       :first_aid_expires_at,
-      :qualifications => [],
       :roles => []
+      :has_food_hygiene,
+      :food_hygiene_achieved_on,
+      :qualifications => []
     )
   end
 end
