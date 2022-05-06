@@ -78,6 +78,16 @@
 <h2>About their skills</h2>
 
 <div class="checkbox field">
+    <%= f.check_box :has_food_hygiene, {class: "checkbox__input"} %>
+    <%= f.label :has_food_hygiene, "Does this person have food hygiene qualification?", class: "checkbox__label" %>
+</div>
+
+<div class="field">
+    <%= f.label :food_hygiene_achieved_on, "If so, when does it expire?", class: "field__label" %>
+    <%= f.date_field :food_hygiene_achieved_on, class: "field__input" %>
+</div>
+
+<div class="checkbox field">
     <%= f.check_box :has_dbs_check, {class: "checkbox__input"} %>
     <%= f.label :has_dbs_check, "Does this person hold a DBS check?", class: "checkbox__label" %>
 </div>
