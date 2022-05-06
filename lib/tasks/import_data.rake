@@ -92,7 +92,7 @@ task :import_employee_data => :environment do
         has_dbs_check: dbs_checked,
         dbs_expires_at: row['dbs_date'],
         qualifications: skills_for_import,
-        roles: rol_for_importing
+        roles: rol_for_importing,
         has_food_hygiene: row['skill'].include?('Food Hygiene')
       )
 
