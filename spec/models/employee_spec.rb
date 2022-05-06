@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
   subject { described_class.new(
-      last_name: 'Lastname',
+      surname: 'Lastname',
+      forenames: 'Forenames', 
       employed_from: Date.today,
       date_of_birth: Date.today - 30.years,
       street_address: '1 The Street',
