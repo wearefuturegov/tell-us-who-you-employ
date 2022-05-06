@@ -22,37 +22,6 @@ qualifications_mapping = {
   "EYC Full & Relevant - Level 5": "Level 5",
 }
 
-roles_mapping = {
-  "Designated Behaviour Management Lead":  "Designated Behaviour Management Lead" ,
-  "Designated Safeguarding Lead": "Designated Safeguarding Lead",
-  "Designated SENCO": "Designated SENCO",
-  "First Aider": "First Aider",
-  "Ofsted Registered Contact": "Ofsted Registered Contact",
-  "Practice Leader":  "Practice Leader"    
-}
-
-job_title_mapping = {
-      "Acting Deputy Manager/Leader/Supervisor":  "Acting Deputy Manager/Leader/Supervisor",
-      "Acting Manager/Leader/Supervisor": "Acting Manager/Leader/Supervisor",
-      "Apprentice/Intern": "Apprentice/Intern",
-      "Assistant Childminder": "Assistant Childminder",
-      "Chair Person": "Chair Person",
-      "Childminder": "Childminder",
-      "Cleaner/Caretaker/Catering": "Cleaner/Caretaker/Catering",
-      "Deputy Manager/Leader/Supervisor": "Deputy Manager/Leader/Supervisor",
-      "Finance/Administrator/Secretary": "Finance/Administrator/Secretary",
-      "Lead Practitioner": "Lead Practitioner",
-      "Manager/Leader/Supervisor": "Manager/Leader/Supervisor",
-      "Nanny": "Nanny",
-      "Not Applicable": "Not Applicable",
-      "Nursery/Pre-School Assistant": "Nursery/Pre-School Assistant",
-      "On maternity leave": "On maternity leave",
-      "Owner/Proprietor/Director": "Owner/Proprietor/Director",
-      "Playworker": "Playworker",
-      "Room Leader/Supervisor": "Room Leader/Supervisor",
-      "Treasurer": "Treasurer",
-      "Volunteer": "Volunteer"
-}
 
 desc 'Import employee data'
 task :import_employee_data => :environment do
@@ -127,11 +96,10 @@ task :import_employee_data => :environment do
       address = [row['ha_house_num'], row['ha_street'], row['ha_extra_address'], row['ha_village_town']].compact.join(', ')
 
       # Roles fields
+      rol_for_importing = []
       rol = row['roles']&.split("\n") || []
       rol.each do |r|
-        next if r == 'None'
-        mapped_rol = roles_mapping[r.to_sym] 
-        rol_for_importing.push mapped_rol
+        rol_for_importing.push r
       end
 
       employee = Employee.new(
