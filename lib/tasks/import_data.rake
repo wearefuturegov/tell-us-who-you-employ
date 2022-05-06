@@ -94,8 +94,8 @@ task :import_employee_data => :environment do
       address = [row['ha_house_num'], row['ha_street'], row['ha_extra_address'], row['ha_village_town']].compact.join(', ')
 
       employee = Employee.new(
-        last_name: row['surname'],
-        other_names: row['forenames'],
+        surname: row['surname'],
+        forenames: row['forenames'],
         role: row['job_title'],
         employed_from: row['start_date'],
         employed_to: row['end_date'],

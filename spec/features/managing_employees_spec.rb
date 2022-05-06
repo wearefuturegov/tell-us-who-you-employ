@@ -46,8 +46,8 @@ RSpec.feature 'Managing employees' do
     end
 
     context 'creating employees' do
-      let(:last_name) { FFaker::Name.last_name }
-      let(:other_names) { FFaker::Name.first_name }
+      let(:surname) { FFaker::Name.last_name }
+      let(:forenames) { FFaker::Name.first_name }
       let(:address) { FFaker::AddressUK.street_address }
       let(:postcode) { FFaker::AddressUK.postcode }
       let(:dob) { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
@@ -60,8 +60,8 @@ RSpec.feature 'Managing employees' do
 
       context 'with valid employee details' do
         before do
-          fill_in :employee_last_name, with: last_name
-          fill_in :employee_other_names, with: other_names
+          fill_in :employee_surname, with: surname
+          fill_in :employee_forenames, with: forenames
           fill_in :employee_street_address, with: address
           fill_in :employee_postal_code, with: postcode
           fill_in :employee_date_of_birth, with: dob
@@ -74,8 +74,8 @@ RSpec.feature 'Managing employees' do
 
         scenario 'it creates the record' do
           expect(page).to have_content 'Your employees'
-          expect(page).to have_content last_name
-          expect(page).to have_content other_names
+          expect(page).to have_content surname
+          expect(page).to have_content forenames
           expect(page).to have_content role
           expect(page).to have_content service_name
         end
@@ -85,7 +85,7 @@ RSpec.feature 'Managing employees' do
           click_button 'Finish and send'
           expect(page).to have_content 'Your records have been updated'
           visit employees_path
-          expect(page).to_not have_content last_name
+          expect(page).to_not have_content surname
           expect(page).to have_link 'Start now'
         end
 
@@ -97,8 +97,8 @@ RSpec.feature 'Managing employees' do
 
       context 'with invalid employee details' do
         before do
-          fill_in :employee_last_name, with: last_name
-          fill_in :employee_other_names, with: other_names
+          fill_in :employee_surname, with: surname
+          fill_in :employee_forenames, with: forenames
           fill_in :employee_street_address, with: address
           fill_in :employee_postal_code, with: postcode
           fill_in :employee_date_of_birth, with: dob
@@ -127,7 +127,7 @@ RSpec.feature 'Managing employees' do
       end
 
       scenario 'you can update employee records' do
-        expect(page).to have_content employee.last_name
+        expect(page).to have_content employee.surname
         expect(page).to have_content service_name
 
         click_link 'Change'
@@ -137,7 +137,7 @@ RSpec.feature 'Managing employees' do
 
         click_button 'Continue'
         expect(page).to have_content 'If these records are accurate, carry on'
-        expect(page).to have_content employee.last_name
+        expect(page).to have_content employee.surname
         expect(page).to have_content service_name
         expect(page).to have_content employed_to
       end
@@ -152,9 +152,9 @@ RSpec.feature 'Managing employees' do
       end
 
       scenario 'you can delete records' do
-        expect(page).to have_content employee.last_name
+        expect(page).to have_content employee.surname
         click_link 'Remove'
-        expect(page).to_not have_content employee.last_name
+        expect(page).to_not have_content employee.surname
       end
     end
   end
