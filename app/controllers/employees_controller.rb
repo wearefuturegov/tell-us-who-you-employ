@@ -65,10 +65,10 @@ class EmployeesController < ApplicationController
       :dbs_expires_at,
       :has_first_aid_training,
       :first_aid_expires_at,
-      :roles => [],
-      :has_food_hygiene
+      :has_food_hygiene,
       :food_hygiene_achieved_on,
-      :qualifications => []
+      :qualifications => [],
+      :roles => []
     )
   end
 end
