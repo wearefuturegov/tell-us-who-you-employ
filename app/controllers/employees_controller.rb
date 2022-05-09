@@ -64,7 +64,7 @@ class EmployeesController < ApplicationController
       :has_dbs_check,
       :dbs_expires_at,
       :has_first_aid_training,
-      :first_aid_expires_at,
+      :first_aid_achieved_on,
       :has_food_hygiene,
       :food_hygiene_achieved_on,
       :qualifications => []
