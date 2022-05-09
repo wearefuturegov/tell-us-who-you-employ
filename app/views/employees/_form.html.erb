@@ -115,6 +115,19 @@
 <div class="field">
     <%= f.label :senco_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
     <%= f.date_field :senco_achieved_on, class: "field__input" %>
+</div>
+
+<div class="checkbox field">
+    <%= f.check_box :has_senco_early_years, {class: "checkbox__input"} %>
+    <%= f.label :has_senco_early_years, "Does this person have early years level 3 SENCO?", class: "checkbox__label" %>
+</div>
+
+<div class="field">
+    <%= f.label :senco_early_years_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
+    <%= f.date_field :senco_early_years_achieved_on, class: "field__input" %>
+</div>
+
+<div class="checkbox field">
     <%= f.check_box :has_safeguarding, {class: "checkbox__input"} %>
     <%= f.label :has_safeguarding, "Does this person have (Other Safeguarding) Safeguarding for all training?", class: "checkbox__label" %>
 </div>
@@ -123,6 +136,7 @@
     <%= f.label :safeguarding_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
     <%= f.date_field :safeguarding_achieved_on, class: "field__input" %>
 </div>
+
 
 <fieldset class="field-group field-group--two-cols">
     <legend class="field-group__legend">What qualifications does this person have?</legend>

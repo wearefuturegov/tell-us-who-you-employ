@@ -71,6 +71,8 @@ class EmployeesController < ApplicationController
       :senco_achieved_on,
       :has_safeguarding,
       :safeguarding_achieved_on,
+      :has_senco_early_years,
+      :senco_early_years_achieved_on,
       :qualifications => []
     )
   end
