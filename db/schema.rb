@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_100042) do
+ActiveRecord::Schema.define(version: 2022_05_09_133159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2022_05_09_100042) do
     t.date "food_hygiene_achieved_on"
     t.boolean "has_senco_training"
     t.date "senco_achieved_on"
+    t.boolean "has_safeguarding"
+    t.date "safeguarding_achieved_on"
   end
 
   create_table "versions", force: :cascade do |t|

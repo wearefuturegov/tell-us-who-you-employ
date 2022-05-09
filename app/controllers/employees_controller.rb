@@ -69,6 +69,8 @@ class EmployeesController < ApplicationController
       :food_hygiene_achieved_on,
       :has_senco_training,
       :senco_achieved_on,
+      :has_safeguarding,
+      :safeguarding_achieved_on,
       :qualifications => []
     )
   end
