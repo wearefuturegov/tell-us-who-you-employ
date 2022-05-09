@@ -107,6 +107,16 @@
     <%= f.date_field :first_aid_achieved_on, class: "field__input" %>
 </div>
 
+<div class="checkbox field">
+    <%= f.check_box :has_safeguarding, {class: "checkbox__input"} %>
+    <%= f.label :has_safeguarding, "Does this person have (Other Safeguarding) Safeguarding for all training?", class: "checkbox__label" %>
+</div>
+
+<div class="field">
+    <%= f.label :safeguarding_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
+    <%= f.date_field :safeguarding_achieved_on, class: "field__input" %>
+</div>
+
 <fieldset class="field-group field-group--two-cols">
     <legend class="field-group__legend">What qualifications does this person have?</legend>
 

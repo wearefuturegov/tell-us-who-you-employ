@@ -67,6 +67,8 @@ class EmployeesController < ApplicationController
       :first_aid_achieved_on,
       :has_food_hygiene,
       :food_hygiene_achieved_on,
+      :has_safeguarding,
+      :safeguarding_achieved_on,
       :qualifications => []
     )
   end
