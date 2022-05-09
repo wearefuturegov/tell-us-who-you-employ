@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_03_145221) do
-
+ActiveRecord::Schema.define(version: 2022_05_09_083131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +18,7 @@ ActiveRecord::Schema.define(version: 2022_05_03_145221) do
   create_table "employees", force: :cascade do |t|
     t.string "surname"
     t.string "forenames"
-    t.string "role"
+    t.string "job_title"
     t.date "employed_from"
     t.date "employed_to"
     t.datetime "created_at", null: false
@@ -33,10 +32,11 @@ ActiveRecord::Schema.define(version: 2022_05_03_145221) do
     t.boolean "has_dbs_check"
     t.date "dbs_expires_at"
     t.boolean "has_first_aid_training"
-    t.date "first_aid_expires_at"
+    t.date "first_aid_achieved_on"
     t.string "qualifications", array: true
     t.boolean "has_food_hygiene"
     t.date "food_hygiene_achieved_on"
+    t.string "roles", array: true
   end
 
   create_table "versions", force: :cascade do |t|
