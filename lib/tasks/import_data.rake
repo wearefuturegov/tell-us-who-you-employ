@@ -82,7 +82,7 @@ task :import_employee_data => :environment do
         street_address: address, 
         postal_code: row['ha_postcode'],
         has_dbs_check: dbs_checked,
-        dbs_expires_at: row['dbs_date'],
+        dbs_achieved_on: row['dbs_date'],
         qualifications: skills_for_import,
         has_food_hygiene: row['skill'].include?('Food Hygiene')
       )
