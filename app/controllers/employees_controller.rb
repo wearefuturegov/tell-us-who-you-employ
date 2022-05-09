@@ -56,7 +56,7 @@ class EmployeesController < ApplicationController
       :date_of_birth,
 
       :service_id,
-      :role,
+      :job_title,
       :employed_from,
       :employed_to,
       :currently_employed,
@@ -73,7 +73,8 @@ class EmployeesController < ApplicationController
       :safeguarding_achieved_on,
       :has_senco_early_years,
       :senco_early_years_achieved_on,
-      :qualifications => []
+      :qualifications => [],
+      :roles => []
     )
   end
 end
