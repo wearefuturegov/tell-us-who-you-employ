@@ -1,7 +1,6 @@
 require 'csv'
 
 skills_mapping = {
-  "Paediatric First Aid": "Paediatric first aid (PFA)",
   "Level 2": "Level 2",
   "Level 3": "Level 3",
   "Level 4": "Level 4",
@@ -84,7 +83,8 @@ task :import_employee_data => :environment do
         has_dbs_check: dbs_checked,
         dbs_achieved_on: row['dbs_date'],
         qualifications: skills_for_import,
-        has_food_hygiene: row['skill'].include?('Food Hygiene')
+        has_food_hygiene: row['skill'].include?('Food Hygiene'),
+        has_first_aid_training: row['skill'].include?('Paediatric First Aid')
       )
 
       employee.skip_validations = true
