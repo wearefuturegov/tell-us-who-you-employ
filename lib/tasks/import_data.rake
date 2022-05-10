@@ -49,7 +49,7 @@ task :import_employee_data => :environment do
       # Then the 'qualifications' column
       quals = row['qualification']&.split("\n") || []
       quals.each do |q|
-        next if q == 'None'
+        next if q == 'None' || q == 'Paediatric First Aid'
         mapped_qual = qualifications_mapping[q.to_sym]
         next if skills_for_import.include? mapped_qual 
 
@@ -84,7 +84,8 @@ task :import_employee_data => :environment do
         has_dbs_check: dbs_checked,
         dbs_achieved_on: row['dbs_date'],
         qualifications: skills_for_import,
-        has_food_hygiene: row['skill'].include?('Food Hygiene')
+        has_food_hygiene: row['skill'].include?('Food Hygiene'),
+        has_first_aid_training: row['skill'].include?('Paediatric First Aid')
       )
 
       employee.skip_validations = true
