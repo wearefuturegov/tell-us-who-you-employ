@@ -52,7 +52,7 @@ RSpec.feature 'Managing employees' do
       let(:postcode) { FFaker::AddressUK.postcode }
       let(:dob) { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
       let(:employed_from) { FFaker::Time.date(year_range: 25) }
-      let(:role) { FFaker::Job.title }
+      let(:job_title) { 'Childminder' }
 
       before do
         click_link 'Add your first employee'
@@ -66,7 +66,7 @@ RSpec.feature 'Managing employees' do
           fill_in :employee_postal_code, with: postcode
           fill_in :employee_date_of_birth, with: dob
           fill_in :employee_employed_from, with: employed_from
-          fill_in :employee_role, with: role
+          page.select job_title, from: :employee_job_title
           check :employee_currently_employed
 
           click_button 'Continue'
@@ -76,7 +76,7 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_content 'Your employees'
           expect(page).to have_content surname
           expect(page).to have_content forenames
-          expect(page).to have_content role
+          expect(page).to have_content job_title
           expect(page).to have_content service_name
         end
 
@@ -102,7 +102,7 @@ RSpec.feature 'Managing employees' do
           fill_in :employee_street_address, with: address
           fill_in :employee_postal_code, with: postcode
           fill_in :employee_date_of_birth, with: dob
-          fill_in :employee_role, with: role
+          page.select job_title, from: :employee_job_title
           check :employee_currently_employed
 
           click_button 'Continue'

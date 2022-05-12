@@ -8,6 +8,7 @@ RSpec.describe Employee, type: :model do
       date_of_birth: Date.today - 30.years,
       street_address: '1 The Street',
       postal_code: 'AB12CD',
+      job_title: 'Childminder',
       currently_employed: true
     ) }
 

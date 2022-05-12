@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_133159) do
   create_table "employees", force: :cascade do |t|
     t.string "surname"
     t.string "forenames"
-    t.string "role"
+    t.string "job_title"
     t.date "employed_from"
     t.date "employed_to"
     t.datetime "created_at", null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_133159) do
     t.string "qualifications", array: true
     t.boolean "has_food_hygiene"
     t.date "food_hygiene_achieved_on"
+    t.string "roles", array: true
     t.boolean "has_senco_training"
     t.date "senco_achieved_on"
     t.boolean "has_senco_early_years"

@@ -19,6 +19,7 @@ qualifications_mapping = {
   "QTS (Level 6)": "QTS",
 }
 
+
 desc 'Import employee data'
 task :import_employee_data => :environment do
   if Employee.all.any?
@@ -68,10 +69,17 @@ task :import_employee_data => :environment do
       # Address fields
       address = [row['ha_house_num'], row['ha_street'], row['ha_extra_address'], row['ha_village_town']].compact.join(', ')
 
+      # Roles fields
+      rol_for_importing = []
+      rol = row['roles']&.split("\n") || []
+      rol.each do |r|
+        rol_for_importing.push r
+      end
+
       employee = Employee.new(
         surname: row['surname'],
         forenames: row['forenames'],
-        role: row['job_title'],
+        job_title: row['job_title'],
         employed_from: row['start_date'],
         employed_to: row['end_date'],
         currently_employed: row['resource_type'] === 'Current Job',
@@ -84,7 +92,8 @@ task :import_employee_data => :environment do
         dbs_achieved_on: row['dbs_date'],
         qualifications: skills_for_import,
         has_food_hygiene: row['skill'].include?('Food Hygiene'),
-        has_first_aid_training: row['skill'].include?('Paediatric First Aid')
+        has_first_aid_training: row['skill'].include?('Paediatric First Aid'),
+        roles: rol_for_importing
       )
 
       employee.skip_validations = true
