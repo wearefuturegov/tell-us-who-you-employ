@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2022_05_09_133159) do
     t.date "food_hygiene_achieved_on"
     t.boolean "has_senco_training"
     t.date "senco_achieved_on"
+    t.boolean "has_senco_early_years"
+    t.date "senco_early_years_achieved_on"
     t.boolean "has_safeguarding"
     t.date "safeguarding_achieved_on"
   end
