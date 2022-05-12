@@ -12,7 +12,6 @@ module ApplicationHelper
 
   def accepted_qualifications
     [
-      "Paediatric first aid (PFA)",
       "Level 2",
       "Level 3",
       "Level 4",
