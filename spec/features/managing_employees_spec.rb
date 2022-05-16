@@ -53,6 +53,12 @@ RSpec.feature 'Managing employees' do
       let(:dob) { FFaker::Time.date(year_latest: 18, year_range: 65 - 18) }
       let(:employed_from) { FFaker::Time.date(year_range: 25) }
       let(:job_title) { 'Childminder' }
+      let(:food_hygiene_achieved_on) {FFaker::Time.date(year_range: 5)}
+      let(:dbs_achieved_on) {FFaker::Time.date(year_range: 2)}
+      let(:first_aid_achieved_on) {FFaker::Time.date(year_range: 3)}
+      let(:senco_achieved_on) {FFaker::Time.date(year_range: 1)}
+      let(:senco_early_years_achieved_on) {FFaker::Time.date(year_range: 5)}
+      let(:safeguarding_achieved_on) {FFaker::Time.date(year_range: 4)}
 
       before do
         click_link 'Add your first employee'
@@ -104,12 +110,53 @@ RSpec.feature 'Managing employees' do
           fill_in :employee_date_of_birth, with: dob
           page.select job_title, from: :employee_job_title
           check :employee_currently_employed
-
+          check :employee_has_food_hygiene
+          check :employee_has_dbs_check
+          check :employee_has_first_aid_training
+          check :employee_has_senco_training
+          check :employee_has_senco_early_years
+          check :employee_has_safeguarding
+          
           click_button 'Continue'
         end
 
         it 'shows you the errors' do
           expect(page).to have_content "Employed from can't be blank"
+          expect(page).to have_content "Please add the date this person achieved food hygiene training"
+          expect(page).to have_content "Please add the date this person achieved DBS check"
+          expect(page).to have_content "Please add the date this person achieved Paediatric first aid training"
+          expect(page).to have_content "Please add the date this person achieved SENCO training"
+          expect(page).to have_content "Please add the date this person achieved Early years level 3 SENCO"
+          expect(page).to have_content "Please add the date this person achieved Safeguarding training"
+        end
+      end
+      context 'with invalid skills' do
+        before do
+          fill_in :employee_surname, with: surname
+          fill_in :employee_forenames, with: forenames
+          fill_in :employee_street_address, with: address
+          fill_in :employee_postal_code, with: postcode
+          fill_in :employee_date_of_birth, with: dob
+          page.select job_title, from: :employee_job_title
+          check :employee_currently_employed
+          fill_in :employee_food_hygiene_achieved_on, with: food_hygiene_achieved_on
+          fill_in :employee_dbs_achieved_on, with: dbs_achieved_on
+          fill_in :employee_first_aid_achieved_on, with: first_aid_achieved_on
+          fill_in :employee_senco_achieved_on, with: senco_achieved_on
+          fill_in :employee_senco_early_years_achieved_on, with: senco_early_years_achieved_on
+          fill_in :employee_safeguarding_achieved_on, with: safeguarding_achieved_on
+          
+          click_button 'Continue'
+        end
+
+        it 'shows you the errors' do
+          expect(page).to have_content "Employed from can't be blank"
+          expect(page).to have_content "Please tick food hygiene training field or remove the date achieved"
+          expect(page).to have_content "Please tick DBS check field or remove the date achieved"
+          expect(page).to have_content "Please tick Paediatric first aid training field or remove the date achieved"
+          expect(page).to have_content "Please tick SENCO training field or remove the date achieved"
+          expect(page).to have_content "Please tick Early years level 3 SENCO field or remove the date achieved"
+          expect(page).to have_content "Please tick Safeguarding training field or remove the date achieved"
         end
       end
     end
