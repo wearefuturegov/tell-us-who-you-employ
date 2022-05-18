@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature 'Managing employees' do
   let(:org_id) { 123 }
   let(:service_id) { 456 }
-  let(:service_name) { FFaker::Company.name }
+  let(:service_name) { 'Test service 1' }
 
   scenario 'must be signed in' do
     visit employees_path
@@ -71,10 +71,9 @@ RSpec.feature 'Managing employees' do
           fill_in :employee_street_address, with: address
           fill_in :employee_postal_code, with: postcode
           fill_in :employee_date_of_birth, with: dob
-          fill_in :employee_employed_from, with: employed_from
           page.select job_title, from: :employee_job_title
+          fill_in :employee_employed_from, with: employed_from
           check :employee_currently_employed
-
           click_button 'Continue'
         end
 
@@ -84,6 +83,67 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_content forenames
           expect(page).to have_content job_title
           expect(page).to have_content service_name
+        end
+
+        scenario 'it check the inputs' do
+          
+          click_link 'Change'
+          check "Designated Safeguarding Lead"
+          check "First Aider"
+          check :employee_has_food_hygiene
+          fill_in :employee_food_hygiene_achieved_on, with: food_hygiene_achieved_on
+          check :employee_has_dbs_check
+          fill_in :employee_dbs_achieved_on, with: dbs_achieved_on
+          check :employee_has_first_aid_training
+          fill_in :employee_first_aid_achieved_on, with: first_aid_achieved_on
+          check :employee_has_senco_training
+          fill_in :employee_senco_achieved_on, with: senco_achieved_on
+          check :employee_has_senco_early_years
+          fill_in :employee_senco_early_years_achieved_on, with: senco_early_years_achieved_on
+          check :employee_has_safeguarding
+          fill_in :employee_safeguarding_achieved_on, with: safeguarding_achieved_on
+          [
+            "Level 2",
+            "Level 3",
+            "Level 4",
+            "Level 5",
+            "Level 6",
+            "EYPS",
+            "QTS",
+            "EYC"
+          ].each do |qual|
+            check(qual)
+          end
+          click_button 'Continue'
+          click_link 'Change'
+
+          expect(page).to have_content 'Edit an employee'
+          expect(page).to have_field(:employee_surname, with: surname)
+          expect(page).to have_field(:employee_forenames, with: forenames)
+          expect(page).to have_field(:employee_street_address, with: address)
+          expect(page).to have_field(:employee_postal_code, with: postcode)
+          expect(page).to have_field(:employee_date_of_birth, with: dob)
+          expect(page).to have_field(:employee_employed_from, with: employed_from)
+          expect(page).to have_field(:employee_service_id, with: service_id)
+          expect(page).to have_select(:employee_job_title, selected: job_title)
+          expect(page).to have_checked_field("Designated Safeguarding Lead")
+          expect(page).to have_checked_field("First Aider")
+          expect(page).to have_checked_field(:employee_currently_employed)
+          expect(page).to have_field(:employee_food_hygiene_achieved_on, with: food_hygiene_achieved_on)
+          expect(page).to have_checked_field(:employee_currently_employed)
+          expect(page).to have_field(:employee_dbs_achieved_on, with: dbs_achieved_on)
+          expect(page).to have_checked_field(:employee_has_dbs_check)
+          expect(page).to have_field(:employee_first_aid_achieved_on, with: first_aid_achieved_on)
+          expect(page).to have_checked_field(:employee_has_first_aid_training)
+          expect(page).to have_field(:employee_senco_achieved_on, with: senco_achieved_on)
+          expect(page).to have_checked_field(:employee_has_senco_training)
+          expect(page).to have_field(:employee_senco_early_years_achieved_on, with: senco_early_years_achieved_on)
+          expect(page).to have_checked_field(:employee_has_senco_early_years)
+          expect(page).to have_field(:employee_safeguarding_achieved_on, with: safeguarding_achieved_on)
+          expect(page).to have_checked_field(:employee_has_safeguarding)
+          expect(page).to have_checked_field("Level 2")
+          expect(page).to have_checked_field("Level 6")
+          expect(page).to have_checked_field("EYC")
         end
 
         scenario 'having submitted the records you are signed out' do
