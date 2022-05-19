@@ -25,7 +25,7 @@ module ApplicationHelper
       "Nanny",
       "Not Applicable",
       "Nursery/Pre-School Assistant",
-      "On maternity leave",
+      "On Maternity Leave",
       "Owner/Proprietor/Director",
       "Playworker",
       "Room Leader/Supervisor",
