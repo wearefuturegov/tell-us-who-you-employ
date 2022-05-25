@@ -69,12 +69,12 @@
 <div class="field-group field-group--two-cols">
     <div class="field field--required" >
         <%= f.label :employed_from, "When did their employment start?", class: "field__label" %>
-        <%= f.date_field :employed_from, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+        <%= f.date_field :employed_from, class: "field__input", min: Date.today - 80.years, max: Date.today %>
     </div>
 
     <div class="field">
         <%= f.label :employed_to, "When did their employment finish?", class: "field__label" %>
-        <%= f.date_field :employed_to, class: "field__input" , min: Date.new(1920, 01, 01), max: Date.today%>
+        <%= f.date_field :employed_to, class: "field__input" , min: Date.today - 80.years, max: Date.today%>
     </div>
 </div>
 
@@ -91,62 +91,62 @@
 
 <div class="checkbox field">
     <%= f.check_box :has_food_hygiene, {class: "checkbox__input"} %>
-    <%= f.label :has_food_hygiene, "Does this person have food hygiene qualification?", class: "checkbox__label" , min: Date.new(1920, 01, 01), max: Date.today%>
+    <%= f.label :has_food_hygiene, "Does this person have food hygiene qualification?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :food_hygiene_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :food_hygiene_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :food_hygiene_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
     <%= f.check_box :has_dbs_check, {class: "checkbox__input"} %>
-    <%= f.label :has_dbs_check, "Does this person hold a DBS check?", class: "checkbox__label", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.label :has_dbs_check, "Does this person hold a DBS check?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :dbs_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :dbs_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :dbs_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
     <%= f.check_box :has_first_aid_training, {class: "checkbox__input"} %>
-    <%= f.label :has_first_aid_training, "Does this person have paediatric first aid training?", class: "checkbox__label", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.label :has_first_aid_training, "Does this person have paediatric first aid training?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :first_aid_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :first_aid_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :first_aid_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
     <%= f.check_box :has_senco_training, {class: "checkbox__input"} %>
-    <%= f.label :has_senco_training, "Does this person have SENCO training?", class: "checkbox__label", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.label :has_senco_training, "Does this person have SENCO training?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :senco_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :senco_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
     <%= f.check_box :has_senco_early_years, {class: "checkbox__input"} %>
-    <%= f.label :has_senco_early_years, "Does this person have early years level 3 SENCO?", class: "checkbox__label", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.label :has_senco_early_years, "Does this person have early years level 3 SENCO?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :senco_early_years_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_early_years_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :senco_early_years_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
     <%= f.check_box :has_safeguarding, {class: "checkbox__input"} %>
-    <%= f.label :has_safeguarding, "Does this person have (Other Safeguarding) Safeguarding for all training?", class: "checkbox__label", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.label :has_safeguarding, "Does this person have (Other Safeguarding) Safeguarding for all training?", class: "checkbox__label" %>
 </div>
 
 <div class="field">
     <%= f.label :safeguarding_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :safeguarding_achieved_on, class: "field__input", min: Date.new(1920, 01, 01), max: Date.today %>
+    <%= f.date_field :safeguarding_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 

@@ -198,9 +198,9 @@ RSpec.feature 'Managing employees' do
         click_button 'Continue'
       end
       it 'shows you the errors' do
-      expect(page).to have_content "Employment start date can't be before finish date"
-      expect(page).to have_content "Employment start date can't be in future"
-      expect(page).to have_content "Employment end date can't be in future"
+      expect(page).to have_content "The employment finish date shouldn't be before the start date"
+      expect(page).to have_content "The employment start date can't be in future"
+      expect(page).to have_content "The employment end date can't be in future"
       end
     end
 
