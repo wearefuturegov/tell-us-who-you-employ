@@ -193,14 +193,14 @@ RSpec.feature 'Managing employees' do
 
       context 'with employment start after employment finish' do 
       before do
-        fill_in :employee_employed_from, with: "25-02-2030"
-        fill_in :employee_employed_to, with: "02-10-2000"
+        fill_in :employee_employed_from, with: "25-02-2050"
+        fill_in :employee_employed_to, with: "02-10-2030"
         click_button 'Continue'
-        save_and_open_page
       end
       it 'shows you the errors' do
       expect(page).to have_content "Employment start date can't be before finish date"
       expect(page).to have_content "Employment start date can't be in future"
+      expect(page).to have_content "Employment end date can't be in future"
       end
     end
 
