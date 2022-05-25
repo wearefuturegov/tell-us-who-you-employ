@@ -190,6 +190,20 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_content "Please add the date this person achieved Safeguarding training"
         end
       end
+
+      context 'with employment start after employment finish' do 
+      before do
+        fill_in :employee_employed_from, with: "25-02-2050"
+        fill_in :employee_employed_to, with: "02-10-2030"
+        click_button 'Continue'
+      end
+      it 'shows you the errors' do
+      expect(page).to have_content "The employment finish date shouldn't be before the start date"
+      expect(page).to have_content "The employment start date can't be in future"
+      expect(page).to have_content "The employment end date can't be in future"
+      end
+    end
+
       context 'with invalid skills' do
         before do
           fill_in :employee_surname, with: surname
@@ -246,7 +260,7 @@ RSpec.feature 'Managing employees' do
         expect(page).to have_content 'If these records are accurate, carry on'
         expect(page).to have_content employee.surname
         expect(page).to have_content service_name
-        expect(page).to have_content employed_to
+        expect(page).to have_content employed_to.strftime("%d/%m/%Y")
       end
 
       scenario 'you cannot update records with invalid employee details' do

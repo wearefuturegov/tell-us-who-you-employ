@@ -23,10 +23,10 @@
             <td><%= e.job_title %></td>
 
             <td><%= service_name_by_id(e.service_id) %></td>
-            <td><%= e.employed_from %></td>
+            <td><%= e.employed_from.strftime("%d/%m/%Y") %></td>
             <td>
               <% if e.employed_to %>
-                <%= e.employed_to %>
+                <%= e.employed_to.strftime("%d/%m/%Y") %>
               <% else %>
                 —
               <% end %>

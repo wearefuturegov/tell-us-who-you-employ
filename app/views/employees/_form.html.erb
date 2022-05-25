@@ -67,14 +67,14 @@
 </fieldset>
 
 <div class="field-group field-group--two-cols">
-    <div class="field field--required">
+    <div class="field field--required" >
         <%= f.label :employed_from, "When did their employment start?", class: "field__label" %>
-        <%= f.date_field :employed_from, class: "field__input" %>
+        <%= f.date_field :employed_from, class: "field__input", min: Date.today - 80.years, max: Date.today %>
     </div>
 
     <div class="field">
         <%= f.label :employed_to, "When did their employment finish?", class: "field__label" %>
-        <%= f.date_field :employed_to, class: "field__input" %>
+        <%= f.date_field :employed_to, class: "field__input" , min: Date.today - 80.years, max: Date.today%>
     </div>
 </div>
 
@@ -96,7 +96,7 @@
 
 <div class="field">
     <%= f.label :food_hygiene_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :food_hygiene_achieved_on, class: "field__input" %>
+    <%= f.date_field :food_hygiene_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
@@ -106,7 +106,7 @@
 
 <div class="field">
     <%= f.label :dbs_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :dbs_achieved_on, class: "field__input" %>
+    <%= f.date_field :dbs_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
@@ -116,7 +116,7 @@
 
 <div class="field">
     <%= f.label :first_aid_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :first_aid_achieved_on, class: "field__input" %>
+    <%= f.date_field :first_aid_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
@@ -126,7 +126,7 @@
 
 <div class="field">
     <%= f.label :senco_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_achieved_on, class: "field__input" %>
+    <%= f.date_field :senco_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
@@ -136,7 +136,7 @@
 
 <div class="field">
     <%= f.label :senco_early_years_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_early_years_achieved_on, class: "field__input" %>
+    <%= f.date_field :senco_early_years_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 <div class="checkbox field">
@@ -146,7 +146,7 @@
 
 <div class="field">
     <%= f.label :safeguarding_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :safeguarding_achieved_on, class: "field__input" %>
+    <%= f.date_field :safeguarding_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
 </div>
 
 
