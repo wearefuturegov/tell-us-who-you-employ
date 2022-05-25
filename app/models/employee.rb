@@ -12,6 +12,15 @@ class Employee < ApplicationRecord
     if currently_employed && employed_to
       errors.add(:base, "Current employees can't have a finish date")
     end
+    if employed_to && employed_from > employed_to
+      errors.add(:base, "Employment start date can't be before finish date ")
+    end
+    if employed_from && employed_from > Time.now
+      errors.add(:base, "Employment start date can't be in future ")
+    end
+    if employed_to && employed_to > Time.now
+      errors.add(:base, "Employment end date can't be in future ")
+    end
   end
 
   def has_food_hygiene_qualification_or_achieved_on
