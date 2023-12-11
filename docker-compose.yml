@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+  # tell-us-who-you-employ app
+
+  tell-us-who-you-employ:
+    image: "tell-us-who-you-employ:development"
+    container_name: tell-us-who-you-employ
+    # command: ["tail", "-f", "/dev/null"]
+    init: true
+    depends_on:
+      - postgres
+    build:
+      context: .
+      target: ${RAILS_ENV:-development}
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+        RAILS_ENV: ${RAILS_ENV:-development}
+    ports:
+      - 3004:3000
+    volumes:
+      - ./:/usr/src/app:cached
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      RACK_ENV: ${RACK_ENV:-development}
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://tell-us-who-you-employ:password@postgres:5432/tell-us-who-you-employ?}
+      RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES:-false}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    networks:
+      - tell-us-who-you-employ_external_network
+      - tell-us-who-you-employ_internal_network
+
+  # Databases
+
+  postgres:
+    image: postgres:13.7-alpine
+    container_name: portal-db-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tell-us-who-you-employ}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-tell-us-who-you-employ_development}
+    ports:
+      - 5433:5432
+    volumes:
+      - tell-us-who-you-employ-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - tell-us-who-you-employ_internal_network
+      - tell-us-who-you-employ_external_network
+
+volumes:
+  tell-us-who-you-employ-postgres-volume:
+
+networks:
+  tell-us-who-you-employ_external_network:
+  tell-us-who-you-employ_internal_network:
+    internal: true
