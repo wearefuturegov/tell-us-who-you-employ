@@ -29,6 +29,9 @@ jobs:
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
 
+      - name: Install Node.js dependencies
+        run: npm install
+
       - name: Setup database
         env:
           RAILS_ENV: test
