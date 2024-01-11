@@ -7,10 +7,13 @@ class FlowController < ApplicationController
 
   def check_eligibility
     if params[:eligible] === "yes"
-      redirect_to "/auth/outpost"
+      redirect_to eligible_path
     else
       redirect_to ineligible_path
     end
+  end
+
+  def eligible
   end
 
   def ineligible
@@ -18,7 +21,8 @@ class FlowController < ApplicationController
 
   def finish
     if params[:confirm_validity]
-      session[:user] = nil
+      # Sign the user out by clearing everything in session
+      reset_session
     else
       redirect_to employees_path, notice: "You must confirm these records are correct before finishing"
     end

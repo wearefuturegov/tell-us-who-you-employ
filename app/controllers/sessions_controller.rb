@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :create
+
   def create
     # First check that the user is associated to an organisation and has listed
     # services; if they haven't, they can't use this service
@@ -13,7 +15,6 @@ class SessionsController < ApplicationController
     session[:organisation_id] = org_id
     session[:services] = services
     session[:uid] = auth_hash.uid
-    session[:user_email] = auth_hash.info.email
 
     redirect_to employees_path
   end

@@ -1,25 +1,30 @@
 require 'csv'
 
 skills_mapping = {
-  "Food Hygiene": "Food hygiene",
-  "Paediatric First Aid": "Paediatric first aid (PFA)",
   "Level 2": "Level 2",
   "Level 3": "Level 3",
   "Level 4": "Level 4",
   "Level 5": "Level 5",
   "Level 6": "Level 6",
-  "Level 6 (EYPS/QTS)": "Level 6 (EYPS/QTS)",
-  "GCSE x 1": "One GCSE",
-  "GCSE x 2": "Two GCSEs",
-  "GCSE x 3": "Three or more GCSEs"
 }
 
-# Only the easy ones in here
 qualifications_mapping = {
   "EYC Full & Relevant - Level 2": "Level 2",
   "EYC Full & Relevant - Level 3": "Level 3",
   "EYC Full & Relevant - Level 4": "Level 4",
   "EYC Full & Relevant - Level 5": "Level 5",
+  "EYC Full & Relevant - Level 6": "EYC",
+  "EYPS (Level 6)": "EYPS",
+  "QTS (Level 6)": "QTS",
+}
+
+roles_mapping = {
+  "designated behaviour management lead": "Designated Behaviour Management Lead",
+  "designated safeguarding lead": "Designated Safeguarding Lead",
+  "designated senco": "Designated SENCO",
+  "first aider": "First Aider",
+  "ofsted registered contact": "Ofsted Registered Contact",
+  "practice leader": "Practice Leader"
 }
 
 desc 'Import employee data'
@@ -55,32 +60,7 @@ task :import_employee_data => :environment do
         mapped_qual = qualifications_mapping[q.to_sym]
         next if skills_for_import.include? mapped_qual 
 
-        # For the easy ones, just add them in
         skills_for_import.push mapped_qual and next if mapped_qual
-
-        # Level 6
-        if ['EYC Full & Relevant - Level 6', 'QTS (Level 6)', 'EYPS (Level 6)'].include? q
-          next if skills_for_import.include? 'Level 6'
-          next if skills_for_import.include? 'Level 6 (EYPS/QTS)'
-          skills_for_import.push 'Level 6'
-        end
-      end
-
-      # GCSEs
-      gcse_quals = 0
-      gcse_quals += 1 if row['qualification']&.include? 'English'
-      gcse_quals += 1 if row['qualification']&.include? 'Maths'
-      gcse_quals += 1 if row['qualification']&.include? 'Science'
-
-      if gcse_quals > 0
-        gcse = skills_mapping["GCSE x #{gcse_quals}".to_sym]
-        unless skills_for_import.include? gcse
-          # There might already be a GCSE qual in the skills to import, we just
-          # need to make sure it matches the one we have in the qualifications
-          # field.
-          skills_for_import -= ["One GCSE", "Two GCSEs", "Three or more GCSEs"]
-          skills_for_import.push gcse
-        end
       end
 
       # DBS check fields
@@ -94,10 +74,17 @@ task :import_employee_data => :environment do
       # Address fields
       address = [row['ha_house_num'], row['ha_street'], row['ha_extra_address'], row['ha_village_town']].compact.join(', ')
 
+      # Roles fields
+      rol_for_importing = []
+      rol = row['staff_role']&.split("\n") || []
+      rol.each do |r|
+        rol_for_importing.push roles_mapping[r.downcase.to_sym]
+      end
+
       employee = Employee.new(
-        last_name: row['surname'],
-        other_names: row['forenames'],
-        role: row['job_title'],
+        surname: row['surname'],
+        forenames: row['forenames'],
+        job_title: row['job_title']&.titleize,
         employed_from: row['start_date'],
         employed_to: row['end_date'],
         currently_employed: row['resource_type'] === 'Current Job',
@@ -107,8 +94,11 @@ task :import_employee_data => :environment do
         street_address: address, 
         postal_code: row['ha_postcode'],
         has_dbs_check: dbs_checked,
-        dbs_expires_at: row['dbs_date'],
-        qualifications: skills_for_import
+        dbs_achieved_on: row['dbs_date'],
+        qualifications: skills_for_import.compact,
+        has_food_hygiene: row['skill']&.include?('Food Hygiene'),
+        has_first_aid_training: row['skill']&.include?('Paediatric First Aid'),
+        roles: rol_for_importing.compact
       )
 
       employee.skip_validations = true

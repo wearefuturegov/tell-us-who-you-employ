@@ -49,23 +49,32 @@ class EmployeesController < ApplicationController
 
   def employee_params
     params.require(:employee).permit(
-      :last_name,
-      :other_names,
+      :surname,
+      :forenames,
       :street_address,
       :postal_code,
       :date_of_birth,
 
       :service_id,
-      :role,
+      :job_title,
       :employed_from,
       :employed_to,
       :currently_employed,
 
       :has_dbs_check,
-      :dbs_expires_at,
+      :dbs_achieved_on,
       :has_first_aid_training,
-      :first_aid_expires_at,
-      :qualifications => []
+      :first_aid_achieved_on,
+      :has_food_hygiene,
+      :food_hygiene_achieved_on,
+      :has_senco_training,
+      :senco_achieved_on,
+      :has_safeguarding,
+      :safeguarding_achieved_on,
+      :has_senco_early_years,
+      :senco_early_years_achieved_on,
+      :qualifications => [],
+      :roles => []
     )
   end
 end

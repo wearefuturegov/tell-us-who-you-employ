@@ -30,8 +30,9 @@ RSpec.feature 'Signing in' do
     visit root_path
     click_link 'Start now'
     choose 'Yes'
-
     click_button 'Continue'
+    click_button 'Sign in'
+
     expect(page).to have_content 'please list your services on our directory before you begin'
   end
 
@@ -55,8 +56,9 @@ RSpec.feature 'Signing in' do
     visit root_path
     click_link 'Start now'
     choose 'Yes'
-
     click_button 'Continue'
+    click_button 'Sign in'
+
     expect(page).to have_content 'please list your services on our directory before you begin'
   end
 end
