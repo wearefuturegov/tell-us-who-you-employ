@@ -63,3 +63,6 @@ gem 'omniauth-rails_csrf_protection'
 gem 'paper_trail'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'filterrific'
+gem 'kaminari'
+gem 'pg_search'

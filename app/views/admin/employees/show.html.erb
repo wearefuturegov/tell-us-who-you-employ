@@ -1,0 +1,212 @@
+<header class="page-header">
+  <p><strong>
+  <%= "#{@employee.job_title}, #{service_name_by_id(@employee.service_id)}" %>
+  </strong></p>
+  <p class="employee-detail">
+    <%= "Record #{@employee.id}"%>
+  </p>
+</header>
+
+<div class="with-sidebar">
+
+  <div class="panel">
+    <div class="collapsible" id="personal-information">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Personal information
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+
+            <tr class="table-column">
+              <td><strong>First name</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.forenames %></td>
+            </tr>
+            <tr class="table-column">
+              <td><strong>Last name</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.surname %></td>
+            </tr>
+            <tr class="table-column">
+              <td><strong>Date of Birth</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.date_of_birth.strftime("%d/%m/%Y") %></td>
+            </tr>
+            <tr class="table-column">
+              <td><strong>Post code</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.postal_code %></td>
+            </tr>
+
+        </table>
+      </div>
+    </div>
+
+    <div class="collapsible" id="provider">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Provider
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+
+            <tr class="table-column">
+              <td><strong>Current Provider</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= service_name_by_id(@employee.service_id) %></td>
+            </tr>
+            <tr class="table-column">
+              <td><strong>Employed from</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.employed_from.strftime("%d/%m/%Y") %></td>
+            </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="collapsible" id="job-title">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Job title
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+            <tr class="table-column">
+              <td><strong>Job title</strong></td>
+            </tr>
+            <tr class="column-value">
+              <td><%= @employee.job_title %></td>
+            </tr>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="collapsible" id="roles">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Roles
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+          <tr class="table-column">
+            <td><strong>Current roles</strong></td>
+          </tr>
+          <tr class="column-value">
+            <td>                
+              <% if @employee.roles.present? %>
+                <%= @employee.roles.join(', ') %>
+              <% else %>
+                No roles
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="collapsible" id="qualifications">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Qualifications
+          </h2>
+      </button>
+      <div class="collapsible__content">
+
+        <table class="employee-info-table qualifications">
+          <tr class="table-column">
+            <th>Qualification</th>
+            <th>Date Achieved</th>
+          </tr>
+
+          <% if @employee.has_dbs_check %>
+            <tr class="table-column">
+              <td>DBS check</td>
+              <td><%= @employee.bs_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+
+          <% if @employee.has_first_aid_training %>
+            <tr class="table-column">
+              <td>First aid training</td>
+              <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+
+          <% if @employee.has_food_hygiene %>
+            <tr class="table-column">
+              <td>Food Hygiene Qualification</td>
+              <td><%= @employee.food_hygiene_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+            <% if @employee.has_senco_training %>
+            <tr class="table-column">
+              <td>SENCO training</td>
+              <td><%= @employee.senco_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+            <% if @employee.has_safeguarding %>
+            <tr class="table-column">
+              <td>(Other Safeguarding) Safeguarding for all training</td>
+              <td><%= @employee.safeguarding_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+            <% if @employee.has_senco_early_years %>
+            <tr class="table-column">
+              <td>Early Years Level 3 SENCO</td>
+              <td><%= @employee.senco_early_years_achieved_on.strftime("%d/%m/%Y") %></td>
+            </tr>
+          <% end %>
+
+          <tr class="table-column">
+            <td>                
+              <% if @employee.qualifications.present? %>
+                <%= @employee.qualifications.join(', ') %>
+              <% else %>
+                No qualifications
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel">
+    <div class="collapsible" id="status">
+        <button class="collapsible__header" type="button">
+            <h2>
+              Status
+            </h2>
+        </button>
+        <div class="collapsible__content">
+          <p>The records status shows whether they are actively in their current role or not.</p>
+          <div class="tag tag <%= @employee.currently_employed? ? 'active' : 'inactive' %>">
+            <%= @employee.currently_employed? ? 'Active' : 'Inactive' %>
+          </div>
+        </div>
+    </div>
+
+    <div class="collapsible" id="history">
+        <button class="collapsible__header" type="button">
+            <h2>
+              History
+            </h2>
+        </button>
+        <div class="collapsible__content">
+
+        </div>
+    </div>
+  </div>
+</div>

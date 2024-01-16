@@ -5,6 +5,82 @@ class Employee < ApplicationRecord
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
 
+  include PgSearch::Model
+  pg_search_scope :search, 
+    against: [:forenames, :surname, :job_title, :qualifications, :service_id], 
+    using: {
+      tsearch: { prefix: true }
+    }
+
+  filterrific(
+    default_filter_params: {},
+    available_filters: [
+      :search,
+      :job_title,
+      :status,
+      :qualifications,
+      :provider
+    ]
+  )
+
+  scope :job_title, -> (job_title) {where(job_title: job_title)}
+  
+  scope :status, -> (status) {
+    case status
+    when 'inactive'
+      where(currently_employed: false)
+    when 'active'
+      where(currently_employed: true)
+    else
+      raise(ArgumentError, "Invalid status: #{status}")
+    end
+  }
+  scope :qualifications, -> (selected_qualifications) {
+    where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
+  }
+  
+  scope :provider, -> (service_id) {
+    where(service_id: service_id) if service_id
+  }
+
+  def self.options_for_status 
+    [
+      ['Active', 'active'],
+      ['Inactive', 'inactive']
+    ]
+  end
+
+  def self.options_for_job_title 
+    Employee.distinct.pluck(:job_title).map do |job_title|
+      [job_title, job_title]
+    end
+  end
+
+  def self.options_for_qualifications
+    [
+      ['Level 2', 'Level 2'],
+      ['Level 3', 'Level 3'],
+      ['Level 4', 'Level 4'],
+      ['Level 5', 'Level 5'],
+      ['Level 6', 'Level 6'],
+      ['EYPS', 'EYPS'],
+      ['QTS', 'QTS'],
+      ['EYC', 'EYC'],
+    ]
+  end
+
+  def self.options_for_provider(services)
+    distinct.pluck(:service_id).map do |service_id|
+      service_name = service_name_by_id(service_id, services)
+      [service_name, service_id]
+    end
+  end
+
+  def self.service_name_by_id(id, services)
+    service = services.find { |s| s["id"] == id }
+    service ? service["name"] : "Unknown Service"
+  end
+
   def employed_to_or_currently_employed
     unless currently_employed || employed_to
       errors.add(:base, "Currently employed and finish date can't both be blank")
