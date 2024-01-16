@@ -22,7 +22,7 @@
         </td>
         <td><%= employee.surname %></td>
         <td><%= employee.job_title %></td>
-        <td><%= employee.service_id %></td>
+        <td><%= service_name_by_id(employee.service_id) %></td>
         <td>
         <% if employee.qualifications.any? %>
           <% employee.qualifications.each do |qualification| %>
