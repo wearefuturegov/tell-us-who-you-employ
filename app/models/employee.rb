@@ -7,7 +7,7 @@ class Employee < ApplicationRecord
 
   include PgSearch::Model
   pg_search_scope :search, 
-    against: [:forenames, :surname, :job_title], 
+    against: [:forenames, :surname, :job_title, :qualifications, :service_id], 
     using: {
       tsearch: { prefix: true }
     }

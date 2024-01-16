@@ -17,7 +17,7 @@ class Admin::EmployeesController < Admin::BaseController
         :with_provider,
         :with_search,
       ],
-      persistence_id: 'employees_filter',
+      persistence_id: 'false',
     ) or return
 
     @employees = @filterrific.find.page(params[:page])
