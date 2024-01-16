@@ -1,0 +1,39 @@
+<table>
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Surname</th>
+      <th>Job title</th>  
+      <th>Provider</th>
+      <th>Qualifications</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td>
+          <strong>
+            <%= employee.forenames %>
+          </strong>
+          <button class="mini-search__submit">
+          <%= image_tag "search.svg", alt: "Submit search" %>
+          </button>
+        </td>
+        <td><%= employee.surname %></td>
+        <td><%= employee.job_title %></td>
+        <td><%= employee.service_id %></td>
+        <td>
+        <% if employee.qualifications.any? %>
+          <% employee.qualifications.each do |qualification| %>
+            <%= qualification %>
+          <% end %>
+        <% end %>
+        </td>
+        <td class="tag tag <%= employee.currently_employed? ? 'active' : 'inactive' %>">
+          <%= employee.currently_employed? ? 'Active' : 'Inactive' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

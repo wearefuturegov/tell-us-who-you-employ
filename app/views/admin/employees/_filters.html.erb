@@ -1,0 +1,46 @@
+
+
+<%= form_for_filterrific @filterrific do |f| %>
+  <header class="actions">
+    <div class="mini-search">
+        <div class="mini-search__form">
+            <%= f.label :with_search, "Search query", class: "visually-hidden" %>
+            <%= f.text_field :with_search, class: "mini-search__input" %>
+            <% if params[:filterrific].present? %>
+              <%= link_to image_tag("clear.svg", alt: "Clear search"), reset_filterrific_url, class: "mini-search__submit" %>
+            <% else %>
+            <button class="mini-search__submit">
+                <%= image_tag "search.svg", alt: "Submit search" %>
+            </button>
+            <% end %>
+        </div>
+
+        <% if params[:filterrific].present? %>
+        <p class="mini-search__count"><%= @employees.total_count %> matches</p>
+        <% end %>
+    </div>
+
+  </header>
+  <details class="filters" <%= "open" if params[:filterrific] %>>
+      <summary class="filters__control" aria-expanded="false">Filter</summary>
+      <div class="filters__body">
+        <%= f.label :with_job_title, "Job title", class: "visually-hidden" %>
+        <%= f.select :with_job_title, @filterrific.select_options[:with_job_title], {prompt: 'Filter by Role'}, { class: "filters__select"} %>
+
+
+        <%= f.label :with_qualifications, "Qualification", class: "visually-hidden" %>
+        <%= f.select :with_qualifications, @filterrific.select_options[:with_qualifications], {prompt: 'Filter by Qualification'}, { class: "filters__select"} %>
+      
+        <%= f.label :with_provider, "Provider", class: "visually-hidden" %>
+        <%= f.select :with_provider, @filterrific.select_options[:with_provider], {prompt: 'Filter by Provider'}, { class: "filters__select"} %>
+
+        <%= f.label :with_status, "Status", class: "visually-hidden" %>
+        <%= f.select :with_status, @filterrific.select_options[:with_status], {prompt: 'Filter by Status'}, { class: "filters__select"} %>
+      </div>
+  </details>
+
+  
+  <%= link_to "Add a record", employees_path, class: "add_record_button button button--small button--add  actions__pull-right" %>
+
+<% end %>
+
