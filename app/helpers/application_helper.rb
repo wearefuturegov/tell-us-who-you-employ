@@ -8,6 +8,12 @@ module ApplicationHelper
       id
     end
   end
+  
+  def service_id_by_name(name)
+    return nil if name.blank?
+    result = session[:services].find { |s| s["name"].casecmp(name).zero? }
+    result ? result["id"] : nil
+  end
 
   def accepted_job_titles 
     [

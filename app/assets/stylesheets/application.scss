@@ -74,3 +74,12 @@ a {
 .add_record_button {
   float: right;
 }
+
+.filters-body
+{
+  justify-content: space-evenly;
+}
+
+.filters__select {
+  max-width:none; 
+}

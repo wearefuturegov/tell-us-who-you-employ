@@ -1,3 +1,4 @@
+<% if @employees.present? %>
 <table>
   <thead>
     <tr>
@@ -10,30 +11,38 @@
     </tr>
   </thead>
   <tbody>
-    <% @employees.each do |employee| %>
-      <tr>
-        <td>
-          <strong>
-            <%= employee.forenames %>
-          </strong>
-          <button class="mini-search__submit">
-          <%= image_tag "search.svg", alt: "Submit search" %>
-          </button>
-        </td>
-        <td><%= employee.surname %></td>
-        <td><%= employee.job_title %></td>
-        <td><%= service_name_by_id(employee.service_id) %></td>
-        <td>
-        <% if employee.qualifications.any? %>
-          <% employee.qualifications.each do |qualification| %>
-            <%= qualification %>
-          <% end %>
+  <% @employees.each do |employee| %>
+    <tr>
+      <td>
+        <strong>
+          <%= employee.forenames %>
+        </strong>
+        <button class="mini-search__submit">
+        <%= image_tag "search.svg", alt: "Submit search" %>
+        </button>
+      </td>
+      <td><%= employee.surname %></td>
+      <td><%= employee.job_title %></td>
+      <td><%= service_name_by_id(employee.service_id) %></td>
+      <td>
+      <% if employee.qualifications.present? %>
+        <% employee.qualifications.each do |qualification| %>
+          <%= qualification %>
         <% end %>
-        </td>
-        <td class="tag tag <%= employee.currently_employed? ? 'active' : 'inactive' %>">
-          <%= employee.currently_employed? ? 'Active' : 'Inactive' %>
-        </td>
-      </tr>
-    <% end %>
+      <% else %>
+        No qualifications
+      <% end %>
+      </td>
+      <td class="tag tag <%= employee.currently_employed? ? 'active' : 'inactive' %>">
+        <%= employee.currently_employed? ? 'Active' : 'Inactive' %>
+      </td>
+    </tr>
+  <% end %> 
   </tbody>
 </table>
+
+<% else %>
+      <div>
+        <h1>No employees found</td>
+      </div>
+    <% end %>

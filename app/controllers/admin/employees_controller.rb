@@ -1,9 +1,12 @@
 class Admin::EmployeesController < Admin::BaseController
-
+  include ApplicationHelper
   def index
+    @filterrific_params = params[:filterrific] || {}
+    @original_search_term = @filterrific_params[:search]
+    preprocess_search_parameter(@filterrific_params)
     @filterrific = initialize_filterrific(
       Employee,
-      params[:filterrific],
+      @filterrific_params,
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
@@ -21,6 +24,14 @@ class Admin::EmployeesController < Admin::BaseController
     ) or return
     
     @employees = @filterrific.find.page(params[:page])
-    puts @employees.inspect
+  end
+
+  private
+
+  def preprocess_search_parameter(filterrific_params)
+    if filterrific_params[:search].present?
+      service_id = service_id_by_name(filterrific_params[:search])
+      filterrific_params[:search] = service_id.to_s if service_id.present?
+    end
   end
 end
