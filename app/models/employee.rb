@@ -15,17 +15,17 @@ class Employee < ApplicationRecord
   filterrific(
     default_filter_params: {},
     available_filters: [
-      :with_search,
-      :with_job_title,
-      :with_status,
-      :with_qualifications,
-      :with_provider
+      :search,
+      :job_title,
+      :status,
+      :qualifications,
+      :provider
     ]
   )
 
-  scope :with_job_title, -> (job_title) {where(job_title: job_title)}
+  scope :job_title, -> (job_title) {where(job_title: job_title)}
   
-  scope :with_status, -> (status) {
+  scope :status, -> (status) {
     case status
     when 'inactive'
       where(currently_employed: false)
@@ -35,14 +35,13 @@ class Employee < ApplicationRecord
       raise(ArgumentError, "Invalid status: #{status}")
     end
   }
-  scope :with_qualifications, -> (selected_qualifications) {
+  scope :qualifications, -> (selected_qualifications) {
     where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
   }
   
-  scope :with_provider, -> (service_id) {where(service_id: service_id)}
-
-  scope :with_search, -> (search) { search(search) }
-
+  scope :provider, -> (service_id) {
+    where(service_id: service_id) if service_id
+  }
 
   def self.options_for_status 
     [
