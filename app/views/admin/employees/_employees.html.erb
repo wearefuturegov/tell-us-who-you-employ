@@ -1,13 +1,13 @@
 <% if @employees.present? %>
-<table>
+<table class="table-holder">
   <thead>
     <tr>
-      <th>First name</th>
-      <th>Surname</th>
-      <th>Job title</th>  
-      <th>Provider</th>
-      <th>Qualifications</th>
-      <th>Status</th>
+      <th><a>First name<%= image_tag "down-arrow.svg", alt: "Sort by Forenames", class: "sorting-icon" %></a></th>
+      <th><a>Surname<%= image_tag "down-arrow.svg", alt: "Sort by Surname", class: "sorting-icon" %></a></th>
+      <th><a>Job title<%= image_tag "down-arrow.svg", alt: "Sort by Job Title", class: "sorting-icon" %></a></th>
+      <th><a>Provider<%= image_tag "down-arrow.svg", alt: "Sort by Provider", class: "sorting-icon" %></a></th>
+      <th><a>Qualifications<%= image_tag "down-arrow.svg", alt: "Sort by Qualifications", class: "sorting-icon" %></a></th>
+      <th><a>Status<%= image_tag "down-arrow.svg", alt: "Sort by Status", class: "sorting-icon" %></a></th>
     </tr>
   </thead>
   <tbody>

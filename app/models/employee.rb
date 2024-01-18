@@ -69,10 +69,16 @@ class Employee < ApplicationRecord
     ]
   end
 
-  def self.options_for_provider
-    Employee.distinct.pluck(:service_id).map do |service_id|
-      [service_id, service_id]
+  def self.options_for_provider(services)
+    distinct.pluck(:service_id).map do |service_id|
+      service_name = service_name_by_id(service_id, services)
+      [service_name, service_id]
     end
+  end
+
+  def self.service_name_by_id(id, services)
+    service = services.find { |s| s["id"] == id }
+    service ? service["name"] : "Unknown Service"
   end
 
   def employed_to_or_currently_employed

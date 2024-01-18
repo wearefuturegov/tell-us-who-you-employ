@@ -4,14 +4,15 @@ class Admin::EmployeesController < Admin::BaseController
     @filterrific_params = params[:filterrific] || {}
     @original_search_term = @filterrific_params[:search]
     preprocess_search_parameter(@filterrific_params)
+    services = session[:services] || []
     @filterrific = initialize_filterrific(
       Employee,
-      @filterrific_params,
+      params[:filterrific],
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
-        provider: Employee.options_for_provider,
+        provider: Employee.options_for_provider(services),
       },
       available_filters: [
         :job_title,

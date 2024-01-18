@@ -5,7 +5,7 @@
     <div class="mini-search">
         <div class="mini-search__form">
             <%= f.label :search, "Search query", class: "visually-hidden" %>
-            <%= f.text_field :search, value: @original_search_term, class: "mini-search__input" %>
+            <%= f.text_field :search, class: "mini-search__input" %>
             <% if params[:filterrific].present? %>
               <%= link_to image_tag("clear.svg", alt: "Clear search"), reset_filterrific_url, class: "mini-search__submit" %>
             <% else %>
@@ -32,7 +32,7 @@
         <%= f.select :qualifications, @filterrific.select_options[:qualifications], {prompt: 'Filter by Qualification'}, { class: "filters__select"} %>
       
         <%= f.label :provider, "Provider", class: "visually-hidden" %>
-        <%= f.select :provider, session[:services].map { |s| [s["name"], s["id"]] }, { prompt: 'Filter by Provider' }, { class: "filters__select" } %>
+        <%= f.select :provider, @filterrific.select_options[:provider], { prompt: 'Filter by Provider' }, { class: "filters__select" } %>
         <%= f.label :status, "Status", class: "visually-hidden" %>
         <%= f.select :status, @filterrific.select_options[:status], {prompt: 'Filter by Status'}, { class: "filters__select"} %>
       </div>
