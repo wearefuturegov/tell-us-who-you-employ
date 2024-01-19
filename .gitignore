@@ -27,10 +27,14 @@
 /config/master.key
 
 # Ignore env file
-.env
+.env*
+.vscode
 
 # Ignore coverage report
 /coverage
 
 # Ignore seeds
 /lib/seeds
+
+# Ignore certs!
+certs/

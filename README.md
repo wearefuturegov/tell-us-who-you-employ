@@ -10,8 +10,20 @@ It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity prov
 
 ## Running it locally
 
+**Using docker:**
+
 ```
-npm install
+cp -rp sample.env .env
+docker compose up -d
+docker compose exec app yarn
+```
+
+**On your local machine:**
+
+```
+cp -rp sample.env .env
+uncomment DATABASE_URL line
+yarn
 bundle install
 rails db:setup
 rails s
@@ -36,3 +48,22 @@ The redirect URI ends in `.../auth/outpost/callback`.
 ## Running it on the web
 
 Suitable for Heroku and other 12-factor compliant hosting.
+
+## Running production locally
+
+When ssl is forced
+
+```
+# make a self signed certificate
+mkdir certs && cd certs
+
+mkcert \
+-cert-file tell-us.local.crt \
+-key-file tell-us.local.key \
+tell-us.local
+
+cd ..
+
+docker compose -f docker-compose.production.yml up -d
+
+```

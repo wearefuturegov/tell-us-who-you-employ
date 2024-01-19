@@ -21,8 +21,6 @@ ARG APP_ENV=production
 #  FROM: node
 #
 FROM node:$NODE_VERSION-alpine AS node
-# used to make the image publically available on github
-LABEL org.opencontainers.image.source="https://github.com/wearefuturegov/tell-us-who-you-employ" 
 
 ARG RUBY_VERSION
 ARG BUNDLER_VERSION
@@ -53,7 +51,7 @@ COPY --from=node /opt /opt
 
 # gcompat is for nokogiri - alpine doesnt include glibc it needs https://nokogiri.org/tutorials/installing_nokogiri.html#linux-musl-error-loading-shared-library
 # python3 for node-sass drama
-RUN apk add --no-cache git \
+RUN apk update && apk upgrade --no-cache && apk add --no-cache git \
   build-base \
   libpq-dev \
   tzdata \
@@ -65,14 +63,14 @@ RUN apk add --no-cache git \
 RUN gem install bundler:$BUNDLER_VERSION
 
 # Add a user for later
-RUN adduser -D tell-us-who-you-employ-user
+RUN adduser -D tellus
 
 WORKDIR /usr/build/app
-
 
 COPY ./Gemfile /usr/build/app/Gemfile
 COPY ./Gemfile.lock /usr/build/app/Gemfile.lock
 COPY ./package.json /usr/build/app/package.json
+COPY ./yarn.lock /usr/build/app/yarn.lock
 
 
 ENV RAILS_ENV=${RAILS_ENV}
@@ -100,6 +98,11 @@ ENV APP_ENV=${APP_ENV}
 
 RUN bundle install
 
+RUN if [ "${NODE_ENV}" == "development" ]; then \
+  yarn install; fi
+RUN if [ "${NODE_ENV}" == "production" ]; then \
+  yarn install --frozen-lockfile; fi
+
 #
 #  FROM: createinit
 #
@@ -114,18 +117,14 @@ ENV RAILS_ENV=${RAILS_ENV}
 ENV RACK_ENV=${RACK_ENV}
 ENV APP_ENV=${APP_ENV}
 
-WORKDIR /usr/src/app
-COPY --chown=tell-us-who-you-employ-user:tell-us-who-you-employ-user ./environment/docker-run.sh /usr/run/app/init.sh
+COPY --chown=tellus:tellus ./environment/docker-run.sh /usr/run/app/init.sh
 RUN chmod +x /usr/run/app/init.sh
-COPY --chown=tell-us-who-you-employ-user:tell-us-who-you-employ-user --from=install /usr/build/app /usr/src/app
-
-
 #
 #  FROM: development
 #
 FROM basics as development
 WORKDIR /usr/src/app
-# USER tell-us-who-you-employ-user
+# USER tellus
 CMD ["/usr/run/app/init.sh"]
 
 
@@ -135,9 +134,9 @@ CMD ["/usr/run/app/init.sh"]
 FROM basics as production
 
 WORKDIR /usr/src/app
-COPY --chown=tell-us-who-you-employ-user:tell-us-who-you-employ-user . /usr/src/app
-
-RUN SECRET_KEY_BASE=dummyvalue bundle exec rails assets:precompile
-RUN chown -R tell-us-who-you-employ-user:tell-us-who-you-employ-user /usr/src/app
-USER tell-us-who-you-employ-user
+COPY --chown=tellus:tellus . /usr/src/app
+COPY --chown=tellus:tellus --from=install /usr/build/app/node_modules /usr/src/app/node_modules
+RUN SECRET_KEY_BASE=dummyvalue bin/bundle exec rails assets:precompile
+RUN chown -R tellus:tellus /usr/src/app
+USER tellus
 CMD ["/usr/run/app/init.sh"]
