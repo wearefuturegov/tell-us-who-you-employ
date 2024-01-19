@@ -3,11 +3,12 @@ class Admin::EmployeesController < Admin::BaseController
   def index
     @filterrific_params = params[:filterrific] || {}
     @original_search_term = @filterrific_params[:search]
-    preprocess_search_parameter(@filterrific_params)
+    transformed_search_term = transform_search_term(@filterrific_params[:search])
+    @filterrific_params[:search] = transformed_search_term if transformed_search_term
     services = session[:services] || []
     @filterrific = initialize_filterrific(
       Employee,
-      params[:filterrific],
+      @filterrific_params,
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
@@ -27,12 +28,15 @@ class Admin::EmployeesController < Admin::BaseController
     @employees = @filterrific.find.page(params[:page])
   end
 
+  def show
+    @employee = Employee.find(params[:id])
+  end
+
   private
 
-  def preprocess_search_parameter(filterrific_params)
-    if filterrific_params[:search].present?
-      service_id = service_id_by_name(filterrific_params[:search])
-      filterrific_params[:search] = service_id.to_s if service_id.present?
-    end
+  def transform_search_term(search_term)
+    return nil unless search_term.present?
+    service_id = service_id_by_name(search_term, session[:services])
+    service_id ? service_id.to_s : search_term
   end
 end

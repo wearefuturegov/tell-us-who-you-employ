@@ -15,7 +15,7 @@
     <tr>
       <td>
         <strong>
-          <%= employee.forenames %>
+          <%= link_to employee.forenames, admin_employee_path(employee) %>
         </strong>
         <button class="mini-search__submit">
         <%= image_tag "search.svg", alt: "Submit search" %>

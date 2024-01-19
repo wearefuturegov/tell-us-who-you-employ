@@ -9,9 +9,11 @@ module ApplicationHelper
     end
   end
   
-  def service_id_by_name(name)
+  def service_id_by_name(name, services)
     return nil if name.blank?
-    result = session[:services].find { |s| s["name"].casecmp(name).zero? }
+    name = name.to_s
+    regex = Regexp.new(Regexp.escape(name), Regexp::IGNORECASE)
+    result = services.find { |s| s["name"] =~ regex }
     result ? result["id"] : nil
   end
 
