@@ -35,3 +35,6 @@
 
 # Ignore seeds
 /lib/seeds
+
+# Ignore certs!
+certs/

@@ -96,3 +96,6 @@ pickle-email-*.html
 /public/packs
 /public/packs-test
 /public/assets
+
+# ignore certs
+/certs/*
