@@ -17,19 +17,19 @@ describe ApplicationHelper do
   end
 
   describe "#service_id_by_name" do
-  let(:service_id) { 1 }
-  let(:service_id_nil) {2}
-  let(:service_name) { FFaker::Company.name }
-  let(:services) { [{ 'id' => service_id, 'name' => service_name } ] }
+    let(:service_id) { 1 }
+    let(:service_id_nil) {2}
+    let(:service_name) { FFaker::Company.name }
+    let(:services) { [{ 'id' => service_id, 'name' => service_name } ] }
 
-  it "when there is no matching service it returns nil" do
-    session[:services] = services
-    expect(helper.service_id_by_name(service_id_nil, services)).to eq nil
-  end
+    it "when there is no matching service it returns nil" do
+      session[:services] = services
+      expect(helper.service_id_by_name(service_id_nil, services)).to eq nil
+    end
 
-  it "when there is a matching service it returns the service id" do
-    session[:services] = services
-    expect(helper.service_id_by_name(service_name, services)).to eq service_id
+    it "when there is a matching service it returns the service id" do
+      session[:services] = services
+      expect(helper.service_id_by_name(service_name, services)).to eq service_id
+    end
   end
-end
 end

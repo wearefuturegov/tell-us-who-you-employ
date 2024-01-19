@@ -2,9 +2,33 @@
 <table class="table-holder">
   <thead>
     <tr>
-      <th><a>First name<%= image_tag "down-arrow.svg", alt: "Sort by Forenames", class: "sorting-icon" %></a></th>
-      <th><a>Surname<%= image_tag "down-arrow.svg", alt: "Sort by Surname", class: "sorting-icon" %></a></th>
-      <th><a>Job title<%= image_tag "down-arrow.svg", alt: "Sort by Job Title", class: "sorting-icon" %></a></th>
+      <th>
+        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'forenames' ? 'desc' : 'asc' %>
+        <%= link_to admin_employees_path(sort: 'forenames', direction: sort_direction) do %>
+          First names
+          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
+                      alt: "Sort by Forenames", 
+                      class: "sorting-icon" %>
+        <% end %>
+      </th>
+            <th>
+        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'surname' ? 'desc' : 'asc' %>
+        <%= link_to admin_employees_path(sort: 'surname', direction: sort_direction) do %>
+          Surname
+          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
+                      alt: "Sort by Surname", 
+                      class: "sorting-icon" %>
+        <% end %>
+      </th>
+            <th>
+        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'job_title' ? 'desc' : 'asc' %>
+        <%= link_to admin_employees_path(sort: 'job_title', direction: sort_direction) do %>
+          Job title
+          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
+                      alt: "Sort by Job title", 
+                      class: "sorting-icon" %>
+        <% end %>
+      </th> 
       <th><a>Provider<%= image_tag "down-arrow.svg", alt: "Sort by Provider", class: "sorting-icon" %></a></th>
       <th><a>Qualifications<%= image_tag "down-arrow.svg", alt: "Sort by Qualifications", class: "sorting-icon" %></a></th>
       <th><a>Status<%= image_tag "down-arrow.svg", alt: "Sort by Status", class: "sorting-icon" %></a></th>

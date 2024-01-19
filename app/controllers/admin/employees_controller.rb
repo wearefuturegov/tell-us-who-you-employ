@@ -25,7 +25,14 @@ class Admin::EmployeesController < Admin::BaseController
       persistence_id: 'false',
     ) or return
     
-    @employees = @filterrific.find.page(params[:page])
+    @employees = @filterrific.find
+    if params[:sort] && params[:direction]
+      sort_column = allowed_sort_columns.include?(params[:sort]) ? params[:sort] : 'default_column'
+      sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+      @employees = @employees.order("#{sort_column} #{sort_direction}")
+    end
+    
+    @employees = @employees.page(params[:page])
   end
 
   def show
@@ -38,5 +45,9 @@ class Admin::EmployeesController < Admin::BaseController
     return nil unless search_term.present?
     service_id = service_id_by_name(search_term, session[:services])
     service_id ? service_id.to_s : search_term
+  end
+
+  def allowed_sort_columns
+    %w[forenames surname job_title]
   end
 end
