@@ -29,10 +29,12 @@ $max-width: 1000px;
 @import "bucks-fis-design-library/tags";
 @import "bucks-fis-design-library/mini-search";
 @import "bucks-fis-design-library/filters";
+@import "bucks-fis-design-library/collapsibles";
 
 @import "breadcrumbs";
 // @import "radio";
 @import "page-title";
+@import "collapsibles";
 
 .table-action {
   margin-left: 10px;
@@ -82,4 +84,29 @@ a {
 
 .filters__select {
   max-width:none; 
+}
+
+.employee-info-table {
+  background-color: #ffffff;
+}
+
+.employee-info-table tr.table-column {
+  padding-bottom: 15px;
+  background-color: #ffffff;
+
+}
+
+.employee-info-table tr.column-value {
+  padding-top: 0px;
+  background-color: #ffffff;
+}
+
+.employee-detail {
+  border-bottom: 1px solid #999999;
+  padding-bottom: 40px;
+  color: #999999;
+}
+
+.qualifications tr.table-column {
+  border-bottom: 1px solid #999999;
 }
