@@ -76,7 +76,7 @@ docker compose exec outpost bin/rails SEED_DUMMY_DATA=true db:seed
 docker compose exec app yarn
 
 # create the application
-docker compose -f docker-compose.outpost.yml exec outpost bin/bundle exec rails c
+docker compose exec outpost bin/bundle exec rails c
 
 Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/oauth/outpost/callback")
 
