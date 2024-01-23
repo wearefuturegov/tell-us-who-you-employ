@@ -10,8 +10,53 @@ It uses [Outpost](https://github.com/wearefuturegov/outpost) as an identity prov
 
 ## Running it locally
 
+**Using docker:**
+
 ```
-npm install
+cp -rp sample.env .env
+docker compose up -d
+docker compose exec app yarn
+```
+
+**With Outpost using docker:**
+
+```
+cp -rp sample.env .env
+cp -rp sample.outpost.env .env.outpost
+
+# run to generate SECRET_KEY_BASE
+RAILS_ENV=production rake secret
+
+mkdir certs && cd certs
+
+mkcert \
+-cert-file outpost.local.crt \
+-key-file outpost.local.key \
+outpost.local
+
+
+docker compose -f docker-compose.outpost.yml up -d
+docker compose -f docker-compose.outpost.yml exec app yarn
+
+docker compose -f docker-compose.outpost.yml exec outpost bin/rails SEED_DUMMY_DATA=true db:seed
+
+
+docker compose -f docker-compose.outpost.yml exec outpost bin/bundle exec rails c
+
+Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/oauth/outpost/callback")
+
+# update your .env file
+
+docker compose -f docker-compose.outpost.yml up -d
+
+```
+
+**On your local machine:**
+
+```
+cp -rp sample.env .env
+uncomment DATABASE_URL line
+yarn
 bundle install
 rails db:setup
 rails s
@@ -36,3 +81,22 @@ The redirect URI ends in `.../auth/outpost/callback`.
 ## Running it on the web
 
 Suitable for Heroku and other 12-factor compliant hosting.
+
+## Running production locally
+
+When ssl is forced
+
+```
+# make a self signed certificate
+mkdir certs && cd certs
+
+mkcert \
+-cert-file tell-us.local.crt \
+-key-file tell-us.local.key \
+tell-us.local
+
+cd ..
+
+docker compose -f docker-compose.production.yml up -d
+
+```
