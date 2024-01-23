@@ -9,7 +9,8 @@ RSpec.describe Employee, type: :model do
       street_address: '1 The Street',
       postal_code: 'AB12CD',
       job_title: 'Childminder',
-      currently_employed: true
+      currently_employed: true,
+      qualifications: ['level 1', 'level 2']
     ) }
 
   it 'is is valid with valid attributes' do
@@ -26,4 +27,24 @@ RSpec.describe Employee, type: :model do
     subject.employed_to = Date.today
     expect(subject).to_not be_valid
   end
+
+  describe '.qualifications' do
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 1']  }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 2']  }
+
+    context 'when qualifications match' do
+      it 'returns employees with matching qualifications' do
+        expect(Employee.qualifications(['level 1'])).to include(employee_1)
+        expect(Employee.qualifications(['level 1'])).not_to include(employee_2)
+      end
+    end
+
+    context 'when qualifications do not match' do
+      it 'returns no employees' do
+        expect(Employee.qualifications(['nonexistent_level'])).to be_empty
+      end
+    end
+  end
+
+
 end
