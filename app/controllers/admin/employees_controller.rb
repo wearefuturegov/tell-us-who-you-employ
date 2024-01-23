@@ -25,7 +25,7 @@ class Admin::EmployeesController < Admin::BaseController
     
     @employees = @filterrific.find
     @employees = apply_sort(@employees)
-    @employees = @employees.page(params[:page])
+    @employees = @employees.page(params[:page]).per(20)
   end
 
   def show
