@@ -236,7 +236,7 @@ RSpec.feature 'Managing employees' do
     end
 
     context 'with employee records in the DB' do
-      let!(:employee) { FactoryBot.create :employee, organisation_id: org_id, service_id: service_id }
+      let!(:employee) { FactoryBot.create :employee, organisation_id: org_id, service_id: service_id, employed_from: Date.today - 1.year }
       let(:employed_to) { Date.today - 5 }
 
       before do
