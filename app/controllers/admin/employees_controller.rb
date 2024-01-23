@@ -2,13 +2,11 @@ class Admin::EmployeesController < Admin::BaseController
   include ApplicationHelper
   def index
     @filterrific_params = params[:filterrific] || {}
-    @original_search_term = @filterrific_params[:search]
     transformed_search_term = transform_search_term(@filterrific_params[:search])
-    @filterrific_params[:search] = transformed_search_term if transformed_search_term
     services = session[:services] || []
     @filterrific = initialize_filterrific(
       Employee,
-      @filterrific_params,
+      @filterrific_params.merge(search: transformed_search_term),
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
@@ -26,12 +24,7 @@ class Admin::EmployeesController < Admin::BaseController
     ) or return
     
     @employees = @filterrific.find
-    if params[:sort] && params[:direction]
-      sort_column = allowed_sort_columns.include?(params[:sort]) ? params[:sort] : 'default_column'
-      sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
-      @employees = @employees.order("#{sort_column} #{sort_direction}")
-    end
-    
+    @employees = apply_sort(@employees)
     @employees = @employees.page(params[:page])
   end
 
@@ -42,9 +35,20 @@ class Admin::EmployeesController < Admin::BaseController
   private
 
   def transform_search_term(search_term)
-    return nil unless search_term.present?
+    return search_term unless search_term.present?
     service_id = service_id_by_name(search_term, session[:services])
     service_id ? service_id.to_s : search_term
+  end
+
+
+  def apply_sort(employees)
+    if params[:sort] && params[:direction]
+      sort_column = allowed_sort_columns.include?(params[:sort]) ? params[:sort] : 'default_column'
+      sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
+      employees.order("#{sort_column} #{sort_direction}")
+    else
+      employees
+    end
   end
 
   def allowed_sort_columns
