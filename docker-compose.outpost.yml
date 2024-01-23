@@ -1,0 +1,130 @@
+version: "3.7"
+name: tell-us-who-you-employ-dev-outpost
+services:
+  # tell-us-who-you-employ app
+
+  app:
+    image: "tell-us-who-you-employ-dev-outpost"
+    env_file:
+      - .env
+    # command: ["tail", "-f", "/dev/null"]
+    pull_policy: build
+    init: true
+    depends_on:
+      - postgres
+    build:
+      context: .
+      target: ${RAILS_ENV:-development}
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+        RAILS_ENV: ${RAILS_ENV:-development}
+    ports:
+      - 3004:3000
+    volumes:
+      - ./:/usr/src/app:cached
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      RACK_ENV: ${RACK_ENV:-development}
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://tell-us-who-you-employ:password@postgres:5432/tell-us-who-you-employ?}
+      RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES:-false}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      OAUTH_SERVER: ${OAUTH_SERVER:-https://localhost}
+    networks:
+      - external_network
+      - internal_network
+
+  # proxy for outpost (because ssl)
+  proxy:
+    image: nginx:1.25.3-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./environment/outpost/dev/data:/usr/src/app
+      - ./environment/outpost/dev/nginx.conf:/etc/nginx/nginx.conf
+      - ./certs/outpost.local.crt:/etc/ssl/certificate.crt
+      - ./certs/outpost.local.key:/etc/ssl/certificate.key
+      # - ./public:/usr/src/app/public
+    depends_on:
+      - app
+    networks:
+      - external_network
+      - internal_network
+
+    # outpost
+
+  outpost:
+    image: ghcr.io/wearefuturegov/outpost:latest
+    env_file:
+      - .env.outpost
+    init: true
+    depends_on:
+      - postgres-outpost
+      - mongo-outpost
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      RAILS_ENV: ${RAILS_ENV:-production}
+      RACK_ENV: ${RACK_ENV:-production}
+      APP_ENV: ${APP_ENV:-production}
+      DB_URI: ${DB_URI:-mongodb://mongo-outpost:27017/outpost_api_production}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://outpost:password@postgres-outpost:5432/outpost?}
+      RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES:-true}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    networks:
+      - external_network
+      - internal_network
+
+  # Databases
+
+  postgres:
+    image: postgres:13.7-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tell-us-who-you-employ}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-tell-us-who-you-employ_development}
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - internal_network
+      - external_network
+
+  postgres-outpost:
+    image: postgres:13.7-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-outpost}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-outpost_production}
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres-outpost-volume:/var/lib/postgresql/data
+    networks:
+      - internal_network
+      - external_network
+
+  mongo-outpost:
+    image: mongo:6
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo-outpost-volume:/data/db
+      - ./environment/mongo/setup-mongodb.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-outpost_api_production}
+    networks:
+      - internal_network
+      - external_network
+
+volumes:
+  postgres-volume:
+  postgres-outpost-volume:
+  mongo-outpost-volume:
+
+networks:
+  external_network:
+  internal_network:
+    internal: true

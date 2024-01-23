@@ -18,6 +18,39 @@ docker compose up -d
 docker compose exec app yarn
 ```
 
+**With Outpost using docker:**
+
+```
+cp -rp sample.env .env
+cp -rp sample.outpost.env .env.outpost
+
+# run to generate SECRET_KEY_BASE
+RAILS_ENV=production rake secret
+
+mkdir certs && cd certs
+
+mkcert \
+-cert-file outpost.local.crt \
+-key-file outpost.local.key \
+outpost.local
+
+
+docker compose -f docker-compose.outpost.yml up -d
+docker compose -f docker-compose.outpost.yml exec app yarn
+
+docker compose -f docker-compose.outpost.yml exec outpost bin/rails SEED_DUMMY_DATA=true db:seed
+
+
+docker compose -f docker-compose.outpost.yml exec outpost bin/bundle exec rails c
+
+Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/oauth/outpost/callback")
+
+# update your .env file
+
+docker compose -f docker-compose.outpost.yml up -d
+
+```
+
 **On your local machine:**
 
 ```
