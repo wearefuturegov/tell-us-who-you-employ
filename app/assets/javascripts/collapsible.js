@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('turbolinks:load', (event) => {
     document.querySelectorAll(".collapsible").forEach((collapsible, index) => {
         let controls = collapsible.querySelector(".collapsible__header");
         let content = collapsible.querySelector(".collapsible__content");
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         window.localStorage.getItem(key) === "false" && close()
 
         controls.addEventListener("click", e => {
-            e.preventDefault()
+            e.preventDefault();
             controls.getAttribute("aria-expanded") === "false" ? open() : close()
 
         });
