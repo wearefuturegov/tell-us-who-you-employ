@@ -1,0 +1,50 @@
+<%= form_for_filterrific @filterrific do |f| %>
+  <header class="actions">
+    <div class="mini-search">
+      <div class="mini-search__form">
+        <%= f.label :search, "Search query", class: "visually-hidden" %>
+        <%= f.text_field :search, value: params.dig(:filterrific, :search), class: "mini-search__input" %>
+        <% if params[:filterrific].present? %>
+          <%= link_to image_tag("clear.svg", alt: "Clear search"), reset_filterrific_url, class: "mini-search__submit" %>
+        <% else %>
+          <button class="mini-search__submit"  id="search-button">
+            <%= image_tag "search.svg", alt: "Submit search" %>
+          </button>
+        <% end %>
+      </div>
+      <% if params[:filterrific].present? %>
+        <% if show_service_specific_filters %>
+        <p class="mini-search__count"><%= @services.total_count %> matches</p>
+        <% elsif show_employee_specific_filters %>
+        <p class="mini-search__count"><%= @employees.total_count %> matches</p>
+        <% end %>
+      <% end %>
+    </div>
+  </header>
+
+  <details class="filters <%= "filters-services" if show_service_specific_filters %>" <%= "open" if params[:filterrific] %>>
+    <summary class="filters__control" aria-expanded="false">Filter</summary>
+    <div class="filters__body">
+      <% if show_service_specific_filters %>
+      <%= f.label :service, "Provider", class: "visually-hidden" %>
+      <%= f.select :service, @filterrific.select_options[:service], {prompt: 'Filter by Provider'}, { class: "filters__select"} %>
+      <%= f.label :location, "Provider", class: "visually-hidden" %>
+      <%= f.select :location, @filterrific.select_options[:location], {prompt: 'Filter by Location'}, { class: "filters__select"} %>
+      <% elsif show_employee_specific_filters %>
+      <%= f.label :job_title, "Job title", class: "visually-hidden" %>
+      <%= f.select :job_title, @filterrific.select_options[:job_title], {prompt: 'Filter by Role'}, { class: "filters__select"} %>
+
+      <%= f.label :qualifications, "Qualification", class: "visually-hidden" %>
+      <%= f.select :qualifications, @filterrific.select_options[:qualifications], {prompt: 'Filter by Qualification'}, { class: "filters__select"} %>
+    
+      <%= f.label :service, "Provider", class: "visually-hidden" %>
+      <%= f.select :service, @filterrific.select_options[:service], { prompt: 'Filter by Provider' }, { class: "filters__select" } %>
+      <%= f.label :status, "Status", class: "visually-hidden" %>
+      <%= f.select :status, @filterrific.select_options[:status], {prompt: 'Filter by Status'}, { class: "filters__select"} %>
+      <% end %>
+    </div>
+  </details>
+<% end %>
+<% if show_employee_specific_filters %>
+  <%= link_to "Add a record",  new_employee_path, class: "add_record_button button button--small button--add  actions__pull-right" %>
+<% end %>

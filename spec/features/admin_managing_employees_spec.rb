@@ -2,12 +2,9 @@ require 'rails_helper'
 
 RSpec.feature 'Admin managing employees' do
   let(:org_id_1) { 123 }
-  let(:service_id_1) { 456 }
-  let(:service_name_1) { 'Test service 1' }
+  let(:service_1) { FactoryBot.create :service, name: 'Service Name 1' }
+  let(:service_2) { FactoryBot.create :service, name: 'Service Name 2' }
 
-  let(:org_id_2) { 789 }
-  let(:service_id_2) { 910 }
-  let(:service_name_2) { 'Spec service 2' }
 
   context 'signed in' do
     before do
@@ -23,14 +20,7 @@ RSpec.feature 'Admin managing employees' do
             organisation: {
               id: org_id_1,
               services: [
-                {
-                  id: service_id_1,
-                  name: service_name_1
-                },
-                {
-                  id: service_id_2,
-                  name: service_name_2
-                }
+                service_1, service_2
               ]
             }
           }
@@ -53,9 +43,9 @@ RSpec.feature 'Admin managing employees' do
 
     
     context 'with employee records in the DB' do
-      let!(:employee_1) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_id_1, employed_from: Date.today - 1.year  }
-      let!(:employee_2) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_id_1, employed_from: Date.today - 1.year  }
-      let!(:employee_3) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_id_2, employed_from: Date.today - 1.year }
+      let!(:employee_1) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year  }
+      let!(:employee_2) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year  }
+      let!(:employee_3) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_2.id, employed_from: Date.today - 1.year }
 
       before do
         visit root_path
@@ -85,8 +75,8 @@ RSpec.feature 'Admin managing employees' do
         expect(page).to have_content(employee_1.qualifications)
       end
 
-      scenario 'you search by provider' do
-        fill_in 'filterrific[search]', with: service_name_2
+      scenario 'you search by service' do
+        fill_in 'filterrific[search]', with: service_2.name
         find('#search-button').click
 
         expect(page).to have_content(employee_3.forenames)
@@ -114,9 +104,9 @@ RSpec.feature 'Admin managing employees' do
         expect(page).to have_content(employee_1.qualifications)
       end
 
-      scenario 'you filter by provider' do
+      scenario 'you filter by service' do
         find('details.filters').click
-        select service_name_1, from: 'filterrific[provider]'
+        select service_1.name, from: 'filterrific[service]'
         find('#search-button').click
 
         expect(page).to have_content(employee_1.forenames)

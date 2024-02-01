@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_133159) do
+ActiveRecord::Schema.define(version: 2024_01_25_164532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2022_05_09_133159) do
     t.string "job_title"
     t.date "employed_from"
     t.date "employed_to"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.boolean "currently_employed"
     t.integer "service_id"
     t.integer "organisation_id"
@@ -45,13 +45,21 @@ ActiveRecord::Schema.define(version: 2022_05_09_133159) do
     t.date "safeguarding_achieved_on"
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.string "location_name"
+    t.string "address_1"
+    t.string "city"
+    t.string "postal_code"
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: 6
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
