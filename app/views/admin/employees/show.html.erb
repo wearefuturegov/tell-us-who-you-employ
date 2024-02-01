@@ -1,4 +1,5 @@
 <header class="page-header">
+  <%= link_to "Back", admin_employees_path, class: "go-back" %>
   <p><strong>
   <%= "#{@employee.job_title}, #{service_name_by_id(@employee.service_id)}" %>
   </strong></p>

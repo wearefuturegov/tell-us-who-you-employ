@@ -1,4 +1,5 @@
 <header class="page-header">
+  <%= link_to "Back", admin_services_path, class: "go-back" %>
   <h1 class="page-header__title"><%= @service.name %></h1>
   <p><strong>
     <%= [@service.location_name, @service.address_1, @service.city, @service.postal_code].reject(&:blank?).join(', ') %>
