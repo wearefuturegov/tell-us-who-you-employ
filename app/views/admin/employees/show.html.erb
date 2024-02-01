@@ -134,7 +134,7 @@
           <% if @employee.has_dbs_check %>
             <tr class="table-column">
               <td>DBS check</td>
-              <td><%= @employee.bs_achieved_on.strftime("%d/%m/%Y") %></td>
+              <td><%= @employee.dbs_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
 
