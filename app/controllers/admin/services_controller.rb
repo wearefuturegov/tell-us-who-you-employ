@@ -13,11 +13,6 @@ include Sortable
         service: Service.options_for_service,
         location: Service.options_for_location
       },
-      available_filters: [
-        :service,
-        :location,
-        :search,
-      ],
       persistence_id: 'false',
     ) or return
     @services = @filterrific.find

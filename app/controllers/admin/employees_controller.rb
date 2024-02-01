@@ -13,13 +13,6 @@ class Admin::EmployeesController < Admin::BaseController
         qualifications: Employee.options_for_qualifications,
         service: Employee.options_for_service(),
       },
-      available_filters: [
-        :job_title,
-        :status,
-        :qualifications,
-        :service,
-        :search,
-      ],
       persistence_id: 'false',
     ) or return
     

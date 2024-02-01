@@ -1,0 +1,20 @@
+<nav class="shortcuts">
+
+    <%= render partial: "admin/shared/shortcuts_item", 
+        locals: {
+            state: current_page?({controller: 'admin/employees', action: 'index'}),
+            link: admin_employees_path,
+            label: "View All"
+        }
+    %>
+
+    <span class="shortcuts__divider">|</span>
+
+    <%= render partial: "admin/shared/shortcuts_item", 
+        locals: {
+            state: current_page?({controller: 'admin/services', action: 'index'}) ,
+            link: admin_services_path,
+            label: "View by Provider"
+        }
+    %>
+</nav>
