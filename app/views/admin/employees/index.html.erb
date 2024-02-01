@@ -1,4 +1,11 @@
 <h1 class="page-header__title">Provider employee details</h1>
-<%= render "filters" %>
-<%= render "employees" %>
-<%= paginate @employees %>
+<%= render "admin/shared/filters", show_employee_specific_filters: true, show_service_specific_filters: false %>
+
+<% if @employees.present? %>
+  <%= render 'admin/shared/employees', show_employee_specific_column: true, show_service_specific_column: false %>
+  <%= paginate @employees %>
+<% else %>
+  <div>
+    <h1>No employees found</td>
+  </div>
+<% end %>

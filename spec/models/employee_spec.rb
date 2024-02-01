@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
+  let(:service) { FactoryBot.create :service }
+
   subject { described_class.new(
       surname: 'Lastname',
       forenames: 'Forenames', 
@@ -10,7 +12,8 @@ RSpec.describe Employee, type: :model do
       postal_code: 'AB12CD',
       job_title: 'Childminder',
       currently_employed: true,
-      qualifications: ['level 1', 'level 2']
+      qualifications: ['level 1', 'level 2'],
+      service: service
     ) }
 
   it 'is is valid with valid attributes' do
@@ -29,8 +32,9 @@ RSpec.describe Employee, type: :model do
   end
 
   describe '.qualifications' do
-    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 1']  }
-    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 2']  }
+    let!(:service) { FactoryBot.create :service, name: 'Service Name' }
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 1'], service: service }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, qualifications: ['level 2'], service: service }
 
     context 'when qualifications match' do
       it 'returns employees with matching qualifications' do
@@ -47,8 +51,9 @@ RSpec.describe Employee, type: :model do
   end
 
   describe '.status' do
-    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: true }
-    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: false, employed_to: Date.today - 1.month }
+    let!(:service) { FactoryBot.create :service, name: 'Service Name' }
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: true, service: service}
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: false, employed_to: Date.today - 1.month, service: service}
 
     context 'when status is inactive' do
       it 'returns employees with currently_employed as false' do

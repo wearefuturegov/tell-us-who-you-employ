@@ -5,9 +5,14 @@ class Employee < ApplicationRecord
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
 
+  belongs_to :service
+  
   include PgSearch::Model
   pg_search_scope :search, 
-    against: [:forenames, :surname, :job_title, :qualifications, :service_id], 
+    against: [:forenames, :surname, :job_title, :qualifications, :service_id],
+    associated_against: {
+      service: [:name]
+    }, 
     using: {
       tsearch: { prefix: true }
     }
@@ -19,7 +24,7 @@ class Employee < ApplicationRecord
       :job_title,
       :status,
       :qualifications,
-      :provider
+      :service
     ]
   )
 
@@ -39,7 +44,7 @@ class Employee < ApplicationRecord
     where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
   }
   
-  scope :provider, -> (service_id) {
+  scope :service, -> (service_id) {
     where(service_id: service_id) if service_id
   }
 
@@ -69,17 +74,12 @@ class Employee < ApplicationRecord
     ]
   end
 
-  def self.options_for_provider(services)
-    distinct.pluck(:service_id).map do |service_id|
-      service_name = service_name_by_id(service_id, services)
-      [service_name, service_id]
+  def self.options_for_service()
+    Employee.distinct.pluck(:service_id).map do |service_id|
+      [Service.find(service_id).name, service_id]
     end
   end
 
-  def self.service_name_by_id(id, services)
-    service = services.find { |s| s["id"] == id }
-    service ? service["name"] : "Unknown Service"
-  end
 
   def employed_to_or_currently_employed
     unless currently_employed || employed_to
