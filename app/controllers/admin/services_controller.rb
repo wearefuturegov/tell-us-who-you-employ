@@ -23,7 +23,8 @@ include Sortable
 
   def show
     @service = Service.find(params[:id])
-
+    @senco = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated SENCO"]).first
+    @safeguarding_lead = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated Safeguarding Lead"]).first
     @filterrific_params = params[:filterrific] || {}
     @filterrific = initialize_filterrific(
       @service.employees,
