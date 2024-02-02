@@ -80,6 +80,12 @@ class Employee < ApplicationRecord
     end
   end
 
+  
+  def self.order_by_roles(direction = 'asc')
+    sort_direction = ['asc', 'desc'].include?(direction.downcase) ? direction.downcase : 'asc'
+    order_query = Arel.sql("CASE WHEN array_length(roles, 1) IS NULL THEN 0 ELSE array_length(roles, 1) END #{sort_direction}")
+    order(order_query)
+  end
 
   def employed_to_or_currently_employed
     unless currently_employed || employed_to

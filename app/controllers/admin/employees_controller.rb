@@ -17,7 +17,7 @@ class Admin::EmployeesController < Admin::BaseController
     ) or return
     
     @employees = @filterrific.find
-    @employees = apply_sort(@employees, params, 'forenames', %w[forenames surname job_title service_name])
+    @employees = apply_sort(@employees, params, 'forenames', %w[forenames surname job_title service_name qualifications status])
     @employees = @employees.page(params[:page]).per(20)
   end
 

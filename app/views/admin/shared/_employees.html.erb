@@ -2,64 +2,30 @@
   <thead>
     <tr>
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'forenames' ? 'desc' : 'asc' %>
-        <% if show_service_specific_column %>
-          <%= link_to admin_service_path(id: local_assigns[:service_id], sort: 'forenames', direction: sort_direction) do %>
-            First names
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Forenames", class: "sorting-icon" %>
-          <% end %>
-        <% else %>
-          <%= link_to admin_employees_path(sort: 'forenames', direction: sort_direction) do %>
-            First names
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Forenames", class: "sorting-icon" %>
-          <% end %>
-        <% end %>
+      <%= sortable_table_column 'First names', :forenames, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
       </th>
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'surname' ? 'desc' : 'asc' %>
-        <% if show_service_specific_column %>
-          <%= link_to admin_service_path(id: local_assigns[:service_id], sort: 'surname', direction: sort_direction) do %>
-            Surname
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Surname", class: "sorting-icon" %>
-          <% end %>
-        <% else %>
-          <%= link_to admin_employees_path(sort: 'surname', direction: sort_direction) do %>
-            Surname
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Surname", class: "sorting-icon" %>
-          <% end %>
-        <% end %>
+      <%= sortable_table_column 'Last name', :surname, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
       </th>
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'job_title' ? 'desc' : 'asc' %>
-        <% if show_service_specific_column %>
-          <%= link_to admin_service_path(id: local_assigns[:service_id], sort: 'job_title', direction: sort_direction) do %>
-            Job title
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Job title", class: "sorting-icon" %>
-          <% end %>
-        <% else %>
-          <%= link_to admin_employees_path(sort: 'job_title', direction: sort_direction) do %>
-            Job title
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", alt: "Sort by Job title", class: "sorting-icon" %>
-          <% end %>
-        <% end %>
+      <%= sortable_table_column 'Job title', :job_title, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
       </th>
-      <% if local_assigns[:show_employee_specific_column] %>
-        <th>
-          <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'service_name' ? 'desc' : 'asc' %>
-          <%= link_to admin_employees_path(sort: 'service_name', direction: sort_direction) do %>
-            Provider
-            <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
-                        alt: "Sort by Provider", 
-                        class: "sorting-icon" %>
-          <% end %>
-        </th> 
-      <% elsif local_assigns[:show_service_specific_column] %>
-      
-      <th><a>Role(s)<%= image_tag "down-arrow.svg", alt: "Sort by Roles", class: "sorting-icon" %></a></th>
+      <% if local_assigns[:show_employee_specific_table] %>
+      <th>
+        <%= sortable_table_column 'Provider', :service_name, params %>
+      </th>
       <% end %>
-      <th><a>Qualifications<%= image_tag "down-arrow.svg", alt: "Sort by Qualifications", class: "sorting-icon" %></a></th>
-      <th><a>Status<%= image_tag "down-arrow.svg", alt: "Sort by Status", class: "sorting-icon" %></a></th>
-      </th> 
+      <% if local_assigns[:show_service_specific_table] %>
+      <th>
+        <%= sortable_table_column 'Roles', :roles, params, service_id: local_assigns[:service_id], show_service_specific_table: true %>
+      </th>
+      <% end %>
+      <th>
+      <%= sortable_table_column 'Qualifications', :qualifications, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
+      </th>
+      <th>
+      <%= sortable_table_column 'Status', :status, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -75,9 +41,9 @@
       </td>
       <td><%= employee.surname %></td>
       <td><%= employee.job_title %></td>
-      <% if local_assigns[:show_employee_specific_column] %>
+      <% if local_assigns[:show_employee_specific_table] %>
         <td><%= service_name_by_id(employee.service_id) %></td>
-      <% elsif local_assigns[:show_service_specific_column] %>
+      <% elsif local_assigns[:show_service_specific_table] %>
         <td>
         <% if employee.roles.present? %>
           <%= "#{employee.roles.count} #{employee.roles.count == 1 ? 'role' : 'roles'}" %>
