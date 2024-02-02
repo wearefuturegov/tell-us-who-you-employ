@@ -3,7 +3,7 @@
 <%= render "admin/shared/filters", show_employee_specific_filters: true, show_service_specific_filters: false %>
 
 <% if @employees.present? %>
-  <%= render 'admin/shared/employees', show_employee_specific_column: true, show_service_specific_column: false %>
+  <%= render 'admin/shared/employees', show_employee_specific_table: true, show_service_specific_table: false %>
   <%= paginate @employees %>
 <% else %>
   <div>

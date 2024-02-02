@@ -3,32 +3,15 @@
 <table class="table-holder">
   <thead>
     <tr>
+
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'name' ? 'desc' : 'asc' %>
-        <%= link_to admin_services_path(sort: 'name', direction: sort_direction) do %>
-          Provider
-          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
-                      alt: "Sort by Provider", 
-                      class: "sorting-icon" %>
-        <% end %>
+      <%= sortable_table_column 'Provider', :name, params, show_service_specific_table: true %>
       </th>
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'employees_count' ? 'desc' : 'asc' %>
-        <%= link_to admin_services_path(sort: 'employees_count', direction: sort_direction) do %>
-          Number of staff
-          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
-                      alt: "Sort by Employee Count", 
-                      class: "sorting-icon" %>
-        <% end %>
+      <%= sortable_table_column 'Number of Staff', :employees_count, params, show_service_specific_table: true %>
       </th>
       <th>
-        <% sort_direction = params[:direction] == 'asc' && params[:sort] == 'full_address' ? 'desc' : 'asc' %>
-        <%= link_to admin_services_path(sort: 'full_address', direction: sort_direction) do %>
-          Address
-          <%= image_tag sort_direction == 'asc' ? "down-arrow.svg" : "up-arrow.svg", 
-                      alt: "Sort by location", 
-                      class: "sorting-icon" %>
-        <% end %>
+      <%= sortable_table_column 'Address', :full_address, params, show_service_specific_table: true %>
       </th>
     </tr>
   </thead>
