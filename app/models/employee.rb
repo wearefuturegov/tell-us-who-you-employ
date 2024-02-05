@@ -56,9 +56,28 @@ class Employee < ApplicationRecord
   end
 
   def self.options_for_job_title 
-    Employee.distinct.pluck(:job_title).map do |job_title|
-      [job_title, job_title]
-    end
+    [
+      ['Acting Deputy Manager/ Leader/ Supervisor', 'Acting Deputy Manager/ Leader/ Supervisor'],
+      ['Acting Manager/ Leader/ Supervisor', 'Acting Manager/ Leader/ Supervisor'],
+      ['Apprentice/ Intern', 'Apprentice/ Intern'],
+      ['Assistant Childminder', 'Assistant Childminder'],
+      ['Chair Person', 'Chair Person'],
+      ['Childminder', 'Childminder'],
+      ['Cleaner/ Caretaker/ Catering', 'Cleaner/ Caretaker/ Catering'],
+      ['Deputy Manager/ Leader/ Supervisor', 'Deputy Manager/ Leader/ Supervisor'],
+      ['Finance/ Administration/ Secretary', 'Finance/ Administration/ Secretary'],
+      ['Lead Practitioner', 'Lead Practitioner'],
+      ['Manager/ Leader/ Supervisor', 'Manager/ Leader/ Supervisor'],
+      ['Nanny', 'Nanny'],
+      ['Not Applicable', 'Not Applicable'],
+      ['Nursery/ Pre-School Assistant', 'Nursery/ Pre-School Assistant'],
+      ['On maternity leave', 'On maternity leave'],
+      ['Owner/ Proprietor/ Director', 'Owner/ Proprietor/ Director'],
+      ['Playworker', 'Playworker'],
+      ['Room Leader/ Supervisor', 'Room Leader/ Supervisor'],
+      ['Treasurer', 'Treasurer'],
+      ['Volunteer', 'Volunteer']
+    ]
   end
 
   def self.options_for_qualifications

@@ -8,7 +8,7 @@
     <p><strong>Designated Safety Lead: </strong><%= @safeguarding_lead.nil? ? "n/a" : "#{@safeguarding_lead.forenames} #{@safeguarding_lead.surname}" %></p>
 </header>
 
-<%= render "admin/shared/filters", show_employee_specific_filters: true, show_service_specific_filters: false %>
+<%= render "admin/shared/filters", show_employee_specific_filters: true, show_service_specific_filters: false, show_provider_filter: false %>
 <% if @employees.present?%>
   <%= render 'admin/shared/employees', show_service_specific_table: true, show_employee_specific_table: false, service_id: @service.id %>
   <%= paginate @employees %>
