@@ -43,7 +43,7 @@ RSpec.feature 'Admin managing employees' do
 
     
     context 'with employee records in the DB' do
-      let!(:employee_1) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year,  job_title: 'Manager/ Leader/ Supervisor' }
+      let!(:employee_1) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year,  job_title: 'Manager/Leader/Supervisor' }
       let!(:employee_2) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year, job_title: 'Childminder' }
       let!(:employee_3) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_2.id, employed_from: Date.today - 1.year, job_title: 'Nanny' }
 
