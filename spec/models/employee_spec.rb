@@ -75,4 +75,83 @@ RSpec.describe Employee, type: :model do
       end
     end
   end
+
+  describe '.service' do
+    let!(:service_1) { FactoryBot.create :service, name: 'Service 1' }
+    let!(:service_2) { FactoryBot.create :service, name: 'Service 2' }
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1 }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_2 }
+
+    context 'when service_id is given' do
+      it 'returns employees with the given service_id' do
+        expect(Employee.service(service_1.id)).to include(employee_1)
+        expect(Employee.service(service_1.id)).not_to include(employee_2)
+      end
+    end
+
+    context 'when service_id is not given' do
+      it 'returns all employees' do
+        expect(Employee.service(nil)).to include(employee_1, employee_2)
+      end
+    end
+  end
+
+  describe '.options_for_status' do
+    it 'returns an array of options for status' do
+      expect(Employee.options_for_status).to eq([['Active', 'active'], ['Inactive', 'inactive']])
+    end
+  end
+
+  describe '.options_for_job_title' do
+    it 'returns an array of options for job_title' do
+      expect(Employee.options_for_job_title).to eq([
+        ['Acting Deputy Manager/ Leader/ Supervisor', 'Acting Deputy Manager/ Leader/ Supervisor'],
+        ['Acting Manager/ Leader/ Supervisor', 'Acting Manager/ Leader/ Supervisor'],
+        ['Apprentice/ Intern', 'Apprentice/ Intern'],
+        ['Assistant Childminder', 'Assistant Childminder'],
+        ['Chair Person', 'Chair Person'],
+        ['Childminder', 'Childminder'],
+        ['Cleaner/ Caretaker/ Catering', 'Cleaner/ Caretaker/ Catering'],
+        ['Deputy Manager/ Leader/ Supervisor', 'Deputy Manager/ Leader/ Supervisor'],
+        ['Finance/ Administration/ Secretary', 'Finance/ Administration/ Secretary'],
+        ['Lead Practitioner', 'Lead Practitioner'],
+        ['Manager/ Leader/ Supervisor', 'Manager/ Leader/ Supervisor'],
+        ['Nanny', 'Nanny'],
+        ['Not Applicable', 'Not Applicable'],
+        ['Nursery/ Pre-School Assistant', 'Nursery/ Pre-School Assistant'],
+        ['On maternity leave', 'On maternity leave'],
+        ['Owner/ Proprietor/ Director', 'Owner/ Proprietor/ Director'],
+        ['Playworker', 'Playworker'],
+        ['Room Leader/ Supervisor', 'Room Leader/ Supervisor'],
+        ['Treasurer', 'Treasurer'],
+        ['Volunteer', 'Volunteer']
+      ])
+    end
+  end
+
+  describe '.options_for_qualifications' do
+    it 'returns an array of options for qualifications' do
+      expect(Employee.options_for_qualifications).to eq([
+        ['Level 2', 'Level 2'],
+        ['Level 3', 'Level 3'],
+        ['Level 4', 'Level 4'],
+        ['Level 5', 'Level 5'],
+        ['Level 6', 'Level 6'],
+        ['EYPS', 'EYPS'],
+        ['QTS', 'QTS'],
+        ['EYC', 'EYC']
+      ])
+    end
+  end
+
+  describe '.options_for_service' do
+    let!(:service_1) { FactoryBot.create :service, name: 'Service 1' }
+    let!(:service_2) { FactoryBot.create :service, name: 'Service 2' }
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1 }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_2 }
+
+    it 'returns an array of options for service' do
+      expect(Employee.options_for_service).to eq([['Service 1', service_1.id], ['Service 2', service_2.id]])
+    end
+  end
 end
