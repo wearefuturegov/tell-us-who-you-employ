@@ -42,7 +42,7 @@
       <td><%= employee.surname %></td>
       <td><%= employee.job_title %></td>
       <% if local_assigns[:show_employee_specific_table] %>
-        <td><%= service_name_by_id(employee.service_id) %></td>
+        <td><%= employee.service.name %></td>
       <% elsif local_assigns[:show_service_specific_table] %>
         <td>
         <% if employee.roles.present? %>
