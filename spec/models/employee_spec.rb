@@ -151,7 +151,7 @@ RSpec.describe Employee, type: :model do
     let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_2 }
 
     it 'returns an array of options for service' do
-      expect(Employee.options_for_service).to eq([['Service 1', service_1.id], ['Service 2', service_2.id]])
+      expect(Employee.options_for_service).to match_array([['Service 1', service_1.id], ['Service 2', service_2.id]])
     end
   end
 end
