@@ -28,7 +28,7 @@
       <% if show_service_specific_filters %>
       <%= f.label :service, "Provider", class: "visually-hidden" %>
       <%= f.select :service, @filterrific.select_options[:service], {prompt: 'Filter by Provider'}, { class: "filters__select"} %>
-      <%= f.label :location, "Provider", class: "visually-hidden" %>
+      <%= f.label :location, "Location", class: "visually-hidden" %>
       <%= f.select :location, @filterrific.select_options[:location], {prompt: 'Filter by Location'}, { class: "filters__select"} %>
       <% elsif show_employee_specific_filters %>
       <%= f.label :job_title, "Job title", class: "visually-hidden" %>
@@ -36,9 +36,10 @@
 
       <%= f.label :qualifications, "Qualification", class: "visually-hidden" %>
       <%= f.select :qualifications, @filterrific.select_options[:qualifications], {prompt: 'Filter by Qualification'}, { class: "filters__select"} %>
-    
-      <%= f.label :service, "Provider", class: "visually-hidden" %>
-      <%= f.select :service, @filterrific.select_options[:service], { prompt: 'Filter by Provider' }, { class: "filters__select" } %>
+        <% if show_provider_filter %>
+          <%= f.label :service, "Provider", class: "visually-hidden" %>
+          <%= f.select :service, @filterrific.select_options[:service], { prompt: 'Filter by Provider' }, { class: "filters__select" } %>
+        <% end %>
       <%= f.label :status, "Status", class: "visually-hidden" %>
       <%= f.select :status, @filterrific.select_options[:status], {prompt: 'Filter by Status'}, { class: "filters__select"} %>
       <% end %>

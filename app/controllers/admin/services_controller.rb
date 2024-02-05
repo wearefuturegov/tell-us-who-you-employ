@@ -33,7 +33,6 @@ include Sortable
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
-        service: Employee.options_for_service
       },
       available_filters: [
         :job_title,
