@@ -145,14 +145,13 @@ RSpec.describe Employee, type: :model do
   end
 
   describe '.options_for_service' do
-    
-    let!(:service_1) { FactoryBot.create :service, name: 'Service 1', organisation_id: 1}
-    let!(:service_2) { FactoryBot.create :service, name: 'Service 2', organisation_id: 1}
-    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, organisation_id: 1}
-    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_2, organisation_id: 1}
+    let!(:service_1) { FactoryBot.create :service, name: 'Service 1' }
+    let!(:service_2) { FactoryBot.create :service, name: 'Service 2' }
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1 }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_2 }
 
     it 'returns an array of options for service' do
-      expect(Employee.options_for_service(1)).to match_array([['Service 1', service_1.id], ['Service 2', service_2.id]])
+      expect(Employee.options_for_service).to match_array([['Service 1', service_1.id], ['Service 2', service_2.id]])
     end
   end
 end

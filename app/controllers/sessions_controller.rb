@@ -28,7 +28,6 @@ class SessionsController < ApplicationController
 
   def persist_services_from_session
     return unless session[:services].present?
-    organisation_id = session[:organisation_id]
   
     session[:services].each do |service_data|
       if service_data.respond_to?(:to_h)
@@ -38,7 +37,6 @@ class SessionsController < ApplicationController
       service = Service.find_or_initialize_by(id: service_data['id'])
   
       service.name = service_data['name']
-      service.organisation_id = organisation_id
   
       if service_data['service_at_locations'].present?
         location_data = service_data['service_at_locations'].first&.dig('location')&.to_h
