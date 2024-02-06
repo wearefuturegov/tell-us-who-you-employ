@@ -93,11 +93,13 @@ class Employee < ApplicationRecord
     ]
   end
 
-  def self.options_for_service()
-    Employee.distinct.pluck(:service_id).map do |service_id|
-      [Service.find(service_id).name, service_id]
-    end
+  def self.options_for_service(organisation_id)
+    Employee.where(organisation_id: organisation_id).distinct.pluck(:service_id).map do |service_id|
+      service = Service.find_by(id: service_id)
+      [service.name, service_id] if service
+    end.compact
   end
+  
 
   
   def self.order_by_roles(direction = 'asc')

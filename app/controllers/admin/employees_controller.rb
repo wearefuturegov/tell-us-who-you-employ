@@ -2,16 +2,15 @@ class Admin::EmployeesController < Admin::BaseController
   include ApplicationHelper
   include Sortable
   def index
-    @filterrific_params = params[:filterrific] || {}
-    @employees = Employee.includes(:service)
+    initial_scope = Employee.includes(:service).where(organisation_id: session[:organisation_id].presence)
     @filterrific = initialize_filterrific(
-      Employee,
-      @filterrific_params,
+      initial_scope,
+      params[:filterrific],
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
-        service: Employee.options_for_service(),
+        service: Employee.options_for_service(session[:organisation_id]),
       },
       persistence_id: 'false',
     ) or return
@@ -22,7 +21,7 @@ class Admin::EmployeesController < Admin::BaseController
   end
 
   def show
-    @employee = Employee.find(params[:id])
+    @employee = Employee.where(organisation_id: session[:organisation_id], id: params[:id]).first
   end
 
 end
