@@ -2,12 +2,12 @@ class Service < ApplicationRecord
 
   has_many :employees
 
-  attribute :name, :string
-  attribute :organisation_id, :integer
   attribute :location_name, :string
   attribute :address_1, :string
   attribute :city, :string
   attribute :postal_code, :string
+
+  attribute :name, :string
 
 
 include PgSearch::Model
@@ -36,11 +36,10 @@ include PgSearch::Model
     [location_name, address_1, city, postal_code].compact.join(', ')
   end
 
-  def self.options_for_service(organisation_id)
-    Service.where(organisation_id: organisation_id)
-           .distinct
-           .pluck(:name)
-           .map { |name| [name, name] }
+  def self.options_for_service
+    Service.distinct.pluck(:name).map do |service|
+      [service, service]
+    end
   end
 
 

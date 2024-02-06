@@ -1,15 +1,16 @@
 require 'service'
 
 class Admin::ServicesController < Admin::BaseController
-  include Sortable
+include Sortable
 
   def index
-    initial_scope = Service.where(organisation_id: session[:organisation_id].presence).includes(:employees)
+    @filterrific_params = params[:filterrific] || {}
+    @services = Service.includes(:employees)
     @filterrific = initialize_filterrific(
-      initial_scope,
-      params[:filterrific],
+      Service,
+      @filterrific_params,
       select_options: {
-        service: Service.options_for_service(session[:organisation_id]),
+        service: Service.options_for_service,
         location: Service.options_for_location
       },
       persistence_id: 'false',
@@ -21,12 +22,13 @@ class Admin::ServicesController < Admin::BaseController
   end
 
   def show
-    @service = Service.where(organisation_id: session[:organisation_id], id: params[:id]).first
+    @service = Service.find(params[:id])
     @senco = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated SENCO"]).first
     @safeguarding_lead = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated Safeguarding Lead"]).first
+    @filterrific_params = params[:filterrific] || {}
     @filterrific = initialize_filterrific(
-      @service.employees.where(organisation_id: session[:organisation_id].presence),
-      params[:filterrific],
+      @service.employees,
+      @filterrific_params,
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
