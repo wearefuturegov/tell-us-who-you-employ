@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.feature 'Admin managing employees' do
   let(:org_id_1) { 123 }
-  let(:service_1) { FactoryBot.create :service, name: 'Service Name 1' }
-  let(:service_2) { FactoryBot.create :service, name: 'Service Name 2' }
+  let(:service_1) { FactoryBot.create :service, name: 'Service Name 1', organisation_id: org_id_1}
+  let(:service_2) { FactoryBot.create :service, name: 'Service Name 2', organisation_id: org_id_1}
 
 
   context 'signed in' do
