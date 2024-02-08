@@ -43,7 +43,7 @@ docker compose -f docker-compose.outpost.yml exec outpost bin/rails SEED_DUMMY_D
 
 docker compose -f docker-compose.outpost.yml exec outpost bin/bundle exec rails c
 
-Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/oauth/outpost/callback")
+Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/auth/outpost/callback")
 
 # update your .env file
 
@@ -78,7 +78,7 @@ docker compose exec app yarn
 # create the application
 docker compose exec outpost bin/bundle exec rails c
 
-Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/oauth/outpost/callback")
+Doorkeeper::Application.create!(name: "tell-us-who-you-employ", redirect_uri: "https://localhost:3004/auth/outpost/callback")
 
 
 ```
