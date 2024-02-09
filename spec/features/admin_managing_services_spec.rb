@@ -22,7 +22,9 @@ RSpec.feature 'Admin managing services' do
               services: [
                 service_1, service_2
               ]
-            }
+            },
+            admin: true,
+            admin_users: true
           }
         }
       })

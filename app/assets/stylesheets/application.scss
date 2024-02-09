@@ -108,7 +108,19 @@ a {
   color: #999999;
 }
 
+.edit-actions {
+  float: right;
+}
+
+.btn-spacing {
+  margin-right: 10px;
+}
+
 .qualifications tr.table-column {
+  border-bottom: 1px solid #999999;
+}
+
+.skills tr.table-column {
   border-bottom: 1px solid #999999;
 }
 

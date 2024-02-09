@@ -1,0 +1,284 @@
+<header class="page-header">
+  <%= link_to "Back", admin_employees_path, class: "go-back" %>
+  <h1 class="page-header__title"><%= "#{@employee.forenames} #{@employee.surname}" %></h1>
+  <p><strong>
+  <%= "#{@employee.job_title}, #{@employee.service.name}" %>
+  </strong></p>
+  <div class="employee-detail">
+    <p>
+      <%= "Record #{@employee.id}"%>
+    </p>
+    <div class="edit-actions">
+      <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
+  </div>
+</header>
+
+<%= form_for([:admin, @employee]) do |f| %>
+
+<% if @employee.errors.any? %>
+<div class="error">
+    <h2 class="error__title"><%= pluralize(@employee.errors.count, "error") %> stopped this employee being saved:</h2>
+    <ul class="error__list">
+        <% @employee.errors.full_messages.each do |e| %>
+        <li><%= e %></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<div class="with-sidebar">
+
+  <div class="panel">
+    <div class="collapsible" id="personal-information">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Personal information
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <div class="field field--required">
+          <strong>
+            <%= f.label :forenames, "First names", class: "field__label" %>
+          </strong>
+            <%= f.text_field :forenames, required: true, class: "field__input" %>
+        </div>
+
+        <div class="field field--required">
+          <strong>
+            <%= f.label :surname, "Surname", class: "field__label" %>
+          </strong>
+            <%= f.text_field :surname, required: true, class: "field__input" %>
+        </div>
+
+        <div class="field field--required">
+          <strong>
+            <%= f.label :date_of_birth, class: "field__label" %>
+          </strong>
+            <%= f.date_field :date_of_birth, class: "field__input" %>
+        </div>
+
+        <div class="field field--required">
+          <strong>
+            <%= f.label :postal_code, "Postcode", class: "field__label" %>
+          </strong>
+            <%= f.text_field :postal_code, required: true, class: "field__input" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible" id="provider">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Provider
+          </h2>
+      </button>
+      <div class="collapsible__content">
+
+        <div class="field field--required">
+          <strong>
+          <%= f.label :service_id, "Current provider", class: "field__label" %>
+          </strong>
+          <%= f.collection_select :service_id, @services, :last, :first, {}, {class: 'form-control'} %>
+        </div>
+        <div class="field field--required">
+          <strong>
+            <%= f.label :employed_from, class: "field__label" %>
+          </strong>
+            <%= f.date_field :employed_from, class: "field__input" %>
+        </div>
+        <div class="checkbox field">
+          <%= f.check_box :currently_employed, class: "checkbox__input" %>
+          <%= f.label :currently_employed, "Currently employed here", class: "checkbox__label" %>
+        </div>
+        <div class="field">
+          <strong>
+            <%= f.label :employed_to, class: "field__label" %>
+          </strong>
+            <%= f.date_field :employed_to, class: "field__input" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible" id="job-title">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Job title
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <div class="field field--required">
+          <%= f.label :job_title, "Job title", class: "field__label" %>
+          <%= f.select :job_title, accepted_job_titles, required: true, class: "field__input" %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="collapsible" id="roles">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Roles
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+          <tr class="table-column">
+            <td><strong>Roles</strong></td>
+          </tr>
+          <tr class="column-value">
+            <td>
+            <%= f.hidden_field :roles, multiple: true, value: [] %>
+            <% accepted_roles.each_with_index do |role, i| %>
+              <div class="field checkbox">
+                <%= f.check_box :roles, { multiple: true, class: "checkbox__input", id: "employee_roles_#{i}" }, role, nil %>
+                <%= f.label "roles_#{i}", role, class: "checkbox__label" %>
+              </div>
+            <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="collapsible" id="skills">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Skills
+          </h2>
+      </button>
+      <div class="collapsible__content">
+
+        <table class="employee-info-table skills">
+          <tr class="table-column">
+            <th>Skills</th>
+            <th>Date Achieved</th>
+            <th></th>
+          </tr>
+          <% if @employee.has_dbs_check %>
+            <tr data-section="dbs">
+              <td>DBS check</td>
+              <td><%= @employee.dbs_achieved_on.strftime("%d/%m/%Y") %></td>
+              <td>
+                <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "dbs" } %>
+                <%= f.hidden_field :remove_dbs, value: false, class: "hidden-remove-field", data: { attribute: "dbs" } %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @employee.has_first_aid_training %>
+            <tr data-section="firstaid">
+              <td>First aid training</td>
+              <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
+              <td>
+                <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "firstaid" } %>
+                <%= f.hidden_field :remove_firstaid, value: false, class: "hidden-remove-field", data: { attribute: "firstaid" } %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @employee.has_food_hygiene %>
+          <tr data-section="foodhygiene">
+            <td>Food Hygiene Qualification</td>
+            <td><%= @employee.food_hygiene_achieved_on.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "foodhygiene" } %>
+              <%= f.hidden_field :remove_foodhygiene, value: false, class: "hidden-remove-field", data: { attribute: "foodhygiene" } %>
+            </td>
+          </tr>
+          <% end %>
+
+          <% if @employee.has_senco_training %>
+          <tr data-section="senco">
+            <td>SENCO training</td>
+            <td><%= @employee.senco_achieved_on.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "senco" } %>
+              <%= f.hidden_field :remove_senco, value: false, class: "hidden-remove-field", data: { attribute: "senco" } %>
+            </td>
+          </tr>
+          <% end %>
+          <% if @employee.has_safeguarding %>
+          <tr data-section="safeguarding">
+            <td>(Other Safeguarding) Safeguarding for all training</td>
+            <td><%= @employee.safeguarding_achieved_on.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "safeguarding" } %>
+              <%= f.hidden_field :remove_safeguarding, value: false, class: "hidden-remove-field", data: { attribute: "safeguarding" } %>
+            </td>
+          </tr>
+          <% end %>
+          <% if @employee.has_senco_early_years %>
+          <tr data-section="earlyyears">
+            <td>Early Years Level 3 SENCO</td>
+            <td><%= @employee.senco_early_years_achieved_on.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "earlyyears" } %>
+              <%= f.hidden_field :remove_earlyyears, value: false, class: "hidden-remove-field", data: { attribute: "earlyyears" } %>
+            </td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+
+    <div class="collapsible" id="qualifications">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Qualifications
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <table class="employee-info-table">
+          <tr class="table-column">
+            <td><strong>Qualifications</strong></td>
+          </tr>
+          <tr class="column-value">
+            <td>
+            <%= f.hidden_field :qualifications, multiple: true, value: [] %>
+            <% accepted_qualifications.each_with_index do |qualification, i| %>
+              <div class="field checkbox">
+                <%= f.check_box :qualifications, { multiple: true, class: "checkbox__input", id: "employee_qualifications_#{i}" }, qualification, nil %>
+                <%= f.label "qualifications_#{i}", qualification, class: "checkbox__label" %>
+              </div>
+            <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel">
+    <div class="collapsible" id="status">
+        <button class="collapsible__header" type="button">
+            <h2>
+              Status
+            </h2>
+        </button>
+        <div class="collapsible__content">
+          <p>The records status shows whether they are actively in their current role or not.</p>
+          <div class="tag tag <%= @employee.currently_employed? ? 'active' : 'inactive' %>">
+            <%= @employee.currently_employed? ? 'Active' : 'Inactive' %>
+          </div>
+        </div>
+    </div>
+
+    <div class="collapsible" id="history">
+        <button class="collapsible__header" type="button">
+            <h2>
+              History
+            </h2>
+        </button>
+        <div class="collapsible__content">
+
+        </div>
+    </div>
+  </div>
+</div>
+<div class="form-actions">
+    <%= f.button "Continue", class: "button" %>
+    <%= link_to 'Cancel', admin_employee_path(@employee), data: { confirm: 'You have unsaved changes. Are you sure you want to leave this page?' }, class: 'btn btn-danger'%>
+
+</div>
+<% end %>

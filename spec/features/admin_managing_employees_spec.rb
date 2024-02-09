@@ -22,13 +22,17 @@ RSpec.feature 'Admin managing employees' do
               services: [
                 service_1, service_2
               ]
-            }
+            },
+            admin: true,
+            admin_users: true
           }
         }
       })
 
       visit root_path
       click_link 'click here'
+      click_button 'Sign in'
+      visit admin_employees_path
     end
 
     after do
