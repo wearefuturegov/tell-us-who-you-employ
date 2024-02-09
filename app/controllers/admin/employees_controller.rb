@@ -36,6 +36,9 @@ class Admin::EmployeesController < Admin::BaseController
 
   def update
     @employee = Employee.find(params[:id])
+
+    process_certifications(params[:employee][:certifications]) if params[:employee][:certifications]
+
     submitted_roles = params[:employee][:roles] || [] 
     submitted_qualifications = params[:employee][:qualifications] || []  
     @employee.roles = submitted_roles
@@ -79,4 +82,28 @@ class Admin::EmployeesController < Admin::BaseController
     remove_earlyyears: [:has_senco_early_years, :senco_early_years_achieved_on]
     }.freeze
 
+  def process_certifications(certifications)
+    certifications.each do |_, cert|
+      case cert[:type]
+      when 'dbs'
+        @employee.has_dbs_check = true
+        @employee.dbs_achieved_on = cert[:date]
+      when 'first_aid'
+        @employee.has_first_aid_training = true
+        @employee.first_aid_achieved_on = cert[:date]
+      when 'food_hygiene'
+        @employee.has_food_hygiene = true
+        @employee.food_hygiene_achieved_on = cert[:date]
+      when 'senco'
+        @employee.has_senco_training = true
+        @employee.senco_achieved_on = cert[:date]
+      when 'safeguarding'
+        @employee.has_safeguarding = true
+        @employee.safeguarding_achieved_on = cert[:date]
+      when 'senco_early_years'
+        @employee.has_senco_early_years = true
+        @employee.senco_early_years_achieved_on = cert[:date]
+      end
+    end
+  end
 end

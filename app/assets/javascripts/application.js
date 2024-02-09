@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require_tree .
 //= require collapsible
-//= require remove-qualification
+//= require process-qualifications
