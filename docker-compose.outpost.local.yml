@@ -53,7 +53,7 @@ services:
   # Outpost app
 
   outpost:
-    image: "outpost:development"
+    image: "outpost:tell-us"
     env_file:
       - ./outpost/.env
     # command: ["tail", "-f", "/dev/null"]
