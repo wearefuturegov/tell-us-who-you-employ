@@ -26,10 +26,16 @@ $max-width: 1000px;
 @import "bucks-fis-design-library/errors";
 @import "bucks-fis-design-library/confirmation";
 @import "bucks-fis-design-library/radios";
+@import "bucks-fis-design-library/tags";
+@import "bucks-fis-design-library/mini-search";
+@import "bucks-fis-design-library/filters";
+@import "bucks-fis-design-library/collapsibles";
+@import "bucks-fis-design-library/shortcut-nav";
 
 @import "breadcrumbs";
 // @import "radio";
 @import "page-title";
+@import "collapsibles";
 
 .table-action {
   margin-left: 10px;
@@ -41,8 +47,77 @@ $max-width: 1000px;
 }
 
 a {
-  text-decoration: underline;
+  text-decoration: none;
   &:hover {
-    text-decoration: none;
+    text-decoration: underline;
   }
+}
+
+.sorting-icon {
+  width: 10px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.tag {
+  margin-top: 10px;
+}
+.tag.active {
+  background-color:#dae7b8;
+  color:#526D0D;
+  border:1px solid #B3CC6E;
+}
+
+.tag.inactive {
+  background-color:#FFDEDE;
+  color:#BB0B0B;
+  border:1px solid #FF0000;
+}
+
+.add_record_button {
+  float: right;
+}
+
+.filters-body
+{
+  justify-content: space-evenly;
+}
+
+.filters__select {
+  max-width:none; 
+}
+
+.employee-info-table {
+  background-color: #ffffff;
+}
+
+.employee-info-table tr.table-column {
+  padding-bottom: 15px;
+  background-color: #ffffff;
+
+}
+
+.employee-info-table tr.column-value {
+  padding-top: 0px;
+  background-color: #ffffff;
+}
+
+.employee-detail {
+  border-bottom: 1px solid #999999;
+  padding-bottom: 40px;
+  color: #999999;
+}
+
+.qualifications tr.table-column {
+  border-bottom: 1px solid #999999;
+}
+
+.filters-services {
+  display: inline;
+  max-width: 50%;
+}
+
+.shortcuts__item.current {
+  background-color: #f5f5f5;
+  padding: 10px;
 }

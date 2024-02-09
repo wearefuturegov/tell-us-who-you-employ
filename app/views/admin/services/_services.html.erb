@@ -1,0 +1,41 @@
+
+<% if @services.present? %>
+<table class="table-holder">
+  <thead>
+    <tr>
+
+      <th>
+      <%= sortable_table_column 'Provider', :name, params, show_service_specific_table: true %>
+      </th>
+      <th>
+      <%= sortable_table_column 'Number of Staff', :employees_count, params, show_service_specific_table: true %>
+      </th>
+      <th>
+      <%= sortable_table_column 'Address', :full_address, params, show_service_specific_table: true %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @services.each do |service| %>
+    <tr>
+      <td>
+        <strong>
+          <%= link_to service.name, admin_service_path(service) %>
+        </strong>
+      </td> 
+      <td><%= service.employees.count %></td>
+      <td>
+        <%= [service.location_name, service.address_1, service.city, service.postal_code].reject(&:blank?).join(', ') %>
+      </td>
+      <td>
+        <%= link_to "View all records", admin_service_path(service) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% else %>
+      <div>
+        <h1>No providers found</td>
+      </div>
+<% end %>

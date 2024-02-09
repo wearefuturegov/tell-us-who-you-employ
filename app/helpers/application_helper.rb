@@ -8,6 +8,7 @@ module ApplicationHelper
       id
     end
   end
+  
 
   def accepted_job_titles 
     [
@@ -59,4 +60,19 @@ module ApplicationHelper
     ]
   end
 
+  def sortable_table_column(label, column, sort_params, service_id: nil, show_service_specific_table: false)
+    is_current_sort = sort_params[:sort] == column.to_s
+    sort_direction = is_current_sort && sort_params[:direction] == 'asc' ? 'desc' : 'asc'
+    arrow_direction = is_current_sort && sort_params[:direction] == 'desc' ? 'up' : 'down'
+
+    path = if show_service_specific_table
+      service_id.present? ? admin_service_path(id: service_id, sort: column, direction: sort_direction) : admin_services_path(sort: column, direction: sort_direction)
+    else
+      admin_employees_path(sort: column, direction: sort_direction)
+    end
+
+    link_to path do
+      safe_join([label, image_tag("#{arrow_direction}-arrow.svg", alt: "Sort by #{label}", class: "sorting-icon")], ' ')
+    end
+  end
 end

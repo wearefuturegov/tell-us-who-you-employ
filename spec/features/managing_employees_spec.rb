@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Managing employees' do
   let(:org_id) { 123 }
-  let(:service_id) { 456 }
-  let(:service_name) { 'Test service 1' }
+  let(:service) { FactoryBot.create :service, name: 'Service Name 1' }
 
   scenario 'must be signed in' do
     visit employees_path
@@ -24,10 +23,7 @@ RSpec.feature 'Managing employees' do
             organisation: {
               id: org_id,
               services: [
-                {
-                  id: service_id,
-                  name: service_name
-                }
+                service
               ]
             }
           }
@@ -82,7 +78,7 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_content surname
           expect(page).to have_content forenames
           expect(page).to have_content job_title
-          expect(page).to have_content service_name
+          expect(page).to have_content service.name
         end
 
         scenario 'it check the inputs' do
@@ -124,7 +120,7 @@ RSpec.feature 'Managing employees' do
           expect(page).to have_field(:employee_postal_code, with: postcode)
           expect(page).to have_field(:employee_date_of_birth, with: dob)
           expect(page).to have_field(:employee_employed_from, with: employed_from)
-          expect(page).to have_field(:employee_service_id, with: service_id)
+          expect(page).to have_field(:employee_service_id, with: service.id)
           expect(page).to have_select(:employee_job_title, selected: job_title)
           expect(page).to have_checked_field("Designated Safeguarding Lead")
           expect(page).to have_checked_field("First Aider")
@@ -236,7 +232,7 @@ RSpec.feature 'Managing employees' do
     end
 
     context 'with employee records in the DB' do
-      let!(:employee) { FactoryBot.create :employee, organisation_id: org_id, service_id: service_id }
+      let!(:employee) { FactoryBot.create :employee, organisation_id: org_id, service_id: service.id, employed_from: Date.today - 1.year }
       let(:employed_to) { Date.today - 5 }
 
       before do
@@ -249,7 +245,7 @@ RSpec.feature 'Managing employees' do
 
       scenario 'you can update employee records' do
         expect(page).to have_content employee.surname
-        expect(page).to have_content service_name
+        expect(page).to have_content service.name
 
         click_link 'Change'
 
@@ -259,7 +255,7 @@ RSpec.feature 'Managing employees' do
         click_button 'Continue'
         expect(page).to have_content 'If these records are accurate, carry on'
         expect(page).to have_content employee.surname
-        expect(page).to have_content service_name
+        expect(page).to have_content service.name
         expect(page).to have_content employed_to.strftime("%d/%m/%Y")
       end
 
