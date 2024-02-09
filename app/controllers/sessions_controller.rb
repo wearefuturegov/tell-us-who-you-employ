@@ -6,6 +6,8 @@ class SessionsController < ApplicationController
     # services; if they haven't, they can't use this service
     org_id = auth_hash.extra.raw_info.organisation_id
     services = auth_hash.extra.raw_info.organisation&.services
+    readonly_admin = auth_hash.extra.raw_info.admin
+    admin_users = auth_hash.extra.raw_info.admin_users
 
     if org_id.nil? || services.empty?
       redirect_to root_path, alert: "It looks like you haven't listed any services yet, please list your services on our directory before you begin"
@@ -16,14 +18,26 @@ class SessionsController < ApplicationController
     session[:services] = services
     session[:uid] = auth_hash.uid
     persist_services_from_session if session[:services].present?
+    session[:admin] = readonly_admin
+    session[:admin_users] = admin_users
 
-    redirect_to employees_path
+
+    return if enforce_admin_permissions
+    redirect_to admin_employees_path
   end
 
   private
 
   def auth_hash
     request.env['omniauth.auth']
+  end
+
+  def enforce_admin_permissions
+    unless session[:admin] || session[:admin_users]
+      redirect_to employees_path, notice: "You don't have permission to access the admin portal."
+      return true
+    end
+    false
   end
 
   def persist_services_from_session
@@ -35,7 +49,6 @@ class SessionsController < ApplicationController
       end
       
       service = Service.find_or_initialize_by(id: service_data['id'])
-  
       service.name = service_data['name']
   
       if service_data['service_at_locations'].present?

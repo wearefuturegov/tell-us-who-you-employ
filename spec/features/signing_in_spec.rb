@@ -23,7 +23,8 @@ RSpec.feature 'Signing in' do
       extra: {
         raw_info: {
           organisation_id: nil
-        }
+        },
+        admin: false
       }
     })
 
@@ -48,7 +49,8 @@ RSpec.feature 'Signing in' do
           organisation: {
             id: 123,
             services: []
-          }
+          },
+          admin: false
         }
       }
     })
@@ -61,4 +63,57 @@ RSpec.feature 'Signing in' do
 
     expect(page).to have_content 'please list your services on our directory before you begin'
   end
+
+  scenario 'redirects to the admin portal and displays error message if the user is not admin' do
+    OmniAuth.config.add_mock(:outpost, {
+      uid: 12345,
+      info: {
+        email: 'user@example.com'
+      },
+      extra: {
+        raw_info: {
+          organisation_id: 123,
+          organisation: {
+            id: 123,
+            services: [{ id: 1, name: 'Service 1' }]
+          },
+          admin: false,
+          admin_users: false
+        }
+      }
+    })
+
+    visit root_path
+    click_link 'click here'
+    click_button 'Sign in'
+
+    expect(page).to have_content 'You don\'t have permission to access the admin portal.'
+  end
+
+  scenario 'grants access to the admin portal if the user is an admin' do
+    OmniAuth.config.add_mock(:outpost, {
+      uid: 12345,
+      info: {
+        email: 'user@example.com'
+      },
+      extra: {
+        raw_info: {
+          organisation_id: 123,
+          organisation: {
+            id: 123,
+            services: [{ id: 1, name: 'Service 1' }]
+          },
+          admin: true,
+          admin_users: true
+        }
+      }
+    })
+
+    visit root_path
+    click_link 'click here'
+    click_button 'Sign in'
+
+    expect(page).to have_content 'Provider employee details'
+  end
+
 end
