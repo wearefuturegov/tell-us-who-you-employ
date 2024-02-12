@@ -88,18 +88,19 @@ a {
 }
 
 .employee-info-table {
-  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 0 15px; /* Horizontal and vertical spacing */
 }
-
 .employee-info-table tr.table-column {
-  padding-bottom: 15px;
-  background-color: #ffffff;
-
+  background-color: #ffffff; /* This will set the row background color */
 }
 
-.employee-info-table tr.column-value {
-  padding-top: 0px;
-  background-color: #ffffff;
+.employee-info-table tr {
+  background-color: #ffffff; /* This will set the row background color */
+}
+
+.employee-info-table td {
+  background-color: #ffffff; /* This will set the row background color */
 }
 
 .employee-detail {
@@ -110,10 +111,6 @@ a {
 
 .edit-actions {
   float: right;
-}
-
-.btn-spacing {
-  margin-right: 10px;
 }
 
 .qualifications tr.table-column {

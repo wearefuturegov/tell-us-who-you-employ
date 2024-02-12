@@ -9,7 +9,7 @@
       <%= "Record #{@employee.id}"%>
     </p>
     <div class="edit-actions">
-      <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' } %>
     </div>
   </div>
 </header>
@@ -56,6 +56,12 @@
             <%= f.label :date_of_birth, class: "field__label" %>
           </strong>
             <%= f.date_field :date_of_birth, class: "field__input" %>
+        </div>
+        <div class="field field--required">
+          <strong>
+            <%= f.label :street_address, "Home address", class: "field__label" %>
+          </strong>
+            <%= f.text_field :street_address, required: true, class: "field__input" %>
         </div>
 
         <div class="field field--required">
@@ -160,7 +166,9 @@
               <td>DBS check</td>
               <td><%= @employee.dbs_achieved_on.strftime("%d/%m/%Y") %></td>
               <td>
-                <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "dbs" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "dbs" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
                 <%= f.hidden_field :remove_dbs, value: false, class: "hidden-remove-field", data: { attribute: "dbs" } %>
               </td>
             </tr>
@@ -171,7 +179,9 @@
               <td>First aid training</td>
               <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
               <td>
-                <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "firstaid" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "firstaid" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
                 <%= f.hidden_field :remove_firstaid, value: false, class: "hidden-remove-field", data: { attribute: "firstaid" } %>
               </td>
             </tr>
@@ -182,7 +192,9 @@
             <td>Food Hygiene Qualification</td>
             <td><%= @employee.food_hygiene_achieved_on.strftime("%d/%m/%Y") %></td>
             <td>
-              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "foodhygiene" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "foodhygiene" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
               <%= f.hidden_field :remove_foodhygiene, value: false, class: "hidden-remove-field", data: { attribute: "foodhygiene" } %>
             </td>
           </tr>
@@ -193,7 +205,9 @@
             <td>SENCO training</td>
             <td><%= @employee.senco_achieved_on.strftime("%d/%m/%Y") %></td>
             <td>
-              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "senco" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "senco" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
               <%= f.hidden_field :remove_senco, value: false, class: "hidden-remove-field", data: { attribute: "senco" } %>
             </td>
           </tr>
@@ -203,7 +217,9 @@
             <td>(Other Safeguarding) Safeguarding for all training</td>
             <td><%= @employee.safeguarding_achieved_on.strftime("%d/%m/%Y") %></td>
             <td>
-              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "safeguarding" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "safeguarding" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
               <%= f.hidden_field :remove_safeguarding, value: false, class: "hidden-remove-field", data: { attribute: "safeguarding" } %>
             </td>
           </tr>
@@ -213,15 +229,17 @@
             <td>Early Years Level 3 SENCO</td>
             <td><%= @employee.senco_early_years_achieved_on.strftime("%d/%m/%Y") %></td>
             <td>
-              <%= link_to "X", "#", class: "btn btn-warning remove-attribute", data: { section: "earlyyears" } %>
+              <%= link_to "#", class: "remove-attribute", data: { section: "earlyyears" } do %>
+                <%= image_tag('clear.svg', alt: 'Clear') %>
+              <% end %>
               <%= f.hidden_field :remove_earlyyears, value: false, class: "hidden-remove-field", data: { attribute: "earlyyears" } %>
             </td>
           </tr>
           <% end %>
-          <div id="certifications-container">
-          </div>
         </table>
-      <%= button_tag "Add Certification", type: "button", id: "add-certification", class: "btn btn-info" %>
+        <div id="skills-container">
+        </div>
+      <%= button_tag "Add another skill", type: "button", id: "add-skill", class: "button button--secondary button--add" %>
       </div>
     </div>
 

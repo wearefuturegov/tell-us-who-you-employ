@@ -1,6 +1,7 @@
 class Admin::EmployeesController < Admin::BaseController
   before_action :require_admin!, only: [:index, :show]
   before_action :require_admin_users!, only: [:edit, :update, :destroy]
+  before_action :set_services, only: [:edit, :update]
 
   include ApplicationHelper
   include Sortable
@@ -30,14 +31,13 @@ class Admin::EmployeesController < Admin::BaseController
 
   def edit
     @employee = Employee.find(params[:id])
-    @services = Service.all.collect { |s| [s.name, s.id] }
   end
 
 
   def update
     @employee = Employee.find(params[:id])
 
-    process_certifications(params[:employee][:certifications]) if params[:employee][:certifications]
+    process_skills(params[:employee][:skills]) if params[:employee][:skills]
 
     submitted_roles = params[:employee][:roles] || [] 
     submitted_qualifications = params[:employee][:qualifications] || []  
@@ -48,6 +48,10 @@ class Admin::EmployeesController < Admin::BaseController
       if employee_params[flag] == "true"
         attrs.each { |attr| @employee.send("#{attr}=", nil) }
       end
+    end
+
+    if params[:employee][:currently_employed] == true
+      @employee.employed_to = nil
     end
   
     @employee.assign_attributes(employee_params.except(:remove_dbs, :remove_firstaid, :remove_foodhygiene, :remove_senco, :remove_safeguarding, :remove_earlyyears))
@@ -70,7 +74,38 @@ class Admin::EmployeesController < Admin::BaseController
   
   private
   def employee_params
-    params.require(:employee).permit(:forenames, :surname, :job_title, :status, :qualifications, :roles, :service_id, :remove_dbs, :remove_firstaid, :remove_foodhygiene, :remove_senco, :remove_safeguarding, :remove_earlyyears)
+    params.require(:employee).permit(
+      :forenames, 
+      :surname, 
+      :date_of_birth, 
+      :street_address,
+      :postal_code, 
+      :service_id, 
+      :employed_from, 
+      :currently_employed, 
+      :employed_to, 
+      :job_title,
+      :has_dbs_check,
+      :dbs_achieved_on,
+      :has_first_aid_training,
+      :first_aid_achieved_on,
+      :has_food_hygiene,
+      :food_hygiene_achieved_on,
+      :has_senco_training,
+      :senco_achieved_on,
+      :has_safeguarding,
+      :safeguarding_achieved_on,
+      :has_senco_early_years,
+      :senco_early_years_achieved_on,
+      :remove_dbs, 
+      :remove_firstaid, 
+      :remove_foodhygiene, 
+      :remove_senco, 
+      :remove_safeguarding, 
+      :remove_earlyyears,
+      :roles => [], 
+      :qualifications => []
+      )
   end
 
   ATTRIBUTE_FLAGS = {
@@ -82,8 +117,8 @@ class Admin::EmployeesController < Admin::BaseController
     remove_earlyyears: [:has_senco_early_years, :senco_early_years_achieved_on]
     }.freeze
 
-  def process_certifications(certifications)
-    certifications.each do |_, cert|
+  def process_skills(skills)
+    skills.each do |_, cert|
       case cert[:type]
       when 'dbs'
         @employee.has_dbs_check = true
@@ -105,5 +140,9 @@ class Admin::EmployeesController < Admin::BaseController
         @employee.senco_early_years_achieved_on = cert[:date]
       end
     end
+  end
+
+  def set_services
+    @services = Service.all.collect { |s| [s.name, s.id] }
   end
 end

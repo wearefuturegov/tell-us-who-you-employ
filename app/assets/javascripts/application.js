@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require_tree .
 //= require collapsible
-//= require process-qualifications
+//= require edit-employee

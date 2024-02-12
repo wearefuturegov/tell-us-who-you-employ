@@ -9,8 +9,8 @@
     </p>
     <% if admin_users? %>
       <div class="edit-actions">
-        <%= link_to 'Edit', edit_admin_employee_path(@employee), class: 'btn btn-primary' %>
-        <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <%= link_to 'Edit', edit_admin_employee_path(@employee) %>
+        <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
     <% end %>
   </div>
@@ -45,6 +45,13 @@
             <label class="field__label">Date of Birth</label>
           </strong>
             <p class="field__input"><%= @employee.date_of_birth.strftime("%d/%m/%Y") %></p>
+        </div>
+
+        <div class="field">
+          <strong>
+            <label class="field__label">Home address</label>
+          </strong>
+            <p class="field__input"><%= @employee.street_address %></p>
         </div>
 
         <div class="field">
