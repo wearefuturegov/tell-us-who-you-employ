@@ -14,6 +14,7 @@ class Employee < ApplicationRecord
       service: [:name]
     }, 
     using: {
+      trigram: { threshold: 0.1},
       tsearch: { prefix: true }
     }
 
