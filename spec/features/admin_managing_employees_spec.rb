@@ -50,7 +50,7 @@ RSpec.feature 'Admin managing employees' do
       let!(:employee_1) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year,  job_title: 'Manager/Leader/Supervisor' }
       let!(:employee_2) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_1.id, employed_from: Date.today - 1.year, job_title: 'Childminder' }
       let!(:employee_3) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_2.id, employed_from: Date.today - 1.year, job_title: 'Nanny' }
-      let!(:employee_4) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_2.id, employed_from: Date.today - 1.year, currently_employed: false, employed_to: Date.today, job_title: 'Treasurer' }
+      let!(:employee_4) { FactoryBot.create :employee, organisation_id: org_id_1, service_id: service_2.id, employed_from: Date.today - 1.year, currently_employed: false, employed_to: Date.today, job_title: 'Treasurer', has_dbs_check: true, dbs_achieved_on: Date.today - 1.year}
 
       before do
         visit root_path
@@ -232,6 +232,15 @@ RSpec.feature 'Admin managing employees' do
 
         expect(page).to have_content('123 New Street')
         expect(page).to have_content('AB1 2CD')
+      end
+
+      scenario 'you receive error messages when editing an individual employee with invalid data' do
+        click_link employee_1.forenames
+        click_link 'Edit'
+        fill_in 'employee[forenames]', with: ''
+        click_button 'Save'
+
+        expect(page).to have_content("Forenames can't be blank")
       end
 
       scenario 'you delete an individual employee' do
