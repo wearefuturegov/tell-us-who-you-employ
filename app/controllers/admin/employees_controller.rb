@@ -1,6 +1,7 @@
 class Admin::EmployeesController < Admin::BaseController
   before_action :require_admin!, only: [:index, :show]
   before_action :require_admin_users!, only: [:edit, :update, :destroy]
+  before_action :set_employee, only: [:update]
   before_action :set_services, only: [:edit, :update]
 
   include ApplicationHelper
@@ -35,32 +36,25 @@ class Admin::EmployeesController < Admin::BaseController
 
 
   def update
-    @employee = Employee.find(params[:id])
-
-    process_skills(params[:employee][:skills]) if params[:employee][:skills]
-
-    submitted_roles = params[:employee][:roles] || [] 
-    submitted_qualifications = params[:employee][:qualifications] || []  
-    @employee.roles = submitted_roles
-    @employee.qualifications = submitted_qualifications
-
-    ATTRIBUTE_FLAGS.each do |flag, attrs|
-      if employee_params[flag] == "true"
-        attrs.each { |attr| @employee.send("#{attr}=", nil) }
-      end
+    ActiveRecord::Base.transaction do
+      update_skills
+      update_flags
+      update_roles_and_qualifications
+      update_employment_status
+      update_employee_attributes
     end
 
-    if params[:employee][:currently_employed] == true
-      @employee.employed_to = nil
-    end
-  
-    @employee.assign_attributes(employee_params.except(:remove_dbs, :remove_firstaid, :remove_foodhygiene, :remove_senco, :remove_safeguarding, :remove_earlyyears))
-
-    
     if @employee.save
       redirect_to admin_employee_path(@employee), notice: 'Employee updated successfully.'
     else
       render :edit
+    end
+  rescue => e
+    Rails.logger.error "Error updating employee: #{e.message}"
+    if @employee.present?
+      redirect_to edit_admin_employee_path(@employee), alert: 'An error occurred while updating the employee.'
+    else
+      redirect_to admin_employees_path, alert: 'Employee not found.'
     end
   end
   
@@ -73,6 +67,7 @@ class Admin::EmployeesController < Admin::BaseController
 
   
   private
+
   def employee_params
     params.require(:employee).permit(
       :forenames, 
@@ -106,6 +101,35 @@ class Admin::EmployeesController < Admin::BaseController
       :roles => [], 
       :qualifications => []
       )
+  end
+
+  def set_employee
+    @employee = Employee.find(params[:id])
+  end
+
+  def update_skills
+    process_skills(params[:employee][:skills]) if params[:employee][:skills].present?
+  end
+
+  def update_flags
+    ATTRIBUTE_FLAGS.each do |flag, attrs|
+      next unless employee_params[flag] == "true"
+      attrs.each { |attr| @employee.send("#{attr}=", nil) }
+    end
+  end
+
+  def update_roles_and_qualifications
+    @employee.roles = params[:employee][:roles] || []
+    @employee.qualifications = params[:employee][:qualifications] || []
+  end
+
+  def update_employment_status
+    return unless params[:employee][:currently_employed] == "true"
+    @employee.employed_to = nil
+  end
+
+  def update_employee_attributes
+    @employee.assign_attributes(employee_params.except(:remove_dbs, :remove_firstaid, :skills, :roles, :qualifications, :currently_employed))
   end
 
   ATTRIBUTE_FLAGS = {
