@@ -208,7 +208,7 @@ RSpec.feature 'Admin managing employees' do
         fill_in 'employee[employed_from]', with: (Date.today - 2.years).strftime('%d/%m/%Y')
         click_button 'Save'
         formatted_date = (Date.today - 2.years).strftime('%d/%m/%Y')
-        
+
         expect(page).to have_content(formatted_date)
       end
 
@@ -238,7 +238,7 @@ RSpec.feature 'Admin managing employees' do
         click_link employee_1.forenames
         click_link 'Delete'
 
-        expect(page).to have_content('Employee was successfully deleted')
+        expect(page).to have_content('Employee was successfully destroyed')
       end
     end
 
