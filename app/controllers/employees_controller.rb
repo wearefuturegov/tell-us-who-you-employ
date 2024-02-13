@@ -23,13 +23,13 @@ class EmployeesController < ApplicationController
   def show
   end
 
-  def update
-    if params[:commit] == 'confirm_details'
+  def update  
+    if params[:confirm_details] == 'true'
       @employee.touch(:updated_at)
       redirect_to employees_path, notice: 'Employee details confirmed.'
     else
       if @employee.update(employee_params)
-        redirect_to employees_path
+        redirect_to employees_path, notice: 'Employee updated successfully.'
       else
         render "show"
       end
