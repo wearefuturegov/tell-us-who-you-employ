@@ -37,10 +37,10 @@ class Admin::EmployeesController < Admin::BaseController
 
   def update
     ActiveRecord::Base.transaction do
-      update_skills
-      update_flags
-      update_roles_and_qualifications
       update_employment_status
+      update_skills
+      remove_skills
+      update_roles_and_qualifications
       update_employee_attributes
     end
 
@@ -80,6 +80,7 @@ class Admin::EmployeesController < Admin::BaseController
       :currently_employed, 
       :employed_to, 
       :job_title,
+      :skills,
       :has_dbs_check,
       :dbs_achieved_on,
       :has_first_aid_training,
@@ -107,12 +108,18 @@ class Admin::EmployeesController < Admin::BaseController
     @employee = Employee.find(params[:id])
   end
 
+  def update_employment_status
+    if employee_params[:currently_employed] == "1"
+      @employee.employed_to = nil
+    end
+  end
+
   def update_skills
     process_skills(params[:employee][:skills]) if params[:employee][:skills].present?
   end
 
-  def update_flags
-    ATTRIBUTE_FLAGS.each do |flag, attrs|
+  def remove_skills
+    SKILL_REMOVAL_ATTRIBUTES.each do |flag, attrs|
       next unless employee_params[flag] == "true"
       attrs.each { |attr| @employee.send("#{attr}=", nil) }
     end
@@ -123,16 +130,11 @@ class Admin::EmployeesController < Admin::BaseController
     @employee.qualifications = params[:employee][:qualifications] || []
   end
 
-  def update_employment_status
-    return unless params[:employee][:currently_employed] == "true"
-    @employee.employed_to = nil
-  end
-
   def update_employee_attributes
-    @employee.assign_attributes(employee_params.except(:remove_dbs, :remove_firstaid, :skills, :roles, :qualifications, :currently_employed))
+    @employee.assign_attributes(employee_params.except(:remove_dbs, :remove_firstaid, :remove_foodhygiene, :remove_senco, :remove_earlyyears, :remove_safeguarding, :skills))
   end
 
-  ATTRIBUTE_FLAGS = {
+  SKILL_REMOVAL_ATTRIBUTES = {
     remove_dbs: [:has_dbs_check, :dbs_achieved_on],
     remove_firstaid: [:has_first_aid_training, :first_aid_achieved_on],
     remove_foodhygiene: [:has_food_hygiene, :food_hygiene_achieved_on],
