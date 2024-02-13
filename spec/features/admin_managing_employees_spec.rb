@@ -125,6 +125,23 @@ RSpec.feature 'Admin managing employees' do
         expect(page).to have_content(employee_1.job_title)
         expect(page).to have_content(employee_1.qualifications)
       end
+
+      scenario 'you edit an individual employee' do
+        click_link employee_1.forenames
+        click_link 'Edit'
+
+        fill_in 'employee[forenames]', with: 'New Name'
+        click_button 'Save'
+
+        expect(page).to have_content('New Name')
+      end
+
+      scenario 'you delete an individual employee' do
+        click_link employee_1.forenames
+        click_link 'Delete'
+
+        expect(page).to have_content('Employee was successfully deleted')
+      end
     end
 
   end
