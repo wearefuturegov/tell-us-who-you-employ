@@ -1,0 +1,6 @@
+.flow-content a {
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
+}

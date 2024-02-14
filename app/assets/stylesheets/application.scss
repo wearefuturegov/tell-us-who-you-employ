@@ -34,7 +34,7 @@ $max-width: 1000px;
 @import "breadcrumbs";
 // @import "radio";
 @import "page-title";
-@import "collapsibles";
+@import "flow";
 
 .table-action {
   margin-left: 10px;
@@ -45,60 +45,47 @@ $max-width: 1000px;
   overflow-x: auto;
 }
 
-a {
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .sorting-icon {
   width: 10px;
   margin-left: 5px;
   vertical-align: middle;
-}
-
-.tag {
-  margin-top: 10px;
-}
-.tag.active {
-  background-color:#dae7b8;
-  color:#526D0D;
-  border:1px solid #B3CC6E;
-}
-
-.tag.inactive {
-  background-color:#FFDEDE;
-  color:#BB0B0B;
-  border:1px solid #FF0000;
-}
-
-.add_record_button {
-  float: right;
-}
-
-.filters-body
-{
-  justify-content: space-evenly;
+  display: inline-block; 
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .filters__select {
   max-width:none; 
 }
 
-.employee-info-table {
-  background-color: #ffffff;
+.tag {
+  margin-top: 10px;
 }
 
-.employee-info-table tr.table-column {
-  padding-bottom: 15px;
-  background-color: #ffffff;
-
+.margin-top--md {
+  margin-top: 10px;
 }
 
-.employee-info-table tr.column-value {
-  padding-top: 0px;
-  background-color: #ffffff;
+.bg--active {
+  background-color: #dae7b8;
+}
+.color--active {
+  color: #526D0D;
+}
+.border--active {
+  border: 1px solid #B3CC6E;
+}
+
+.bg--inactive {
+  background-color: #FFDEDE;
+}
+
+.color--inactive {
+  color: #BB0B0B;
+}
+.border--inactive {
+  border: 1px solid #FF0000;
 }
 
 .employee-detail {
@@ -107,6 +94,6 @@ a {
   color: #999999;
 }
 
-.qualifications tr.table-column {
-  border-bottom: 1px solid #999999;
+.table--employee-info td {
+  background-color: #FFFFFF;
 }
