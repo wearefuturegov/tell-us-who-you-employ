@@ -6,6 +6,8 @@ class Employee < ApplicationRecord
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
 
   belongs_to :service
+
+  default_scope { where(marked_for_deletion: nil) }
   
   include PgSearch::Model
   pg_search_scope :search, 
@@ -28,6 +30,14 @@ class Employee < ApplicationRecord
       :service
     ]
   )
+
+  def soft_delete
+    update(marked_for_deletion: Time.current, currently_employed: false, employed_to: Time.current)
+  end
+
+  def restore
+    update(marked_for_deletion: nil)
+  end
 
   scope :job_title, -> (job_title) {where(job_title: job_title)}
   

@@ -168,7 +168,7 @@
 
           <% if @employee.has_first_aid_training %>
             <tr class="table-column">
-              <td>First aid training</td>
+              <td>Paediatric First Aid training</td>
               <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
@@ -248,6 +248,24 @@
             </h2>
         </button>
         <div class="collapsible__content">
+          <ul>
+            <% @employee.versions.each do |version| %>
+              <li>
+                Changed on: <%= version.created_at.strftime("%Y-%m-%d %H:%M:%S") %><br>
+                Changed by: <%= version.whodunnit || "Unknown" %><br> <!-- Directly display whodunnit -->
+                <% if version.changeset.present? %>
+                  Changes:
+                  <ul>
+                    <% version.changeset.each do |key, value| %>
+                      <li>
+                        <%= key.humanize %>: <%= value[0] %> -> <%= value[1] %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
 
         </div>
     </div>

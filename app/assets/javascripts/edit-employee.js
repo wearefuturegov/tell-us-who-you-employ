@@ -25,7 +25,7 @@ document.addEventListener('turbolinks:load', function() {
         <select name="employee[skills][${index}][type]" class="form-control field__input">
           <option value="">Select skill</option>
           <option value="dbs">DBS check</option>
-          <option value="first_aid">First aid training</option>
+          <option value="first_aid">Paediatric First Aid training</option>
           <option value="food_hygiene">Food Hygiene Qualification</option>
           <option value="senco">SENCO training</option>
           <option value="senco_early_years">Early Years Level 3 SENCO</option>

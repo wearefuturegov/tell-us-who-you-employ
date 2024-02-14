@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2024_02_12_121424) do
     t.date "senco_early_years_achieved_on"
     t.boolean "has_safeguarding"
     t.date "safeguarding_achieved_on"
+    t.datetime "marked_for_deletion"
   end
 
   create_table "services", force: :cascade do |t|

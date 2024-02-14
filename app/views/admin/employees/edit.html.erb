@@ -176,7 +176,7 @@
 
           <% if @employee.has_first_aid_training %>
             <tr data-section="firstaid">
-              <td>First aid training</td>
+              <td>Paediatric First Aid training</td>
               <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
               <td>
               <%= link_to "#", class: "remove-attribute", data: { section: "firstaid" } do %>

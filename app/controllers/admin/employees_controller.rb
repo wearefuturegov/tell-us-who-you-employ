@@ -61,8 +61,8 @@ class Admin::EmployeesController < Admin::BaseController
 
   def destroy
     @employee = Employee.find(params[:id])
-    @employee.destroy
-    redirect_to admin_employees_path, notice: 'Employee was successfully destroyed.'
+    @employee.soft_delete
+    redirect_to admin_employees_path, notice: 'Employee was successfully deleted.'
   end
 
   
