@@ -59,4 +59,8 @@ module ApplicationHelper
       "EYC"
     ]
   end
+
+  def body_class
+    'flow-content' unless controller_path.start_with?('admin/')
+  end
 end

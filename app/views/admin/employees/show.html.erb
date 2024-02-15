@@ -18,7 +18,7 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="employee-info-table">
+        <table class="table--employee-info">
 
             <tr class="table-column">
               <td><strong>First name</strong></td>
@@ -56,7 +56,7 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="employee-info-table">
+        <table class="table--employee-info">
 
             <tr class="table-column">
               <td><strong>Current Provider</strong></td>
@@ -81,7 +81,7 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="employee-info-table">
+        <table class="table--employee-info">
             <tr class="table-column">
               <td><strong>Job title</strong></td>
             </tr>
@@ -100,7 +100,7 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="employee-info-table">
+        <table class="table--employee-info">
           <tr class="table-column">
             <td><strong>Current roles</strong></td>
           </tr>
@@ -125,7 +125,7 @@
       </button>
       <div class="collapsible__content">
 
-        <table class="employee-info-table qualifications">
+        <table class="table--employee-info">
           <tr class="table-column">
             <th>Qualification</th>
             <th>Date Achieved</th>
@@ -193,7 +193,7 @@
         </button>
         <div class="collapsible__content">
           <p>The records status shows whether they are actively in their current role or not.</p>
-          <div class="tag tag <%= @employee.currently_employed? ? 'active' : 'inactive' %>">
+          <div class="tag margin-top--md <%= @employee.currently_employed? ? 'bg--active color--active border--active' : 'bg--inactive color--inactive border--inactive' %>">
             <%= @employee.currently_employed? ? 'Active' : 'Inactive' %>
           </div>
         </div>

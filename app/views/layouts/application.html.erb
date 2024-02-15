@@ -13,7 +13,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="<%= body_class %>">
 
     <header class="site-header">
       <div class="container site-header__inner">
@@ -41,8 +41,7 @@
           <% end %>
           <%= yield :header %>
         </header>
-
-        <%= yield %>
+          <%= yield %>
       </div>
     </div>
 

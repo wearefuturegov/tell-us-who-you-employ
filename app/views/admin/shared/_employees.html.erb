@@ -61,7 +61,7 @@
         <%= "" %>
       <% end %>
       </td>
-      <td class="tag tag <%= employee.currently_employed? ? 'active' : 'inactive' %>">
+      <td class="tag margin-top--md <%= employee.currently_employed? ? 'bg--active color--active border--active' : 'bg--inactive color--inactive border--inactive' %>">
         <%= employee.currently_employed? ? 'Active' : 'Inactive' %>
       </td>
     </tr>
