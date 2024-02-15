@@ -18,8 +18,9 @@ class Employee < ApplicationRecord
     }
 
   filterrific(
-    default_filter_params: {},
+    default_filter_params: {sorted_by: 'forenames_asc'},
     available_filters: [
+      :sorted_by,
       :search,
       :job_title,
       :status,
@@ -47,6 +48,53 @@ class Employee < ApplicationRecord
   scope :service, -> (service_id) {
     where(service_id: service_id) if service_id
   }
+
+  scope :sorted_by, -> (sort_option) {
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    case sort_option.to_s
+    when /^forenames/
+      order("employees.forenames #{direction}")
+    when /^surname/
+      order("employees.surname #{direction}")
+    when /^job_title/
+      order("employees.job_title #{direction}")
+    when /^service_name/
+      joins(:service).order("services.name #{direction}")
+    when /^qualifications/
+      order("employees.qualifications #{direction}")
+    when /^status/
+      order("employees.currently_employed #{direction}")
+    when /^roles/
+      order_by_roles(direction)
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+
+  def self.options_for_sorted_by(include_roles: false)
+    options = 
+    [
+      ['Forenames (a-z)', 'forenames_asc'],
+      ['Forenames (z-a)', 'forenames_desc'],
+      ['Surname (a-z)', 'surname_asc'],
+      ['Surname (z-a)', 'surname_desc'],
+      ['Job Title (a-z)', 'job_title_asc'],
+      ['Job Title (z-a)', 'job_title_desc'],
+    ]
+    if include_roles
+      options << ['Roles (least to most)', 'roles_asc']
+      options << ['Roles (most to least)', 'roles_desc']
+    else
+      options << ['Service (a-z)', 'service_name_asc']
+      options << ['Service (z-a)', 'service_name_desc']
+    end
+    
+    options << ['Qualifications (a-z)', 'qualifications_asc']
+    options << ['Qualifications (z-a)', 'qualifications_desc']
+    options << ['Status (a-z)', 'status_asc']
+    options << ['Status (z-a)', 'status_desc']
+      options
+    end
 
   def self.options_for_status 
     [

@@ -1,31 +1,31 @@
 <table class="table-holder">
   <thead>
     <tr>
-      <th>
-      <%= sortable_table_column 'First names', :forenames, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
-      </th>
-      <th>
-      <%= sortable_table_column 'Last name', :surname, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
-      </th>
-      <th>
-      <%= sortable_table_column 'Job title', :job_title, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
-      </th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'forenames_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'forenames_desc' %>>
+      First names
+    </th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'surname_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'surname_desc' %>>
+        Last name</th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'job_title_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'job_title_desc' %>>
+        Job title</th>
       <% if local_assigns[:show_employee_specific_table] %>
-      <th>
-        <%= sortable_table_column 'Provider', :service_name, params %>
-      </th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'service_name_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'service_name_desc' %>>
+        Provider</th>
+      <% elsif local_assigns[:show_service_specific_table] %>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'roles_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'roles_desc' %>>
+        Roles</th>
       <% end %>
-      <% if local_assigns[:show_service_specific_table] %>
-      <th>
-        <%= sortable_table_column 'Roles', :roles, params, service_id: local_assigns[:service_id], show_service_specific_table: true %>
-      </th>
-      <% end %>
-      <th>
-      <%= sortable_table_column 'Qualifications', :qualifications, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
-      </th>
-      <th>
-      <%= sortable_table_column 'Status', :status, params, service_id: local_assigns[:service_id], show_service_specific_table: local_assigns[:show_service_specific_table] %>
-      </th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'qualifications_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'qualifications_desc' %>>
+        Qualifications</th>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'status_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'status_desc' %>>
+        Status</th>
     </tr>
   </thead>
   <tbody>

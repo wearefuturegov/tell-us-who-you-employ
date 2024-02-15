@@ -1,8 +1,6 @@
 require 'service'
 
 class Admin::ServicesController < Admin::BaseController
-include Sortable
-
   def index
     @filterrific_params = params[:filterrific] || {}
     @services = Service.includes(:employees)
@@ -10,18 +8,17 @@ include Sortable
       Service,
       @filterrific_params,
       select_options: {
+        sorted_by: Service.options_for_sorted_by,
         service: Service.options_for_service,
         location: Service.options_for_location
       },
-      persistence_id: 'false',
+      persistence_id: false,
     ) or return
-    @services = @filterrific.find
-    @services = apply_sort(@services, params, 'name', %w[name employees_count full_address])
-    @services = @services.page(params[:page]).per(20)
-    
+    @services = @filterrific.find.page(params[:page]).per(20)
   end
 
   def show
+    @include_roles = true
     @service = Service.find(params[:id])
     @senco = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated SENCO"]).first
     @safeguarding_lead = @service.employees.where("roles @> ARRAY[?]::varchar[]", ["Designated Safeguarding Lead"]).first
@@ -33,6 +30,7 @@ include Sortable
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
+        sorted_by: Employee.options_for_sorted_by(include_roles: @include_roles),
       },
       available_filters: [
         :job_title,
@@ -40,12 +38,11 @@ include Sortable
         :qualifications,
         :service,
         :search,
+        :sorted_by,
       ],
-      persistence_id: 'false',
+      persistence_id: false,
     ) or return
-    @employees = @filterrific.find
-    @employees = apply_sort(@employees, params, 'forenames', %w[forenames surname job_title roles qualifications status])
-    @employees = @employees.page(params[:page]).per(20)
+    @employees = @filterrific.find.page(params[:page]).per(20)
   end
   
 end

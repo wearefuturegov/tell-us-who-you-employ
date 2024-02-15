@@ -3,15 +3,17 @@
 <table class="table-holder">
   <thead>
     <tr>
-
-      <th>
-      <%= sortable_table_column 'Provider', :name, params, show_service_specific_table: true %>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'name_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'name_desc' %>>
+        Provider
       </th>
-      <th>
-      <%= sortable_table_column 'Number of Staff', :employees_count, params, show_service_specific_table: true %>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'employees_count_desc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'employees_count_asc' %>>
+        Number of Staff
       </th>
-      <th>
-      <%= sortable_table_column 'Address', :full_address, params, show_service_specific_table: true %>
+    <th <%= "aria-sort=\"ascending\"" if @filterrific.sorted_by == 'location_asc' %> 
+        <%= "aria-sort=\"descending\"" if @filterrific.sorted_by == 'location_desc' %>>
+        Address
       </th>
     </tr>
   </thead>

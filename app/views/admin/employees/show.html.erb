@@ -1,7 +1,7 @@
 <header class="page-header">
   <%= link_to "Back", admin_employees_path, class: "go-back" %>
   <p><strong>
-  <%= "#{@employee.job_title}, #{service_name_by_id(@employee.service_id)}" %>
+  <%= "#{@employee.job_title}, #{@employee.service.name}" %>
   </strong></p>
   <p class="employee-detail">
     <%= "Record #{@employee.id}"%>
@@ -62,7 +62,7 @@
               <td><strong>Current Provider</strong></td>
             </tr>
             <tr class="column-value">
-              <td><%= service_name_by_id(@employee.service_id) %></td>
+              <td><%= @employee.service.name %></td>
             </tr>
             <tr class="table-column">
               <td><strong>Employed from</strong></td>

@@ -18,13 +18,30 @@ include PgSearch::Model
     }
 
   filterrific(
-    default_filter_params: {},
+    default_filter_params: {sorted_by: 'name_asc'},
     available_filters: [
+      :sorted_by,
       :search,
       :service,
       :location
     ]
   )
+
+  scope :sorted_by, -> (sort_option) {
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    case sort_option.to_s
+    when /^name/
+      order("services.name #{direction}")
+    when /^location/
+      order_by_full_address(direction)
+    when /^employees_count/
+      left_joins(:employees)
+        .group("services.id")
+        .order("COUNT(employees.id) #{direction}")
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
 
   scope :service, -> (service) {where(name: service)}
 
@@ -34,6 +51,17 @@ include PgSearch::Model
 
   def full_address
     [location_name, address_1, city, postal_code].compact.join(', ')
+  end
+
+  def self.options_for_sorted_by
+    [
+      ['Name (a-z)', 'name_asc'],
+      ['Name (z-a)', 'name_desc'],
+      ['Location (a-z)', 'location_asc'],
+      ['Location (z-a)', 'location_desc'],
+      ['Employees (most to least)', 'employees_count_desc'],
+      ['Employees (least to most)', 'employees_count_asc']
+    ]
   end
 
   def self.options_for_service

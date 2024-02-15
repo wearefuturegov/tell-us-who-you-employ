@@ -24,7 +24,9 @@
 
   <details class="filters <%= "filters-services" if show_service_specific_filters %>" <%= "open" if params[:filterrific] %>>
     <summary class="filters__control" aria-expanded="false">Filter</summary>
-    <div class="filters__body">
+    <div class="filters__body">      
+      <%= f.label :sorted_by, "Sort", class: "visually-hidden" %>
+      <%= f.select :sorted_by, @filterrific.select_options[:sorted_by], {}, { class: "filters__select", data: { autosubmit: true }, disabled: params.dig(:filterrific, :search).present? } %>     
       <% if show_service_specific_filters %>
       <%= f.label :service, "Provider", class: "visually-hidden" %>
       <%= f.select :service, @filterrific.select_options[:service], {prompt: 'Filter by Provider'}, { class: "filters__select"} %>
@@ -33,7 +35,6 @@
       <% elsif show_employee_specific_filters %>
       <%= f.label :job_title, "Job title", class: "visually-hidden" %>
       <%= f.select :job_title, @filterrific.select_options[:job_title], {prompt: 'Filter by Role'}, { class: "filters__select"} %>
-
       <%= f.label :qualifications, "Qualification", class: "visually-hidden" %>
       <%= f.select :qualifications, @filterrific.select_options[:qualifications], {prompt: 'Filter by Qualification'}, { class: "filters__select"} %>
         <% if show_provider_filter %>
@@ -44,5 +45,14 @@
       <%= f.select :status, @filterrific.select_options[:status], {prompt: 'Filter by Status'}, { class: "filters__select"} %>
       <% end %>
     </div>
+    <br>
+  <div>
+    <button type="submit" id="search-button" class="button button--small">Apply filters</button>
+    <% if params[:filterrific].present? %>
+      <%= link_to reset_filterrific_url, class: "button button--small button--secondary", id: "reset_filters_link" do %>
+      Clear filters
+      <% end %>
+    <% end %>
+  </div>
   </details>
 <% end %>
