@@ -13,5 +13,10 @@ Rails.application.routes.draw do
   resources :employees, except: :edit
 
   post "finish", to: "flow#finish", as: "finish"
-  
+
+  namespace :admin do
+    resources :employees
+    resources :services
+  end
+
 end

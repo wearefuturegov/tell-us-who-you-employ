@@ -26,10 +26,16 @@ $max-width: 1000px;
 @import "bucks-fis-design-library/errors";
 @import "bucks-fis-design-library/confirmation";
 @import "bucks-fis-design-library/radios";
+@import "bucks-fis-design-library/tags";
+@import "bucks-fis-design-library/mini-search";
+@import "bucks-fis-design-library/filters";
+@import "bucks-fis-design-library/collapsibles";
+@import "bucks-fis-design-library/shortcut-nav";
 
 @import "breadcrumbs";
 // @import "radio";
 @import "page-title";
+@import "flow";
 
 .table-action {
   margin-left: 10px;
@@ -40,9 +46,65 @@ $max-width: 1000px;
   overflow-x: auto;
 }
 
-a {
-  text-decoration: underline;
-  &:hover {
-    text-decoration: none;
-  }
+.sorting-icon {
+  width: 10px;
+  margin-left: 5px;
+  vertical-align: middle;
+  display: inline-block; 
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.filters__select {
+  max-width:none; 
+}
+
+.tag {
+  margin-top: 10px;
+}
+
+.margin-top--md {
+  margin-top: 10px;
+}
+
+.bg--active {
+  background-color: #dae7b8;
+}
+.color--active {
+  color: #526D0D;
+}
+.border--active {
+  border: 1px solid #B3CC6E;
+}
+
+.bg--inactive {
+  background-color: #FFDEDE;
+}
+
+.color--inactive {
+  color: #BB0B0B;
+}
+.border--inactive {
+  border: 1px solid #FF0000;
+}
+
+.employee-detail {
+  border-bottom: 1px solid #999999;
+  padding-bottom: 40px;
+  color: #999999;
+}
+
+.table--employee-info td {
+  background-color: #FFFFFF;
+}
+
+.filters-services {
+  display: inline;
+  max-width: 75%;
+}
+
+.shortcuts__item.current {
+  background-color: #f5f5f5;
+  padding: 10px;
 }
