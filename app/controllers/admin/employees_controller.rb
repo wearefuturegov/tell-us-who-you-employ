@@ -1,6 +1,4 @@
 class Admin::EmployeesController < Admin::BaseController
-  before_action :require_admin!, only: [:index, :show]
-  before_action :require_admin_users!, only: [:edit, :update, :destroy]
   before_action :set_employee, only: [:update]
   before_action :set_services, only: [:edit, :update]
 

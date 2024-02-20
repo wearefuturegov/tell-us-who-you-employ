@@ -15,12 +15,17 @@
 
   <body>
 
-    <header class="site-header">
+    <header class="site-header  <%= "site-header--logged-out" unless user_signed_in? %>">
       <div class="container site-header__inner">
         <div class="site-header__masthead">
           <%= link_to image_tag("logo.svg", alt: "Buckinghamshire Council", class: "site-header__logo"), "https://buckinghamshire.gov.uk", class: "site-header__logo-link" %>
         </div>
-        <!-- <div class="site-header__actions"></div> -->
+        <% if admin? %>
+        <div class="site-header__actions">
+            <%= link_to user_display_name, user_outpost_profile, class: "site-header__username"%>
+            <%= link_to "Sign out", logout_path, method: :post, class: "site-header__link" %>
+        </div>
+        <% end %>
         <nav class="site-header__service-name-holder">
           <%= link_to "Tell us who you employ", root_path, class: "site-header__service-name"%>
           <span class="site-header__phase-tag">Beta</span>
@@ -57,6 +62,7 @@
           <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/community-and-safety/modern-slavery-statement/">Modern slavery statement</a>
           <a class="site-footer__link" href="https://jobs.buckinghamshire.gov.uk/">Jobs</a>
           <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/coronavirus/martin-tett-coronavirus-update/subscribe-our-newsletter/">Newsletter</a>
+          <%= link_to 'Admin', admin_start_path, class: 'site-footer__link' %>
         </nav>
 
         <p class="site-footer__license">
