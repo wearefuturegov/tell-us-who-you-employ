@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_12_121424) do
+ActiveRecord::Schema.define(version: 2024_02_12_151639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 2024_02_12_121424) do
     t.string "job_title"
     t.date "employed_from"
     t.date "employed_to"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "currently_employed"
     t.integer "service_id"
     t.integer "organisation_id"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2024_02_12_121424) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at", precision: 6
+    t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

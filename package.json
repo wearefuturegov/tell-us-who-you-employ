@@ -1,6 +1,11 @@
 {
   "name": "tell-us-who-you-employ",
   "private": true,
+  "packageManager": "yarn@1.22.19",
+  "engines": {
+    "node": "20.9.0",
+    "yarn": "1.22.19"
+  },
   "dependencies": {
     "bucks-fis-design-library": "^1.0.8"
   }
