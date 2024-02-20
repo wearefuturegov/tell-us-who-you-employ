@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   post "finish", to: "flow#finish", as: "finish"
 
+  post "logout", to: "sessions#destroy", as: "logout" 
+
   namespace :admin do
     resources :employees
     resources :services
