@@ -1,0 +1,18 @@
+<header class="actions">
+  <div class="mini-search">
+    <div class="mini-search__form">
+      <%= f.label :search, "Search query", class: "visually-hidden" %>
+      <%= f.text_field :search, value: params.dig(:filterrific, :search), class: "mini-search__input" %>
+      <% if params.dig(:filterrific, :search).present? %>
+        <%= link_to image_tag("clear.svg", alt: "Clear search"), reset_filterrific_url, class: "mini-search__submit" %>
+      <% else %>
+        <button class="mini-search__submit"  id="search-button">
+          <%= image_tag "search.svg", alt: "Submit search" %>
+        </button>
+      <% end %>
+    </div>
+    <% if params[:filterrific].present? %>
+      <p class="mini-search__count"><%= matches %> matches</p>
+    <% end %>
+  </div>
+</header>

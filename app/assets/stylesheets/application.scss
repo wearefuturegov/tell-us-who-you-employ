@@ -35,79 +35,24 @@ $max-width: 1000px;
 @import "breadcrumbs";
 @import "page-title";
 @import "edit";
+@import "sort";
+@import "tables";
+
+// @TODO: need to genericise this
+@import "employee-edit";
 
 // temporarily removed so that status colors align with Outpost
-@import "tags";
+// @import "tags";
 
 .table-action {
   margin-left: 10px;
 }
 
-.table-holder {
-  width: 100%;
-  overflow-x: auto;
-}
-
-a {
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.sorting-icon {
-  width: 10px;
-  margin-left: 5px;
-  vertical-align: middle;
-}
-
-.add_record_button {
-  float: right;
-}
-
-.filters-body {
-  justify-content: space-evenly;
-}
-
-.filters__select {
-  max-width: none;
-}
-
-.employee-info-table {
-  border-collapse: separate;
-  border-spacing: 0 15px;
-}
-.employee-info-table tr.table-column {
-  background-color: #ffffff;
-}
-
-.employee-info-table tr {
-  background-color: #ffffff;
-}
-
-.employee-info-table td {
-  background-color: #ffffff;
-}
-
-.employee-detail {
-  border-bottom: 1px solid #999999;
-  padding-bottom: 40px;
-  color: #999999;
-}
-
-.edit-actions {
-  float: right;
-}
-
+// @TODO document where these are used
 .qualifications tr.table-column {
   border-bottom: 1px solid #999999;
 }
 
 .skills tr.table-column {
   border-bottom: 1px solid #999999;
-}
-
-.filters-services {
-  display: inline;
-  max-width: 50%;
 }

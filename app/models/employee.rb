@@ -1,13 +1,30 @@
 class Employee < ApplicationRecord
   has_paper_trail
 
+  # ----------
+  # validations
+  # ----------
   attr_accessor :skip_validations
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
 
+
+  # ----------
+  # associations
+  # ----------
   belongs_to :service
 
-  default_scope { where(marked_for_deletion: nil) }
+
+  # ----------
+  # callbacks
+  # ----------
+
+
+
+  # ----------
+  # search
+  # ----------
+
   
   include PgSearch::Model
   pg_search_scope :search, 
@@ -20,26 +37,42 @@ class Employee < ApplicationRecord
       tsearch: { prefix: true }
     }
 
-  filterrific(
-    default_filter_params: {},
-    available_filters: [
-      :search,
-      :job_title,
-      :status,
-      :qualifications,
-      :service
-    ]
-  )
 
-  def soft_delete
-    update(marked_for_deletion: Time.current, currently_employed: false, employed_to: Time.current)
-  end
 
-  def restore
-    update(marked_for_deletion: nil)
-  end
+  # ----------
+  # scopes
+  # ----------
+  default_scope { where(marked_for_deletion: nil) }
 
-  scope :job_title, -> (job_title) {where(job_title: job_title)}
+  scope :sorted_by, ->(sort_option) {
+    direction = /desc$/.match?(sort_option) ? "desc" : "asc"
+    employees = Employee.arel_table
+    case sort_option.to_s
+    when /^recent/
+      order(employees[:updated_at].send('asc')) 
+    when /^forenames_/
+      order(employees[:forenames].lower.send(direction))
+    when /^surname_/
+      order(employees[:surname].lower.send(direction))
+    when /^job_title_/
+      # order(employees[:job_title].lower.send(direction))
+    when /^service_/
+      # order(employees[:service].lower.send(direction))
+    when /^qualifications_/
+      # order(employees[:qualifications].lower.send(direction))
+    when /^status_/
+      # order(employees[:currently_employed].send(direction))
+    when /^created_at_/
+      order(employees[:created_at].send(direction)) 
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+
+
+  scope :job_title, -> (job_title) {
+    where(job_title: job_title)
+  }
   
   scope :status, -> (status) {
     case status
@@ -51,6 +84,7 @@ class Employee < ApplicationRecord
       raise(ArgumentError, "Invalid status: #{status}")
     end
   }
+
   scope :qualifications, -> (selected_qualifications) {
     where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
   }
@@ -58,6 +92,41 @@ class Employee < ApplicationRecord
   scope :service, -> (service_id) {
     where(service_id: service_id) if service_id
   }
+
+
+  # ----------
+  # filtering
+  # ----------
+
+  filterrific(
+    default_filter_params: { sorted_by: "recent" },
+    available_filters: [
+      :job_title,
+      :status,
+      :qualifications,
+      :service,
+      :search,
+      :sorted_by
+    ]
+  )
+
+
+
+  # ----------
+  # filter options
+  # ----------
+
+  def self.order_by_roles(direction = 'asc')
+    sort_direction = ['asc', 'desc'].include?(direction.downcase) ? direction.downcase : 'asc'
+    order_query = Arel.sql("CASE WHEN array_length(roles, 1) IS NULL THEN 0 ELSE array_length(roles, 1) END #{sort_direction}")
+    order(order_query)
+  end
+
+  def self.options_for_service()
+    Employee.distinct.pluck(:service_id).map do |service_id|
+      [Service.find(service_id).name, service_id]
+    end
+  end
 
   def self.options_for_status 
     [
@@ -104,18 +173,49 @@ class Employee < ApplicationRecord
     ]
   end
 
-  def self.options_for_service()
-    Employee.distinct.pluck(:service_id).map do |service_id|
-      [Service.find(service_id).name, service_id]
-    end
+  def self.options_for_sorted_by
+    [
+      ["Recently updated", "recent"],
+      ["Forename A-Z", "forenames_asc"],
+      ["Forename Z-A", "forenames_desc"],
+      ["Surname A-Z", "surname_asc"],
+      ["Surname Z-A", "surname_desc"],
+      ["Job title A-Z", "job_title_asc"],
+      ["Job title Z-A", "job_title_desc"],
+      # ["Provider A-Z", "service_asc"],
+      # ["Provider Z-A", "service_desc"],
+      # ["Qualifications A-Z", "qualifications_asc"],
+      # ["Qualifications Z-A", "qualifications_desc"],
+      # ["Status A-Z", "status_asc"],
+      # ["Status Z-A", "status_desc"],
+      ["Oldest added", "created_at_asc"],
+      ["Newest added", "created_at_desc"],
+    ]
   end
 
-  
-  def self.order_by_roles(direction = 'asc')
-    sort_direction = ['asc', 'desc'].include?(direction.downcase) ? direction.downcase : 'asc'
-    order_query = Arel.sql("CASE WHEN array_length(roles, 1) IS NULL THEN 0 ELSE array_length(roles, 1) END #{sort_direction}")
-    order(order_query)
+
+
+
+
+  # ----------
+  # deletion
+  # ----------
+
+  def soft_delete
+    update(marked_for_deletion: Time.current, currently_employed: false, employed_to: Time.current)
   end
+
+  def restore
+    update(marked_for_deletion: nil)
+  end
+
+
+
+  # ----------
+  # Error checking
+  # ----------
+
+
 
   def employed_to_or_currently_employed
     unless currently_employed || employed_to

@@ -1,26 +1,30 @@
-document.addEventListener('turbolinks:load', (event) => {
-  document.querySelectorAll('.remove-attribute').forEach(function(button) {
-    button.addEventListener('click', function(event) {
+document.addEventListener("turbolinks:load", (event) => {
+  document.querySelectorAll(".remove-attribute").forEach(function (button) {
+    button.addEventListener("click", function (event) {
       event.preventDefault();
       var section = this.dataset.section;
-      console.log('Attempting to remove section:', section);
+      console.log("Attempting to remove section:", section);
       var targetRow = document.querySelector(`tr[data-section="${section}"]`);
       if (targetRow) {
-        targetRow.style.display = 'none';
-        document.querySelector(`input[name='employee[remove_${section}]']`).value = 'true';
+        targetRow.style.display = "none";
+        document.querySelector(
+          `input[name='employee[remove_${section}]']`
+        ).value = "true";
       } else {
-        console.log('No target row found for section:', section);
+        console.log("No target row found for section:", section);
       }
     });
   });
 });
 
-document.addEventListener('turbolinks:load', function() {
-  document.getElementById('add-skill').addEventListener('click', function() {
-    const container = document.getElementById('skills-container');
-    const index = container.children.length;
+document.addEventListener("turbolinks:load", function () {
+  const addSkill = document.getElementById("add-skill");
+  if (addSkill) {
+    addSkill.addEventListener("click", function () {
+      const container = document.getElementById("skills-container");
+      const index = container.children.length;
 
-    const skillSelect = `
+      const skillSelect = `
       <div class="field">
         <select name="employee[skills][${index}][type]" class="form-control field__input">
           <option value="">Select skill</option>
@@ -34,25 +38,34 @@ document.addEventListener('turbolinks:load', function() {
         <input type="date" name="employee[skills][${index}][date]" class="form-control field__input">
       </div>`;
 
-    container.insertAdjacentHTML('beforeend', skillSelect);
-  });
+      container.insertAdjacentHTML("beforeend", skillSelect);
+    });
+  }
 });
 
+document.addEventListener("turbolinks:load", function () {
+  var currentlyEmployedCheckbox = document.querySelector(
+    '.checkbox__input[name="employee[currently_employed]"]'
+  );
+  var employedToDateField = document.querySelector(
+    '.field__input[name="employee[employed_to]"]'
+  );
 
-document.addEventListener('turbolinks:load', function() {
-  var currentlyEmployedCheckbox = document.querySelector('.checkbox__input[name="employee[currently_employed]"]');
-  var employedToDateField = document.querySelector('.field__input[name="employee[employed_to]"]');
-
-  function toggleEmployedToDateField() {
-    if (currentlyEmployedCheckbox.checked) {
-      employedToDateField.value = '';
-      employedToDateField.disabled = true;
-    } else {
-      employedToDateField.disabled = false;
+  if (currentlyEmployedCheckbox && employedToDateField) {
+    function toggleEmployedToDateField() {
+      if (currentlyEmployedCheckbox.checked) {
+        employedToDateField.value = "";
+        employedToDateField.disabled = true;
+      } else {
+        employedToDateField.disabled = false;
+      }
     }
+
+    toggleEmployedToDateField();
+
+    currentlyEmployedCheckbox.addEventListener(
+      "change",
+      toggleEmployedToDateField
+    );
   }
-
-  toggleEmployedToDateField();
-
-  currentlyEmployedCheckbox.addEventListener('change', toggleEmployedToDateField);
 });

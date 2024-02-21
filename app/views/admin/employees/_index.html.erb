@@ -1,0 +1,8 @@
+<% if @employees.present? %>
+  <div class="table-holder">
+    <%= render partial: 'admin/employees/list', locals: { employees: @employees } %>
+  </div>
+  <%= paginate @employees %>
+<% else %>
+  <p class="no-results no-results--big">No employees found</p>
+<% end %>

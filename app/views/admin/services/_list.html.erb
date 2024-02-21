@@ -1,0 +1,29 @@
+<table class="table test-services">
+  <thead>
+    <tr>
+      <th class="visually-hidden">ID</th>
+      <%= sort_column_by("Provider", "service") %>
+      <th>Number of staff</th>
+      <th class="visually-hidden">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @services.each do |s| %>
+      <tr>
+        <td><span class="table__small"><%= s.id %></span></td>
+        <td>
+          <strong><%= link_to s.name, admin_service_path(s) %></strong>
+        </td>
+        <td>
+          <%= s.employees.count %>
+        </td>
+        <td>
+          <a href="<%= ENV["OAUTH_SERVER"] %>/admin/services/<%= s.id %>">Outpost service page</a>
+        </td>
+        <td>
+          <%= link_to "View all records", admin_service_path(s) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

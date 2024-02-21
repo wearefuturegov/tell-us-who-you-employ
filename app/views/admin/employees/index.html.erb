@@ -1,10 +1,4 @@
 <h1 class="page-header__title">Provider employee details</h1>
 <%= render "admin/shared/shortcut-nav" %>
-<%= render "admin/shared/filters", show_employee_specific_filters: true, show_provider_filter: true, show_service_specific_filters: false %>
-
-<% if @employees.present? %>
-  <%= render 'admin/shared/employees', show_employee_specific_table: true, show_service_specific_table: false %>
-  <%= paginate @employees %>
-<% else %>
-  <p class="no-results no-results--big">No employees found</p>
-<% end %>
+<%= render "filters" %>
+<%= render partial: 'index', locals: { employees: @employees } %>
