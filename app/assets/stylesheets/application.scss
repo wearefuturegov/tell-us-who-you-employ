@@ -34,6 +34,10 @@ $max-width: 1000px;
 
 @import "breadcrumbs";
 @import "page-title";
+@import "edit";
+
+// temporarily removed so that status colors align with Outpost
+@import "tags";
 
 .table-action {
   margin-left: 10px;
@@ -55,21 +59,6 @@ a {
   width: 10px;
   margin-left: 5px;
   vertical-align: middle;
-}
-
-.tag {
-  margin-top: 10px;
-}
-.tag.active {
-  background-color: #dae7b8;
-  color: #526d0d;
-  border: 1px solid #b3cc6e;
-}
-
-.tag.inactive {
-  background-color: #ffdede;
-  color: #bb0b0b;
-  border: 1px solid #ff0000;
 }
 
 .add_record_button {

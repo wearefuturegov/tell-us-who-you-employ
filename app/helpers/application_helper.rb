@@ -1,12 +1,15 @@
 module ApplicationHelper
 
   def service_name_by_id(id)
-    result = session[:services].find{|s| s["id"] === id }
-    if result
-      result["name"]
-    else
-      id
+    if session[:services]
+      result = session[:services].find{|s| s["id"] === id }
+      return result["name"] if result
+    else 
+      result = Service.where(id: id).pluck(:name)
+      return result.join(' ')  if result
     end
+  
+    return id
   end
   
 
@@ -75,4 +78,18 @@ module ApplicationHelper
       safe_join([label, image_tag("#{arrow_direction}-arrow.svg", alt: "Sort by #{label}", class: "sorting-icon")], ' ')
     end
   end
+
+
+  def status_tag(status)
+    if status.downcase === "active"
+        "<span class='tag'>Active</span".html_safe
+    elsif status === "pending" || status === "proposed"
+        "<span class='tag tag--yellow'>Pending</span".html_safe
+    elsif status === "marked for deletion"
+        "<span class='tag tag--red'>Marked for deletion</span".html_safe
+    else
+        "<span class='tag tag--grey'>#{status.capitalize}</span".html_safe
+    end
+end
+
 end

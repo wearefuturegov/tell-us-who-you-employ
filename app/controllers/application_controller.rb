@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
-  helper_method :user_signed_in?, :admin?
+  helper_method :user_signed_in?, :admin?, :admin_users?
 
   private
 
