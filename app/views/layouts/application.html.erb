@@ -17,15 +17,8 @@
 
 
   <%= render "shared/header" %>
-  <%#= render "shared/navigation" %>
+  <%= render "shared/navigation" %>
 
-
-user signed in: <%= user_signed_in? %>
-<br />
-admin?: <%= admin? %>
-<br />
-
-    <%= debug session %>
 
     <%= yield :precontent %>
 

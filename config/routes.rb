@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   post "logout", to: "sessions#destroy", as: "logout" 
 
   namespace :admin do
-    get "login", to: "login#index", as: "start" #alias for the admin start page 
+    get "", to: "login#index", as: "start" #alias for the admin start page 
     resources :employees
     resources :services
   end
