@@ -6,7 +6,5 @@
   <%= render 'admin/shared/employees', show_employee_specific_table: true, show_service_specific_table: false %>
   <%= paginate @employees %>
 <% else %>
-  <div>
-    <h1>No employees found</td>
-  </div>
+  <p class="no-results no-results--big">No employees found</p>
 <% end %>

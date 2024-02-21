@@ -1,5 +1,10 @@
 <h1 class="page-header__title">Provider employee details</h1>
 <%= render "admin/shared/shortcut-nav" %>
 <%= render "admin/shared/filters", show_service_specific_filters: true, show_employee_specific_filters: false, show_provider_filter: false, employees: @employees %>
-<%= render "services" %>
-<%= paginate @services %>
+
+<% if @services.present? %>
+  <%= render "services" %>
+  <%= paginate @services %>
+<% else %>
+  <p class="no-results no-results--big">No services found</p>
+<% end %>

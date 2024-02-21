@@ -7,6 +7,6 @@
     "yarn": "1.22.19"
   },
   "dependencies": {
-    "bucks-fis-design-library": "^1.0.8"
+    "@outpost-platform/outpost-design-library": "^1.0.9"
   }
 }
