@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
   # services; if they haven't, they can't use this service
   def check_user_eligibility!
     if (session[:organisation_id].nil? || session[:services].empty?)
-      redirect_to root_path, alert: "It looks like you haven't listed any services yet, please list your services on our directory before you begin"
+      flash_alert = "It looks like you haven't listed any services yet, please list your services on our directory before you begin"
+      reset_session
+      redirect_to root_path, alert: flash_alert
       return
     end
   end 
