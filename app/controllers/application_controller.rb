@@ -31,21 +31,29 @@ class ApplicationController < ActionController::Base
   def check_user_eligibility!
     if (session[:organisation_id].nil? || session[:services].empty?)
       flash_alert = "It looks like you haven't listed any services yet, please list your services on our directory before you begin"
-      reset_session
+      reset_session unless admin?
       redirect_to root_path, alert: flash_alert
       return
     end
   end 
 
-  def require_admin!
-    unless admin?
-      redirect_to employees_path
+  def authenticate_admin!
+    unless admin? 
+      redirect_to admin_start_path
     end
   end
 
   def user_admins_only!
     unless admin_users? 
       redirect_to request.referer, notice: "You don't have permission to edit other users."
+    end
+  end
+
+  def redirect_if_admin_logged_in!
+    if admin?
+      redirect_to admin_employees_path
+    elsif user_signed_in?
+      redirect_to employees_path
     end
   end
 

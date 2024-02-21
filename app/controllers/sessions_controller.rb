@@ -53,6 +53,7 @@ class SessionsController < ApplicationController
       
       service = Service.find_or_initialize_by(id: service_data['id'])
       service.name = service_data['name']
+      service.save
   
     end
   end
