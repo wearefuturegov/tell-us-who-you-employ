@@ -1,7 +1,7 @@
 <header class="page-header">
   <%= link_to "Back", admin_employees_path, class: "go-back" %>
   <p><strong>
-  <%= "#{@employee.job_title}, #{service_name_by_id(@employee.service_id)}" %>
+  <%= "#{@employee.job_title}, #{@employee.service.name}" %>
   </strong></p>
   <div class="employee-detail">
     <p>
@@ -153,7 +153,7 @@
       </button>
       <div class="collapsible__content">
 
-        <table class="employee-info-table qualifications">
+        <table class="table--employee-info">
           <tr class="table-column">
             <th>Skill</th>
             <th>Date Achieved</th>
@@ -235,7 +235,7 @@
         </button>
         <div class="collapsible__content">
           <p>The records status shows whether they are actively in their current role or not.</p>
-          <div class="tag tag <%= @employee.currently_employed? ? 'active' : 'inactive' %>">
+          <div class="tag margin-top--md <%= @employee.currently_employed? ? 'bg--active color--active border--active' : 'bg--inactive color--inactive border--inactive' %>">
             <%= @employee.currently_employed? ? 'Active' : 'Inactive' %>
           </div>
         </div>
