@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-bucks-fis-design-library@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/bucks-fis-design-library/-/bucks-fis-design-library-1.0.8.tgz#cdbee19122deed3e57c0960bf4f8a904db59f0c5"
-  integrity sha512-UnJwgGnh5rVFCIJYn1GAtlNegIPi64JbXSeKBxNuIaKkdN2P5Vu3jdA4Tv8QEW/8OtdgmLh9ku0KOFlFfMAReA==
+"@outpost-platform/outpost-design-library@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@outpost-platform/outpost-design-library/-/outpost-design-library-1.0.9.tgz#78be6f075c3a62864135a2a7a569e177e75ab6f7"
+  integrity sha512-A1uFA5n5GrsDnjyeEYEpXLNE8D7tbKDNJnJfUqs29+rJIOaYXhTun8vASILK7CqeJy0d5rySivM1sofRY3bS5A==

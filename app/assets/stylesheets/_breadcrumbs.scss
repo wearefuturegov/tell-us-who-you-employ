@@ -10,6 +10,13 @@
     flex-wrap: wrap;
     flex-direction: row;
 
+    .a {
+        text-decoration: underline;
+        &:hover {
+          text-decoration: none;
+        }
+    }
+
     &__crumb{
         padding-left: 0px;
 

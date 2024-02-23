@@ -1,0 +1,53 @@
+.sort-col {
+  // &:hover {
+  // background-color: $grey6;
+  // }
+
+  form {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  button {
+    flex: 1;
+    border: 0;
+    background: none;
+    font-size: 1rem;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    font-weight: bold;
+
+    &:after {
+      content: "";
+      display: inline-block;
+      width: 19px;
+      height: 13px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-left: 13px;
+      flex-basis: 19px;
+    }
+  }
+
+  &.asc {
+    button {
+      &:after {
+        background-image: url(asset_path("up-arrow.svg"));
+      }
+    }
+  }
+  &.desc {
+    button {
+      &:after {
+        background-image: url(asset_path("down-arrow.svg"));
+      }
+    }
+  }
+}

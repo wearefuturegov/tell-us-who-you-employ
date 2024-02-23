@@ -9,9 +9,10 @@
 
 
 # if your using these values anywhere new see https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG NODE_VERSION=16.13.1
+ARG NODE_VERSION=20.9.0
 ARG RUBY_VERSION=3.0.3
-ARG BUNDLER_VERSION=2.3.10
+ARG BUNDLER_VERSION=2.3.25
+ARG YARN_VERSION=1.22.19
 ARG NODE_ENV=production
 ARG RAILS_ENV=production
 ARG RACK_ENV=production
@@ -57,7 +58,8 @@ RUN apk update && apk upgrade --no-cache && apk add --no-cache git \
   tzdata \
   gcompat \
   python3 \
-  postgresql-client
+  postgresql-client \
+  openssl 
 
 # install bundler version
 RUN gem install bundler:$BUNDLER_VERSION
@@ -136,7 +138,7 @@ FROM basics as production
 WORKDIR /usr/src/app
 COPY --chown=tellus:tellus . /usr/src/app
 COPY --chown=tellus:tellus --from=install /usr/build/app/node_modules /usr/src/app/node_modules
-RUN SECRET_KEY_BASE=dummyvalue bin/bundle exec rails assets:precompile
+RUN NODE_OPTIONS=--openssl-legacy-provider SECRET_KEY_BASE=dummyvalue bin/bundle exec rails assets:precompile
 RUN chown -R tellus:tellus /usr/src/app
 USER tellus
 CMD ["/usr/run/app/init.sh"]

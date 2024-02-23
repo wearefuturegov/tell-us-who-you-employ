@@ -1,13 +1,70 @@
+include Filterrific
+
 module ApplicationHelper
 
   def service_name_by_id(id)
-    result = session[:services].find{|s| s["id"] === id }
-    if result
-      result["name"]
-    else
-      id
+    if session[:services]
+      result = session[:services].find{|s| s["id"] === id }
+      return result["name"] if result
+    else 
+      result = Service.where(id: id).pluck(:name)
+      return result.join(' ')  if result
     end
+  
+    return id
   end
+
+
+  def get_current_sorted_by
+
+    if params[:filterrific].nil? || params[:filterrific]['sorted_by'].nil?
+      return nil
+    end
+
+    sorted_by = params[:filterrific]['sorted_by']
+    parts = sorted_by.split('_')
+    direction = parts.last
+    sorted_column = parts[0...-1].join('_')
+    return sorted_column
+  end
+
+  def get_current_sorted_direction
+
+    if params[:filterrific].nil? || params[:filterrific]['sorted_by'].nil?
+      return nil
+    end
+
+    sorted_by = params[:filterrific]['sorted_by']
+    parts = sorted_by.split('_')
+    direction = parts.last
+    sorted_column = parts[0...-1].join('_')
+    return direction
+  end
+
+  def is_sorted_by?(column)
+    sorted_column = get_current_sorted_by
+    return column == sorted_column 
+  end 
+
+  def sort_column_by(label, column)
+  
+    directions = { 'asc' => 'Ascending', 'desc' => 'Descending' }     
+    current_direction = get_current_sorted_direction if is_sorted_by?(column) 
+    new_direction = current_direction == 'asc' ? 'desc' : 'asc' 
+    
+    new_column = [column, new_direction].join('_')
+
+    render partial: 'admin/shared/sort_button', locals: { 
+      directions: directions,
+      current_direction: current_direction,
+      new_direction: new_direction,
+      label: label,
+      new_column: new_column 
+    }
+    
+  end 
+
+
   
 
   def accepted_job_titles 
@@ -60,19 +117,19 @@ module ApplicationHelper
     ]
   end
 
-  def sortable_table_column(label, column, sort_params, service_id: nil, show_service_specific_table: false)
-    is_current_sort = sort_params[:sort] == column.to_s
-    sort_direction = is_current_sort && sort_params[:direction] == 'asc' ? 'desc' : 'asc'
-    arrow_direction = is_current_sort && sort_params[:direction] == 'desc' ? 'up' : 'down'
-
-    path = if show_service_specific_table
-      service_id.present? ? admin_service_path(id: service_id, sort: column, direction: sort_direction) : admin_services_path(sort: column, direction: sort_direction)
+  def status_tag(status)
+    if status.downcase === "active"
+        "<span class='tag'>Active</span".html_safe
+    elsif status === "pending" || status === "proposed"
+        "<span class='tag tag--yellow'>Pending</span".html_safe
+    elsif status === "marked for deletion"
+        "<span class='tag tag--red'>Marked for deletion</span".html_safe
     else
-      admin_employees_path(sort: column, direction: sort_direction)
+        "<span class='tag tag--grey'>#{status.capitalize}</span".html_safe
     end
+  end
 
-    link_to path do
-      safe_join([label, image_tag("#{arrow_direction}-arrow.svg", alt: "Sort by #{label}", class: "sorting-icon")], ' ')
-    end
+  def body_class
+    'flow-content' unless controller_path.start_with?('admin/')
   end
 end

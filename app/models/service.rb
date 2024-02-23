@@ -1,40 +1,77 @@
 class Service < ApplicationRecord
 
+
+  # ----------
+  # validations
+  # ----------
+
+
+
+ # ----------
+  # associations
+  # ----------
   has_many :employees
-
-  attribute :location_name, :string
-  attribute :address_1, :string
-  attribute :city, :string
-  attribute :postal_code, :string
-
   attribute :name, :string
 
 
+  # ----------
+  # callbacks
+  # ----------
+
+
+
+  # ----------
+  # search
+  # ----------
+
 include PgSearch::Model
   pg_search_scope :search,
-    against: [:name, :location_name, :address_1, :city, :postal_code],
+    against: [:name],
     using: {
       tsearch: { prefix: true }
     }
 
-  filterrific(
-    default_filter_params: {},
-    available_filters: [
-      :search,
-      :service,
-      :location
-    ]
-  )
+
+
+
+  # ----------
+  # scopes
+  # ----------
 
   scope :service, -> (service) {where(name: service)}
 
-  scope :location, -> (location) {
-    where("CONCAT_WS(', ', location_name, address_1, city, postal_code) = ?", location) unless location.blank?
+  scope :sorted_by, ->(sort_option) {
+    direction = /desc$/.match?(sort_option) ? "desc" : "asc"
+    services = Service.arel_table
+    case sort_option.to_s
+    when /^service_/
+      order(services[:name].lower.send(direction))
+    when /^staff_count_/
+      # order(employees[:qualifications].lower.send(direction))
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
   }
 
-  def full_address
-    [location_name, address_1, city, postal_code].compact.join(', ')
-  end
+
+
+  # ----------
+  # filtering
+  # ----------
+
+  filterrific(
+    default_filter_params: { },
+    available_filters: [
+      :search,
+      :service,
+      :sorted_by
+    ]
+  )
+
+    # ----------
+  # filter options
+  # ----------
+
 
   def self.options_for_service
     Service.distinct.pluck(:name).map do |service|
@@ -50,6 +87,28 @@ include PgSearch::Model
       [service, service]
     end
   end
+
+
+  def self.options_for_sorted_by
+    [
+      ["Provider A-Z", "service_asc"],
+      ["Provider Z-A", "service_desc"]
+      # ["Number of staff 0-9", "staff_count_asc"],
+      # ["Number of staff 9-0", "staff_count_desc"],
+    ]
+  end
+
+
+
+  # ----------
+  # other
+  # ----------
+
+  def full_address
+    [location_name, address_1, city, postal_code].compact.join(', ')
+  end
+
+
 
   def self.order_by_full_address(direction = 'asc')
     location_name = arel_table[:location_name]

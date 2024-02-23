@@ -1,132 +1,59 @@
-@import "bucks-fis-design-library/vars";
-@import "bucks-fis-design-library/mixins";
+@import "@outpost-platform/outpost-design-library/vars";
+@import "@outpost-platform/outpost-design-library/mixins";
 
 $max-width: 1000px;
 
-@import "bucks-fis-design-library/globals";
+@import "@outpost-platform/outpost-design-library/globals";
 
 // utility classes
-@import "bucks-fis-design-library/layout";
+@import "@outpost-platform/outpost-design-library/layout";
 
 // common page layout
-@import "bucks-fis-design-library/header";
-@import "bucks-fis-design-library/beta-banner";
-@import "bucks-fis-design-library/nav";
-@import "bucks-fis-design-library/page-header";
-@import "bucks-fis-design-library/footer";
+@import "@outpost-platform/outpost-design-library/header";
+@import "@outpost-platform/outpost-design-library/beta-banner";
+@import "@outpost-platform/outpost-design-library/nav";
+@import "@outpost-platform/outpost-design-library/page-header";
+@import "@outpost-platform/outpost-design-library/footer";
 
 // components
-@import "bucks-fis-design-library/go-back";
-@import "bucks-fis-design-library/buttons";
-@import "bucks-fis-design-library/forms";
-@import "bucks-fis-design-library/tables";
-@import "bucks-fis-design-library/pagination";
-@import "bucks-fis-design-library/alerts";
-@import "bucks-fis-design-library/notices";
-@import "bucks-fis-design-library/errors";
-@import "bucks-fis-design-library/confirmation";
-@import "bucks-fis-design-library/radios";
-@import "bucks-fis-design-library/tags";
-@import "bucks-fis-design-library/mini-search";
-@import "bucks-fis-design-library/filters";
-@import "bucks-fis-design-library/collapsibles";
-@import "bucks-fis-design-library/shortcut-nav";
+@import "@outpost-platform/outpost-design-library/go-back";
+@import "@outpost-platform/outpost-design-library/buttons";
+@import "@outpost-platform/outpost-design-library/forms";
+@import "@outpost-platform/outpost-design-library/tables";
+@import "@outpost-platform/outpost-design-library/pagination";
+@import "@outpost-platform/outpost-design-library/alerts";
+@import "@outpost-platform/outpost-design-library/notices";
+@import "@outpost-platform/outpost-design-library/errors";
+@import "@outpost-platform/outpost-design-library/confirmation";
+@import "@outpost-platform/outpost-design-library/radios";
+@import "@outpost-platform/outpost-design-library/tags";
+@import "@outpost-platform/outpost-design-library/mini-search";
+@import "@outpost-platform/outpost-design-library/filters";
+@import "@outpost-platform/outpost-design-library/collapsibles";
+@import "@outpost-platform/outpost-design-library/shortcut-nav";
 
 @import "breadcrumbs";
-// @import "radio";
 @import "page-title";
-@import "collapsibles";
+@import "flow";
+@import "edit";
+@import "sort";
+@import "tables";
+
+// @TODO: need to genericise this
+@import "employee-edit";
+
+// temporarily removed so that status colors align with Outpost
+// @import "tags";
 
 .table-action {
   margin-left: 10px;
 }
 
-.table-holder {
-  width: 100%;
-  overflow-x: auto;
-}
-
-a {
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.sorting-icon {
-  width: 10px;
-  margin-left: 5px;
-  vertical-align: middle;
-}
-
-.tag {
-  margin-top: 10px;
-}
-.tag.active {
-  background-color:#dae7b8;
-  color:#526D0D;
-  border:1px solid #B3CC6E;
-}
-
-.tag.inactive {
-  background-color:#FFDEDE;
-  color:#BB0B0B;
-  border:1px solid #FF0000;
-}
-
-.add_record_button {
-  float: right;
-}
-
-.filters-body
-{
-  justify-content: space-evenly;
-}
-
-.filters__select {
-  max-width:none; 
-}
-
-.employee-info-table {
-  border-collapse: separate;
-  border-spacing: 0 15px;
-}
-.employee-info-table tr.table-column {
-  background-color: #ffffff;
-}
-
-.employee-info-table tr {
-  background-color: #ffffff;
-}
-
-.employee-info-table td {
-  background-color: #ffffff;
-}
-
-.employee-detail {
-  border-bottom: 1px solid #999999;
-  padding-bottom: 40px;
-  color: #999999;
-}
-
-.edit-actions {
-  float: right;
-}
-
+// @TODO document where these are used
 .qualifications tr.table-column {
   border-bottom: 1px solid #999999;
 }
 
 .skills tr.table-column {
   border-bottom: 1px solid #999999;
-}
-
-.filters-services {
-  display: inline;
-  max-width: 50%;
-}
-
-.shortcuts__item.current {
-  background-color: #f5f5f5;
-  padding: 10px;
 }

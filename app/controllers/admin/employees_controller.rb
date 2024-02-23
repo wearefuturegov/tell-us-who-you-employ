@@ -1,29 +1,22 @@
 class Admin::EmployeesController < Admin::BaseController
-  before_action :require_admin!, only: [:index, :show]
-  before_action :require_admin_users!, only: [:edit, :update, :destroy]
   before_action :set_employee, only: [:update]
   before_action :set_services, only: [:edit, :update]
 
-  include ApplicationHelper
-  include Sortable
   def index
-    @filterrific_params = params[:filterrific] || {}
-    @employees = Employee.includes(:service)
     @filterrific = initialize_filterrific(
       Employee,
-      @filterrific_params,
+      params[:filterrific],
+      persistence_id: false,
       select_options: {
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
-        service: Employee.options_for_service(),
+        service: Employee.options_for_service,
+        sorted_by: Employee.options_for_sorted_by,
       },
-      persistence_id: 'false',
     ) or return
     
-    @employees = @filterrific.find
-    @employees = apply_sort(@employees, params, 'forenames', %w[forenames surname job_title service_name qualifications status])
-    @employees = @employees.page(params[:page]).per(20)
+    @employees = @filterrific.find.page(params[:page]).includes(:service).per(20)
   end
 
   def show

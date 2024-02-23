@@ -16,3 +16,4 @@
 //= require_tree .
 //= require collapsible
 //= require edit-employee
+//= require filters

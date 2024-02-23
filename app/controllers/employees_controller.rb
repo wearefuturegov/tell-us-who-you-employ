@@ -1,5 +1,6 @@
 class EmployeesController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_user_eligibility!
   before_action :set_employees, only: :index
   before_action :set_employee, only: [:show, :update, :destroy]
 

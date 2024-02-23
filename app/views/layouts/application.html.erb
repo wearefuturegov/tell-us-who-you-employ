@@ -13,22 +13,14 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="<%= body_class %>">
 
-    <header class="site-header">
-      <div class="container site-header__inner">
-        <div class="site-header__masthead">
-          <%= link_to image_tag("logo.svg", alt: "Buckinghamshire Council", class: "site-header__logo"), "https://buckinghamshire.gov.uk", class: "site-header__logo-link" %>
-        </div>
-        <!-- <div class="site-header__actions"></div> -->
-        <nav class="site-header__service-name-holder">
-          <%= link_to "Tell us who you employ", root_path, class: "site-header__service-name"%>
-          <span class="site-header__phase-tag">Beta</span>
-        </nav>
-      </div>
-    </header>
 
-    <%= yield :preheader %>
+  <%= render "shared/header" %>
+  <%= render "shared/navigation" %>
+
+
+    <%= yield :precontent %>
 
     <div class="page-content">
       <div class="container">
@@ -41,33 +33,12 @@
           <% end %>
           <%= yield :header %>
         </header>
-
-        <%= yield %>
+          <%= yield %>
       </div>
     </div>
 
-    <footer class="site-footer">
-      <div class="container">
 
-        <nav class="site-footer__menu">
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/about/">About</a>
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/about/accessibility/">Accessibility</a>
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/about/cookies/">Cookies</a>
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/your-council/contact-us/">Contact us</a>
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/community-and-safety/modern-slavery-statement/">Modern slavery statement</a>
-          <a class="site-footer__link" href="https://jobs.buckinghamshire.gov.uk/">Jobs</a>
-          <a class="site-footer__link" href="https://www.buckinghamshire.gov.uk/coronavirus/martin-tett-coronavirus-update/subscribe-our-newsletter/">Newsletter</a>
-        </nav>
-
-        <p class="site-footer__license">
-        <%= image_tag "ogl.svg" %>
-        All content is available under the <%= link_to "Open Government Licence v.30", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" %>, except where otherwise stated
-        </p>
-
-        <p class="site-footer__copyright">© <%= Date.current.year %> Buckinghamshire Council</p>
-
-      </div>
-    </footer>
+  <%= render "shared/footer" %>
 
   </body>
 </html>

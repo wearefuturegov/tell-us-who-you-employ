@@ -1,0 +1,20 @@
+<%= form_for_filterrific @filterrific do |f| %>
+
+
+  <details class="filters" <%= "open" if params[:filterrific] %>>
+    <summary class="filters__control" aria-expanded="false">Filter</summary>
+    <div class="filters__body">
+
+      <%= f.label :sorted_by, "Sort by", class: "visually-hidden" %>
+      <%= f.select :sorted_by, @filterrific.select_options[:sorted_by], {include_blank: 'Sorted by'}, { class: "filters__select visually-hidden",  data: { autosubmit: true } } %>
+      
+      <%= f.label :service, "Provider", class: "visually-hidden" %>
+      <%= f.select :service, @filterrific.select_options[:service], { include_blank: 'Filter by Provider' }, { class: "filters__select", data: { autosubmit: true }} %>
+
+    </div>
+  </details>
+
+
+  <%= render partial: 'admin/shared/mini_search', locals: { f: f, matches: @services.total_count } %>
+ 
+<% end %>

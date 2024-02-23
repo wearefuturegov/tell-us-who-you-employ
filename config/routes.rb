@@ -13,8 +13,10 @@ Rails.application.routes.draw do
   resources :employees, except: :edit
 
   post "finish", to: "flow#finish", as: "finish"
+  post "logout", to: "sessions#destroy", as: "logout" 
 
   namespace :admin do
+    get "", to: "login#index", as: "start" #alias for the admin start page 
     resources :employees
     resources :services
   end

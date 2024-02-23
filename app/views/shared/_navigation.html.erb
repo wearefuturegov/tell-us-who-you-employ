@@ -1,0 +1,19 @@
+<% if user_signed_in? && admin? %>
+    <nav class="site-nav">
+        <div class="site-nav__inner container">
+
+            <%= link_to_unless_current "Employees", admin_employees_path, class: "site-nav__link" do %>
+                <span class="site-nav__current">Employees</span>
+            <% end %>
+
+            <%= link_to_unless_current "Services", admin_services_path, class: "site-nav__link" do %>
+                <span class="site-nav__current">Services</span>
+            <% end %>
+
+            <div class="site-nav__pull-right">
+                <a href="<%= ENV['OAUTH_SERVER'] %>" class="site-nav__link" target="_blank">Outpost</a>
+            </div>
+                                
+        </div>
+    </nav>
+<% end %>
