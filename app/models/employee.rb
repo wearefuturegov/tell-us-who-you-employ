@@ -1,5 +1,6 @@
 class Employee < ApplicationRecord
   after_save :check_for_duplicates
+  before_destroy :remove_associated_duplicate_records
   has_paper_trail
 
   # ----------
@@ -306,4 +307,43 @@ class Employee < ApplicationRecord
     end
   end
 
+  def self.merge_records(employee, duplicate, params)
+
+    if employee.updated_at > duplicate.updated_at
+      retained_employee = employee
+      removed_employee = duplicate
+    else
+      retained_employee = duplicate
+      removed_employee = employee
+    end
+
+    Employee.transaction do
+      retained_employee.update!(
+        forenames: params[:forenames],
+        surname: params[:surname],
+        date_of_birth: params[:date_of_birth],
+        postal_code: params[:postal_code]
+      )
+      removed_employee.soft_delete
+      Employee.clean_up_duplicates(retained_employee, removed_employee)
+    end
+    rescue ActiveRecord::RecordInvalid => e
+      false
+  end
+
+  def self.clean_up_duplicates(retained_employee, removed_employee)
+    removed_employee_records = DuplicateRecord.where('employee1_id = ? OR employee2_id = ?', removed_employee.id, removed_employee.id)
+    removed_employee_records.destroy_all
+
+    retained_employee_records = DuplicateRecord.where('employee1_id = ? OR employee2_id = ?', retained_employee.id, retained_employee.id)
+    retained_employee_records.update_all(reviewed: true, decision: 'resolved')
+
+  end
+
+  # ----------
+  # Before destroying employee, remove associated duplicate records
+  # ----------
+  def remove_associated_duplicate_records
+    DuplicateRecord.where("employee1_id = :id OR employee2_id = :id", id: self.id).destroy_all
+  end
 end

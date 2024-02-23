@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :employees do
       member do
         get :manage_duplicates
+        post :merge
       end
     end
     resources :services

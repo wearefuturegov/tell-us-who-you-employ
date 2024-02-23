@@ -21,42 +21,75 @@
 
 <h3>Select correct data to merge</h3>
 <p>To merge records, select the data you would lke to appear in the record</p>
-<%= form_tag(admin_employee_path, method: :post) do %>
-  <div class="field radio">
-    <%= radio_button_tag 'selected_record', @employee.id, required: true %>
-    <%= label_tag 'selected_record_#{@employee.id}' do %>
-      <p>Record <%= @employee.id %>: <%= @employee.forenames %></p>
-    <% end %>
-  </div>
-  <div class="field radio">
-    <%= radio_button_tag 'selected_record', @potential_duplicate.id, required: true %>
-    <%= label_tag "selected_record_#{@potential_duplicate.id}" do %>
-      <p>Record <%= @potential_duplicate.id %>: <%= @potential_duplicate.forenames %></p>
-    <% end %>
-  </div>
-<% end %>
 
-<h3>Merging data</h3>
-<p>If you choose to merge your data, please choose a record number you would like to merge it to, or if you would like to create a new record. Only the history from the chosen record will be saved, all other record history will be lost.</p>
+<%= form_with url: merge_admin_employee_path(@employee), method: :post do |form| %>
+  <%= hidden_field_tag :id, @employee.id %>
+  
+    <fieldset>     
+      <div>
+        <h3>First Names</h3>
+        <div class="record-container">
+          <div class="record one-half">
+          <%= radio_button_tag :forenames, @employee.forenames, checked: true %>
+          <%= label_tag :forenames, @employee.forenames %>
+          </div>
+          <div class="record one-half">
+          <%= radio_button_tag :forenames, @potential_duplicate.forenames %>
+          <%= label_tag :forenames, @potential_duplicate.forenames %>
+          </div>
+        </div>
 
-<%= form_tag(admin_employee_path, method: :post) do %>
-  <div class="field radio">
-    <%= radio_button_tag 'merge_to_record', @employee.id, required: true %>
-    <%= label_tag 'merge_to_record_#{employee.id}' do %>
-      <p>Merge to Record <%= @employee.id %></p>
-    <% end %>
-  </div>
-  <div class="field radio">
-    <%= radio_button_tag 'merge_to_record', @potential_duplicate.id, required: true %>
-    <%= label_tag "merge_to_record_#{@potential_duplicate.id}" do %>
-      <p>Merge to Record <%= @potential_duplicate.id %></p>
-    <% end %>
-  </div>
-  <div class="field radio">
-    <%= radio_button_tag 'keep_records_separate', 'new', required: true %>
-    <%= label_tag 'keep_records_separate' do %>
-      <p>No merge necessary. Record is not a duplicate.</p>
-    <% end %>
-  </div>
-  <%= check_box_tag 'I confirm that by merging or creating a new record, the lost of any history or archived data will be lost from the discarded record.' %>
+        <h3>Surname</h3>
+        <div class="record-container">
+          <div class="record one-half">
+          <%= radio_button_tag :surname, @employee.surname, checked: true %>
+          <%= label_tag :surname, @employee.surname %>
+          </div>
+          <div class="record one-half">
+          <%= radio_button_tag :surname, @potential_duplicate.surname %>
+          <%= label_tag :surname, @potential_duplicate.surname %>
+          </div>
+        </div>
+
+        <h3>Date of Birth</h3>
+        <div class="record-container">
+          <div class="record one-half">
+          <%= radio_button_tag :date_of_birth, @employee.date_of_birth, checked: true %>
+          <%= label_tag :date_of_birth, @employee.date_of_birth %>
+          </div>
+          <div class="record one-half">
+          <%= radio_button_tag :date_of_birth, @potential_duplicate.date_of_birth %>
+          <%= label_tag :date_of_birth, @potential_duplicate.date_of_birth %>
+          </div>
+        </div>
+
+        <h3>Postal Code</h3>
+        <div class="record-container">
+
+          <div class="record one-half">
+          <%= radio_button_tag :postal_code, @employee.postal_code, checked: true %>  
+          <%= label_tag :postal_code, @employee.postal_code %>
+          </div>
+          <div class="record one-half">
+          <%= radio_button_tag :postal_code, @potential_duplicate.postal_code %>
+          <%= label_tag :postal_code, @potential_duplicate.postal_code %>
+          </div>
+        </div>
+          
+          <%= hidden_field_tag :duplicate_id, @potential_duplicate.id %>
+      </div>
+    </fieldset>
+
+  <fieldset>
+    <h3>Merging data</h3>
+    <%= radio_button_tag :merge_action, 'merge', checked: true %>
+    <%= label_tag :merge_action_merge, "Merge records" %>
+    <%= radio_button_tag :merge_action, 'keep_unique' %>
+    <%= label_tag :merge_action_keep_unique, "These records are different. Do not merge" %>
+    
+    <%= check_box_tag :confirm_action %>
+    <%= label_tag :confirm_action, "I confirm that by merging or creating a new record, the loss of any history or archived data will be lost from the discarded record." %>
+  </fieldset>
+
+  <%= submit_tag "Confirm selection", class: "button", name: "commit" %>  
 <% end %>

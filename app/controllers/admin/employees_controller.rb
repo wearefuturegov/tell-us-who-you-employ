@@ -64,6 +64,39 @@ class Admin::EmployeesController < Admin::BaseController
     @potential_duplicate = potential_duplicate_record(@employee)
   end
 
+  def merge
+    employee = Employee.find(params[:id])
+    duplicate = Employee.find(params[:duplicate_id])
+
+
+    if params[:mark_as_unique]
+      DuplicateRecord.create(employee1: employee, employee2: duplicate, reviewed: true, decision: 'isUnique', review_date: Time.zone.now)
+      redirect_to admin_employee_path(employee), notice: 'Records have been marked as non-duplicates.'
+    end
+
+    recently_updated_employee = employee.updated_at > duplicate.updated_at ? employee : duplicate
+
+    if params[:confirm_action] == '1'
+      case params[:merge_action]
+      when 'merge'
+        Employee.merge_records(employee, duplicate, params)
+        DuplicateRecord.create(employee1: employee, employee2: duplicate, reviewed: true, decision: 'isDuplicate', review_date: Time.zone.now)
+        redirect_to admin_employee_path(recently_updated_employee), notice: 'Records merged successfully.'
+      when 'keep_unique'
+        existing_record = DuplicateRecord.find_by(employee1_id: employee.id, employee2_id: duplicate.id) ||
+        DuplicateRecord.find_by(employee1_id: duplicate.id, employee2_id: employee.id)
+        if existing_record.present?
+        existing_record.update(reviewed: true, decision: 'isUnique', review_date: Time.zone.now)
+        else
+        DuplicateRecord.create(employee1: employee, employee2: duplicate, reviewed: true, decision: 'isUnique', review_date: Time.zone.now)
+        end
+        redirect_to admin_employee_path(recently_updated_employee), notice: 'Records have been marked as non-duplicates.'
+      end
+    else
+      redirect_to manage_duplicates_admin_employee_path(employee), alert: 'Action not confirmed.'
+    end
+
+  end
   
   private
 
@@ -172,7 +205,7 @@ class Admin::EmployeesController < Admin::BaseController
   end
 
   def check_potential_duplicate(employee)
-    DuplicateRecord.exists?(employee1: employee) || DuplicateRecord.exists?(employee2: employee)
+    DuplicateRecord.where(employee1: employee, reviewed: false).or(DuplicateRecord.where(employee2: employee, reviewed: false)).exists?
   end
 
   def potential_duplicate_record(employee)
