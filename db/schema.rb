@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_21_104456) do
+ActiveRecord::Schema.define(version: 2024_02_22_113947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
+
+  create_table "duplicate_records", force: :cascade do |t|
+    t.bigint "employee1_id", null: false
+    t.bigint "employee2_id", null: false
+    t.boolean "reviewed", default: false
+    t.string "decision"
+    t.datetime "review_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee1_id"], name: "index_duplicate_records_on_employee1_id"
+    t.index ["employee2_id"], name: "index_duplicate_records_on_employee2_id"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.string "surname"
@@ -22,8 +34,8 @@ ActiveRecord::Schema.define(version: 2024_02_21_104456) do
     t.string "job_title"
     t.date "employed_from"
     t.date "employed_to"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.boolean "currently_employed"
     t.integer "service_id"
     t.integer "organisation_id"
@@ -45,6 +57,8 @@ ActiveRecord::Schema.define(version: 2024_02_21_104456) do
     t.boolean "has_safeguarding"
     t.date "safeguarding_achieved_on"
     t.datetime "marked_for_deletion"
+    t.boolean "is_potential_duplicate"
+    t.boolean "ignore_duplicate"
   end
 
   create_table "services", force: :cascade do |t|
@@ -57,8 +71,10 @@ ActiveRecord::Schema.define(version: 2024_02_21_104456) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: 6
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "duplicate_records", "employees", column: "employee1_id"
+  add_foreign_key "duplicate_records", "employees", column: "employee2_id"
 end

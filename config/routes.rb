@@ -17,7 +17,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "", to: "login#index", as: "start" #alias for the admin start page 
-    resources :employees
+    resources :employees do
+      member do
+        get :manage_duplicates
+      end
+    end
     resources :services
   end
 

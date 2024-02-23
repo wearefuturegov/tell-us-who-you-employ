@@ -1,0 +1,62 @@
+<h1>Duplicate data detected</h1>
+<p>Potential duplicate records</p>
+<div class="record-container">
+  <div class="record one-half">
+  <% if @employee %>
+    <h3>Record <%= @employee.id %>:</h3>
+    <p><%= @employee.forenames %> <%= @employee.surname%></p>
+    <p>Last updated: <%= @employee.updated_at.strftime("%d/%m/%Y") %></p>
+    <p><%= link_to 'View record', admin_employee_path(@employee)%></p>
+  <% end %>
+  </div>
+  <div class="record one-half">
+  <% if @potential_duplicate %>
+    <h3>Record <%= @potential_duplicate.id %>:</h3>
+    <p><%= @potential_duplicate.forenames %> <%= @potential_duplicate.surname%></p>
+    <p>Last updated <%= @potential_duplicate.updated_at.strftime("%d/%m/%Y") %></p>
+    <p><%= link_to 'View record', admin_employee_path(@potential_duplicate)%></p>
+  <% end %>
+  </div>
+</div>
+
+<h3>Select correct data to merge</h3>
+<p>To merge records, select the data you would lke to appear in the record</p>
+<%= form_tag(admin_employee_path, method: :post) do %>
+  <div class="field radio">
+    <%= radio_button_tag 'selected_record', @employee.id, required: true %>
+    <%= label_tag 'selected_record_#{@employee.id}' do %>
+      <p>Record <%= @employee.id %>: <%= @employee.forenames %></p>
+    <% end %>
+  </div>
+  <div class="field radio">
+    <%= radio_button_tag 'selected_record', @potential_duplicate.id, required: true %>
+    <%= label_tag "selected_record_#{@potential_duplicate.id}" do %>
+      <p>Record <%= @potential_duplicate.id %>: <%= @potential_duplicate.forenames %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<h3>Merging data</h3>
+<p>If you choose to merge your data, please choose a record number you would like to merge it to, or if you would like to create a new record. Only the history from the chosen record will be saved, all other record history will be lost.</p>
+
+<%= form_tag(admin_employee_path, method: :post) do %>
+  <div class="field radio">
+    <%= radio_button_tag 'merge_to_record', @employee.id, required: true %>
+    <%= label_tag 'merge_to_record_#{employee.id}' do %>
+      <p>Merge to Record <%= @employee.id %></p>
+    <% end %>
+  </div>
+  <div class="field radio">
+    <%= radio_button_tag 'merge_to_record', @potential_duplicate.id, required: true %>
+    <%= label_tag "merge_to_record_#{@potential_duplicate.id}" do %>
+      <p>Merge to Record <%= @potential_duplicate.id %></p>
+    <% end %>
+  </div>
+  <div class="field radio">
+    <%= radio_button_tag 'keep_records_separate', 'new', required: true %>
+    <%= label_tag 'keep_records_separate' do %>
+      <p>No merge necessary. Record is not a duplicate.</p>
+    <% end %>
+  </div>
+  <%= check_box_tag 'I confirm that by merging or creating a new record, the lost of any history or archived data will be lost from the discarded record.' %>
+<% end %>

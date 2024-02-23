@@ -21,6 +21,7 @@ class Admin::EmployeesController < Admin::BaseController
 
   def show
     @employee = Employee.find(params[:id])
+    @is_potential_duplicate = check_potential_duplicate(@employee)
   end
 
   def edit
@@ -56,6 +57,11 @@ class Admin::EmployeesController < Admin::BaseController
     @employee = Employee.find(params[:id])
     @employee.soft_delete
     redirect_to admin_employees_path, notice: 'Employee was successfully deleted.'
+  end
+
+  def manage_duplicates
+    @employee = Employee.find(params[:id])
+    @potential_duplicate = potential_duplicate_record(@employee)
   end
 
   
@@ -163,5 +169,19 @@ class Admin::EmployeesController < Admin::BaseController
 
   def set_services
     @services = Service.all.collect { |s| [s.name, s.id] }
+  end
+
+  def check_potential_duplicate(employee)
+    DuplicateRecord.exists?(employee1: employee) || DuplicateRecord.exists?(employee2: employee)
+  end
+
+  def potential_duplicate_record(employee)
+    duplicate = Employee.where(forenames: employee.forenames, surname: employee.surname)
+    .or(Employee.where(forenames: employee.forenames, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(surname: employee.surname, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(postal_code: employee.postal_code, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(postal_code: employee.postal_code, forenames: employee.forenames))
+    .or(Employee.where(postal_code: employee.postal_code, surname: employee.surname))
+    .where.not(id: employee.id).first
   end
 end

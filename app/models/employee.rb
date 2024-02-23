@@ -1,4 +1,5 @@
 class Employee < ApplicationRecord
+  after_save :check_for_duplicates
   has_paper_trail
 
   # ----------
@@ -280,6 +281,28 @@ class Employee < ApplicationRecord
       errors.add(:base, "Please add the date this person achieved Safeguarding training")
       elsif (!has_safeguarding && safeguarding_achieved_on)
         errors.add(:base, "Please tick Safeguarding training field or remove the date achieved")
+    end
+  end
+
+  # ----------
+  # Duplicate checking
+  # ----------
+  def check_for_duplicates
+    duplicates = Employee.where(forenames: forenames, surname: surname)
+    .or(Employee.where(forenames: forenames, date_of_birth: date_of_birth))
+    .or(Employee.where(surname: surname, date_of_birth: date_of_birth))
+    .or(Employee.where(postal_code: postal_code, date_of_birth: date_of_birth))
+    .or(Employee.where(postal_code: postal_code, forenames: forenames))
+    .or(Employee.where(postal_code: postal_code, surname: surname))
+    .where.not(id: id)
+    create_duplicate_records(duplicates)
+  end
+
+  def create_duplicate_records(duplicates)
+    if duplicates.any?
+      duplicates.each do |duplicate|
+        DuplicateRecord.create(employee1: self, employee2: duplicate, reviewed: false)
+      end
     end
   end
 
