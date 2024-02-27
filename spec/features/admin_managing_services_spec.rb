@@ -71,6 +71,14 @@ RSpec.feature 'Admin managing services' do
 
         expect(page).to have_content(service_1.name)
       end
+
+      scenario 'you filter by number of staff' do
+        find('details.filters').click
+        select '0-5', from: 'filterrific[with_employee_count_range]'
+        find('#search-button').click
+
+        expect(page).to have_content(service_1.name)
+      end
     end
   end
 end
