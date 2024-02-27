@@ -2,18 +2,12 @@
   <%= link_to "Back", admin_services_path, class: "go-back" %>
   <h1 class="page-header__title"><%= @service.name %></h1>
   <p><strong>
-    <%= [@service.location_name, @service.address_1, @service.city, @service.postal_code].reject(&:blank?).join(', ') %>
+    <%#= [@service.location_name, @service.address_1, @service.city, @service.postal_code].reject(&:blank?).join(', ') %>
   </strong></p>
     <p><strong>SENCO: </strong><%= @senco.nil? ? "n/a" : "#{@senco.forenames} #{@senco.surname}" %></p>
     <p><strong>Designated Safety Lead: </strong><%= @safeguarding_lead.nil? ? "n/a" : "#{@safeguarding_lead.forenames} #{@safeguarding_lead.surname}" %></p>
 </header>
 
-<%= render "admin/shared/filters", show_employee_specific_filters: true, show_service_specific_filters: false, show_provider_filter: false %>
-<% if @employees.present?%>
-  <%= render 'admin/shared/employees', include_roles: @include_roles, show_service_specific_table: true, show_employee_specific_table: false, service_id: @service.id %>
-  <%= paginate @employees %>
-<% else %>
-  <div>
-    <h1>No employees found</td>
-  </div>
-<% end %>
+<%= render "admin/employees/filters" %>
+
+<%= render partial: 'admin/employees/index', locals: { employees: @employees } %>

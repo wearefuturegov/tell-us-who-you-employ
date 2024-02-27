@@ -1,110 +1,59 @@
-@import "bucks-fis-design-library/vars";
-@import "bucks-fis-design-library/mixins";
+@import "@outpost-platform/outpost-design-library/vars";
+@import "@outpost-platform/outpost-design-library/mixins";
 
 $max-width: 1000px;
 
-@import "bucks-fis-design-library/globals";
+@import "@outpost-platform/outpost-design-library/globals";
 
 // utility classes
-@import "bucks-fis-design-library/layout";
+@import "@outpost-platform/outpost-design-library/layout";
 
 // common page layout
-@import "bucks-fis-design-library/header";
-@import "bucks-fis-design-library/beta-banner";
-@import "bucks-fis-design-library/nav";
-@import "bucks-fis-design-library/page-header";
-@import "bucks-fis-design-library/footer";
+@import "@outpost-platform/outpost-design-library/header";
+@import "@outpost-platform/outpost-design-library/beta-banner";
+@import "@outpost-platform/outpost-design-library/nav";
+@import "@outpost-platform/outpost-design-library/page-header";
+@import "@outpost-platform/outpost-design-library/footer";
 
 // components
-@import "bucks-fis-design-library/go-back";
-@import "bucks-fis-design-library/buttons";
-@import "bucks-fis-design-library/forms";
-@import "bucks-fis-design-library/tables";
-@import "bucks-fis-design-library/pagination";
-@import "bucks-fis-design-library/alerts";
-@import "bucks-fis-design-library/notices";
-@import "bucks-fis-design-library/errors";
-@import "bucks-fis-design-library/confirmation";
-@import "bucks-fis-design-library/radios";
-@import "bucks-fis-design-library/tags";
-@import "bucks-fis-design-library/mini-search";
-@import "bucks-fis-design-library/filters";
-@import "bucks-fis-design-library/collapsibles";
-@import "bucks-fis-design-library/shortcut-nav";
+@import "@outpost-platform/outpost-design-library/go-back";
+@import "@outpost-platform/outpost-design-library/buttons";
+@import "@outpost-platform/outpost-design-library/forms";
+@import "@outpost-platform/outpost-design-library/tables";
+@import "@outpost-platform/outpost-design-library/pagination";
+@import "@outpost-platform/outpost-design-library/alerts";
+@import "@outpost-platform/outpost-design-library/notices";
+@import "@outpost-platform/outpost-design-library/errors";
+@import "@outpost-platform/outpost-design-library/confirmation";
+@import "@outpost-platform/outpost-design-library/radios";
+@import "@outpost-platform/outpost-design-library/tags";
+@import "@outpost-platform/outpost-design-library/mini-search";
+@import "@outpost-platform/outpost-design-library/filters";
+@import "@outpost-platform/outpost-design-library/collapsibles";
+@import "@outpost-platform/outpost-design-library/shortcut-nav";
 
 @import "breadcrumbs";
-// @import "radio";
 @import "page-title";
 @import "flow";
+@import "edit";
+@import "sort";
+@import "tables";
+
+// @TODO: need to genericise this
+@import "employee-edit";
+
+// temporarily removed so that status colors align with Outpost
+// @import "tags";
 
 .table-action {
   margin-left: 10px;
 }
 
-.table-holder {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.sorting-icon {
-  width: 10px;
-  margin-left: 5px;
-  vertical-align: middle;
-  display: inline-block; 
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.filters__select {
-  max-width:none; 
-}
-
-.tag {
-  margin-top: 10px;
-}
-
-.margin-top--md {
-  margin-top: 10px;
-}
-
-.bg--active {
-  background-color: #dae7b8;
-}
-.color--active {
-  color: #526D0D;
-}
-.border--active {
-  border: 1px solid #B3CC6E;
-}
-
-.bg--inactive {
-  background-color: #FFDEDE;
-}
-
-.color--inactive {
-  color: #BB0B0B;
-}
-.border--inactive {
-  border: 1px solid #FF0000;
-}
-
-.employee-detail {
+// @TODO document where these are used
+.qualifications tr.table-column {
   border-bottom: 1px solid #999999;
-  padding-bottom: 40px;
-  color: #999999;
 }
 
-.table--employee-info td {
-  background-color: #FFFFFF;
-}
-
-.filters-services {
-  display: inline;
-  max-width: 75%;
-}
-
-.shortcuts__item.current {
-  background-color: #f5f5f5;
-  padding: 10px;
+.skills tr.table-column {
+  border-bottom: 1px solid #999999;
 }

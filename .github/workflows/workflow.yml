@@ -1,5 +1,8 @@
 name: Run tests
 
+env:
+  NODE_OPTIONS: --openssl-legacy-provider
+
 on: [push]
 
 jobs:
@@ -8,7 +11,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:11
+        image: postgres:13.7-alpine
         ports:
           - 5432:5432
         env:
@@ -25,9 +28,19 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      
+      - name: Install required Node.js version
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.9.0
 
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
+
+      - name: Yarn install
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+        run: yarn --frozen-lockfile
 
       - name: Setup database
         env:

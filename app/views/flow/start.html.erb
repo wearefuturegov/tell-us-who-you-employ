@@ -1,4 +1,4 @@
-<% content_for :preheader do%>
+<% content_for :precontent do%>
   <div class="pre-header">
     <ul class="breadcrumbs container">
       <li class="breadcrumbs__crumb"><a href="https://familyinfo.buckinghamshire.gov.uk/">Home</a></li>
@@ -35,7 +35,6 @@
   <p>You’ll need the account details you use to manage your service in the Family Information Service’s directory.</p>
 
   <p>If you don’t have an account, you’ll need to <%= link_to 'register first', href="#{ENV['OAUTH_SERVER']}/register" %>.</p>
-  
-  <p>If you require admin access please <%= link_to 'click here', admin_employees_path %>.</p>
+
   </main>
 </div>

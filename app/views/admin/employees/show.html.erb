@@ -3,9 +3,17 @@
   <p><strong>
   <%= "#{@employee.job_title}, #{@employee.service.name}" %>
   </strong></p>
-  <p class="employee-detail">
-    <%= "Record #{@employee.id}"%>
-  </p>
+  <div class="employee-detail">
+    <p>
+      <%= "Record #{@employee.id}"%>
+    </p>
+    <% if admin_users? %>
+      <div class="edit-actions">
+        <%= link_to 'Edit', edit_admin_employee_path(@employee) %>
+        <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+    <% end %>
+  </div>
 </header>
 
 <div class="with-sidebar">
@@ -18,34 +26,40 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="table--employee-info">
+        <div class="field">
+          <strong>
+            <label class="field__label">First names</label>
+          </strong>
+            <p class="field__input"><%= @employee.forenames %></p>
+        </div>
 
-            <tr class="table-column">
-              <td><strong>First name</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.forenames %></td>
-            </tr>
-            <tr class="table-column">
-              <td><strong>Last name</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.surname %></td>
-            </tr>
-            <tr class="table-column">
-              <td><strong>Date of Birth</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.date_of_birth.strftime("%d/%m/%Y") %></td>
-            </tr>
-            <tr class="table-column">
-              <td><strong>Post code</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.postal_code %></td>
-            </tr>
+        <div class="field">
+          <strong>
+            <label class="field__label">Surname</label>
+          </strong>
+            <p class="field__input"><%= @employee.surname %></p>
+        </div>
 
-        </table>
+        <div class="field">
+          <strong>
+            <label class="field__label">Date of Birth</label>
+          </strong>
+            <p class="field__input"><%= @employee.date_of_birth.strftime("%d/%m/%Y") %></p>
+        </div>
+
+        <div class="field">
+          <strong>
+            <label class="field__label">Home address</label>
+          </strong>
+            <p class="field__input"><%= @employee.street_address %></p>
+        </div>
+
+        <div class="field">
+          <strong>
+            <label class="field__label">Post code</label>
+          </strong>
+            <p class="field__input"><%= @employee.postal_code %></p>
+        </div>
       </div>
     </div>
 
@@ -56,21 +70,37 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="table--employee-info">
+        <div class="field">
+          <strong>
+            <label class="field__label">Current Provider</label>
+          </strong>
+            <p class="field__input"><%= service_name_by_id(@employee.service_id) %></p>
+        </div>
 
-            <tr class="table-column">
-              <td><strong>Current Provider</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.service.name %></td>
-            </tr>
-            <tr class="table-column">
-              <td><strong>Employed from</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.employed_from.strftime("%d/%m/%Y") %></td>
-            </tr>
-        </table>
+        <div class="field">
+          <strong>
+            <label class="field__label">Employed from</label>
+          </strong>
+            <p class="field__input"><%= @employee.employed_from.strftime("%d/%m/%Y") %></p>
+        </div>
+
+        <div class="checkbox field">
+          <strong>
+            <label class="field__label">Currently employed</label>
+          </strong>
+            <p class="field__input">
+                <%= @employee.currently_employed? ? 'Yes' : 'No' %>
+            </p>
+        </div>
+
+        <% if @employee.employed_to.present?%>
+        <div class="field">
+          <strong>
+            <label class="field__label">Employed to</label>
+          </strong>
+            <p class="field__input"><%= @employee.employed_to.strftime("%d/%m/%Y") %></p>
+        </div>
+        <% end %>
       </div>
     </div>
 
@@ -81,14 +111,12 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="table--employee-info">
-            <tr class="table-column">
-              <td><strong>Job title</strong></td>
-            </tr>
-            <tr class="column-value">
-              <td><%= @employee.job_title %></td>
-            </tr>
-        </table>
+        <div class="field">
+          <strong>
+            <label class="field__label">Job title</label>
+          </strong>
+            <p class="field__input"><%= @employee.job_title %></p>
+        </div>
       </div>
     </div>
 
@@ -100,34 +128,34 @@
           </h2>
       </button>
       <div class="collapsible__content">
-        <table class="table--employee-info">
-          <tr class="table-column">
-            <td><strong>Current roles</strong></td>
-          </tr>
-          <tr class="column-value">
-            <td>                
+        <div class="field">
+          <strong>
+            <label class="field__label">Current roles</label>
+          </strong>
+            <p class="field__input">
               <% if @employee.roles.present? %>
-                <%= @employee.roles.join(', ') %>
+                <% @employee.roles.each do |role| %>
+                  <%= role %><br>
+                <% end %>
               <% else %>
                 No roles
               <% end %>
-            </td>
-          </tr>
-        </table>
+            </p>
+        </div>
       </div>
     </div>
 
-    <div class="collapsible" id="qualifications">
+    <div class="collapsible" id="skills">
       <button class="collapsible__header" type="button">
           <h2>
-            Qualifications
+            Skills
           </h2>
       </button>
       <div class="collapsible__content">
 
         <table class="table--employee-info">
           <tr class="table-column">
-            <th>Qualification</th>
+            <th>Skill</th>
             <th>Date Achieved</th>
           </tr>
 
@@ -140,7 +168,7 @@
 
           <% if @employee.has_first_aid_training %>
             <tr class="table-column">
-              <td>First aid training</td>
+              <td>Paediatric First Aid training</td>
               <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
@@ -169,17 +197,31 @@
               <td><%= @employee.senco_early_years_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
+        </table>
+      </div>
+    </div>
 
-          <tr class="table-column">
-            <td>                
+    <div class="collapsible" id="qualifications">
+      <button class="collapsible__header" type="button">
+          <h2>
+            Qualifications
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <div class="field">
+          <strong>
+            <label class="field__label">Qualifications</label>
+          </strong>
+            <p class="field__input">
               <% if @employee.qualifications.present? %>
-                <%= @employee.qualifications.join(', ') %>
+                <% @employee.qualifications.each do |qualification| %>
+                  <%= qualification %><br>
+                <% end %>
               <% else %>
                 No qualifications
               <% end %>
-            </td>
-          </tr>
-        </table>
+            </p>
+        </div>
       </div>
     </div>
   </div>
@@ -206,6 +248,24 @@
             </h2>
         </button>
         <div class="collapsible__content">
+          <ul>
+            <% @employee.versions.each do |version| %>
+              <li>
+                Changed on: <%= version.created_at.strftime("%Y-%m-%d %H:%M:%S") %><br>
+                Changed by: <%= version.whodunnit || "Unknown" %><br> <!-- Directly display whodunnit -->
+                <% if version.changeset.present? %>
+                  Changes:
+                  <ul>
+                    <% version.changeset.each do |key, value| %>
+                      <li>
+                        <%= key.humanize %>: <%= value[0] %> -> <%= value[1] %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
 
         </div>
     </div>

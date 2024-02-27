@@ -1,0 +1,51 @@
+
+
+<table class="table test-employees">
+  <caption>
+    A list of all employees entered into the system
+    <span class="sr-only">, column headers with buttons are sortable.</span>
+  </caption>
+  <thead>
+    <tr>
+      <!--<th class="visually-hidden">ID</th>-->
+      <%= sort_column_by("First name", "forenames") %>
+      <%= sort_column_by("Last name", "surname") %>
+      <%= sort_column_by("Job title", "job_title") %>
+      <%#= sort_column_by("Provider", "provider") %>
+      <th>Provider</th>
+      <%#= sort_column_by("Qualifications", "qualifications") %>
+      <th>Qualifications</th>
+      <%#= sort_column_by("Status", "status") %>
+      <th>Status</th>
+      <th class="visually-hidden">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |e| %>
+      <tr>
+        <!--<td><span class="table__small"><%= e.id %></span></td>-->
+        <td>
+          <strong><%= link_to e.forenames.truncate(30), admin_employee_path(e), title: e.forenames %></strong>
+        </td>
+        <td>
+          <%= link_to e.surname.truncate(30), admin_employee_path(e), title: e.surname %>
+        </td>
+        <td>
+          <%= e.job_title %>
+        </td>
+        <td>
+          <%= link_to e.service.name.truncate(30), admin_service_path(e.service.id), title: e.service.name %>
+        </td>
+        <td>
+          <%= e.qualifications.join("<br>") if e.qualifications.present? %>
+        </td>
+        <td><%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %></td>
+        <td>
+        <% if admin_users? %>
+          <a href="<%= edit_admin_employee_url(e) %>" class="edit" title="Edit <%= [e.forenames, e.surname].join(' ') %>, <%= e.job_title %> at <%= e.service.name %> "><span class="visually-hidden">Edit this employee</span></a>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

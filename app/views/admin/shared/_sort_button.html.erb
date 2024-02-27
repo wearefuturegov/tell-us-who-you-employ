@@ -1,0 +1,9 @@
+<% if current_direction %>
+  <th aria-sort="<%= directions[current_direction] %>" class="sort-col <%= current_direction %>">
+<% else %>
+  <th class="sort-col">
+<% end %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <button data-autosubmit="true" name="filterrific[sorted_by]" value="<%=new_column%>"><%= label %></button>
+  <% end %>
+</th>
