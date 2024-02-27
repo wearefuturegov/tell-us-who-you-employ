@@ -308,27 +308,24 @@ class Employee < ApplicationRecord
   end
 
   def self.merge_records(employee, duplicate, params)
-
-    if employee.updated_at > duplicate.updated_at
-      retained_employee = employee
-      removed_employee = duplicate
-    else
-      retained_employee = duplicate
-      removed_employee = employee
+    retained_employee, removed_employee = employee.updated_at > duplicate.updated_at ? [employee, duplicate] : [duplicate, employee]
+    updatable_attributes = %w[forenames surname date_of_birth postal_code]
+  
+    # Build the attributes hash for the update, using params if present, or retaining the existing value
+    update_attributes = updatable_attributes.each_with_object({}) do |attr, attrs|
+      attrs[attr] = params[attr].present? ? params[attr] : retained_employee.send(attr)
     end
-
+  
     Employee.transaction do
-      retained_employee.update!(
-        forenames: params[:forenames],
-        surname: params[:surname],
-        date_of_birth: params[:date_of_birth],
-        postal_code: params[:postal_code]
-      )
+      retained_employee.update!(update_attributes)
       removed_employee.soft_delete
       Employee.clean_up_duplicates(retained_employee, removed_employee)
+      removed_employee.destroy
+
     end
-    rescue ActiveRecord::RecordInvalid => e
-      false
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error "Error during merge_records: #{e.message}"
+    return false
   end
 
   def self.clean_up_duplicates(retained_employee, removed_employee)

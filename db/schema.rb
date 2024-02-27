@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_22_113947) do
+ActiveRecord::Schema.define(version: 2024_02_26_113032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(version: 2024_02_22_113947) do
     t.boolean "has_safeguarding"
     t.date "safeguarding_achieved_on"
     t.datetime "marked_for_deletion"
-    t.boolean "is_potential_duplicate"
-    t.boolean "ignore_duplicate"
   end
 
   create_table "services", force: :cascade do |t|

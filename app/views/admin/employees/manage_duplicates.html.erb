@@ -1,95 +1,138 @@
-<h1>Duplicate data detected</h1>
-<p>Potential duplicate records</p>
-<div class="record-container">
-  <div class="record one-half">
-  <% if @employee %>
-    <h3>Record <%= @employee.id %>:</h3>
-    <p><%= @employee.forenames %> <%= @employee.surname%></p>
-    <p>Last updated: <%= @employee.updated_at.strftime("%d/%m/%Y") %></p>
-    <p><%= link_to 'View record', admin_employee_path(@employee)%></p>
-  <% end %>
+<% if @employee && @potential_duplicate %> 
+  <h1 class="page-header__title">Duplicate data detected</h1>
+  <h4 class="page-subheading">Potential duplicate records</h4>
+  <div class="record-container">
+    <div class="duplicate-record one-half">
+    <% if @employee %>
+      <p>Record <%= @employee.id %>:</p>
+      <h1><%= @employee.forenames %> <%= @employee.surname%></h1>
+      <p>Last updated: <%= @employee.updated_at.strftime("%d/%m/%Y") %></p>
+      <p><%= link_to 'View record', admin_employee_path(@employee)%></p>
+    <% end %>
+    </div>
+    <div class="duplicate-record one-half">
+    <% if @potential_duplicate %>
+      <p>Record <%= @potential_duplicate.id %>:</p>
+      <h1><%= @potential_duplicate.forenames %> <%= @potential_duplicate.surname%></h1>
+      <p>Last updated: <%= @potential_duplicate.updated_at.strftime("%d/%m/%Y") %></p>
+      <p><%= link_to 'View record', admin_employee_path(@potential_duplicate)%></p>
+    <% end %>
+    </div>
   </div>
-  <div class="record one-half">
-  <% if @potential_duplicate %>
-    <h3>Record <%= @potential_duplicate.id %>:</h3>
-    <p><%= @potential_duplicate.forenames %> <%= @potential_duplicate.surname%></p>
-    <p>Last updated <%= @potential_duplicate.updated_at.strftime("%d/%m/%Y") %></p>
-    <p><%= link_to 'View record', admin_employee_path(@potential_duplicate)%></p>
-  <% end %>
-  </div>
-</div>
 
-<h3>Select correct data to merge</h3>
-<p>To merge records, select the data you would lke to appear in the record</p>
+  <h3>Select correct data to merge</h3>
+  <i class="warning-text">To merge records, select the data you would like to appear in the record</i>
 
-<%= form_with url: merge_admin_employee_path(@employee), method: :post do |form| %>
-  <%= hidden_field_tag :id, @employee.id %>
-  
-    <fieldset>     
-      <div>
-        <h3>First Names</h3>
-        <div class="record-container">
-          <div class="record one-half">
-          <%= radio_button_tag :forenames, @employee.forenames, checked: true %>
-          <%= label_tag :forenames, @employee.forenames %>
-          </div>
-          <div class="record one-half">
-          <%= radio_button_tag :forenames, @potential_duplicate.forenames %>
-          <%= label_tag :forenames, @potential_duplicate.forenames %>
+  <%= form_with url: merge_admin_employee_path(@employee), method: :post do |form| %>
+    <div class="duplicate-form-container">
+      <%= hidden_field_tag :id, @employee.id %>
+      
+      <% if @employee.forenames != @potential_duplicate.forenames %>
+        <div class="field-container">
+          <h3>First names</h3>
+          <div class="options-container">
+            <div class="option">
+              <%= radio_button_tag :forenames, @employee.forenames, id: "forenames_employee" %>
+              <%= label_tag "forenames_#{@employee.forenames}", "Record #{@employee.id}: " %> 
+                <span class="tag tag--red"><%=@employee.forenames%>
+              </span>          </div>
+            <div class="option">
+              <%= radio_button_tag :forenames, @potential_duplicate.forenames, id: "forenames_potential_duplicate" %>
+              <%= label_tag "forenames_#{@potential_duplicate.forenames}", "Record #{@potential_duplicate.id}: " %> 
+                <span class="tag tag--red"><%=@potential_duplicate.forenames%>
+              </span>
+            </div>
           </div>
         </div>
+      <% end %>
 
-        <h3>Surname</h3>
-        <div class="record-container">
-          <div class="record one-half">
-          <%= radio_button_tag :surname, @employee.surname, checked: true %>
-          <%= label_tag :surname, @employee.surname %>
-          </div>
-          <div class="record one-half">
-          <%= radio_button_tag :surname, @potential_duplicate.surname %>
-          <%= label_tag :surname, @potential_duplicate.surname %>
+      <% if @employee.surname != @potential_duplicate.surname %>
+        <div class="field-container">
+          <h3>Surname</h3>
+          <div class="options-container">
+            <div class="option">
+              <%= radio_button_tag :surname, @employee.surname, id: "surname_employee" %>
+              <%= label_tag "surname_#{@employee.surname}", "Record #{@employee.id}: " %> 
+                <span class="tag tag--red"><%=@employee.surname%>
+              </span>
+            </div>
+            <div class="option">
+              <%= radio_button_tag :surname, @potential_duplicate.surname, id: "surname_potential_duplicate" %>
+              <%= label_tag "surname_#{@potential_duplicate.surname}", "Record #{@potential_duplicate.id}: " %> 
+                <span class="tag tag--red"><%=@potential_duplicate.surname%>
+              </span>
+            </div>
           </div>
         </div>
+      <% end %>
 
-        <h3>Date of Birth</h3>
-        <div class="record-container">
-          <div class="record one-half">
-          <%= radio_button_tag :date_of_birth, @employee.date_of_birth, checked: true %>
-          <%= label_tag :date_of_birth, @employee.date_of_birth %>
-          </div>
-          <div class="record one-half">
-          <%= radio_button_tag :date_of_birth, @potential_duplicate.date_of_birth %>
-          <%= label_tag :date_of_birth, @potential_duplicate.date_of_birth %>
+      <% if @employee.date_of_birth != @potential_duplicate.date_of_birth %>
+        <div class="field-container">
+          <h3>Date of Birth</h3>
+          <div class="options-container">
+            <div class="option">
+              <%= radio_button_tag :date_of_birth, @employee.date_of_birth, id: "date_of_birth_employee" %>
+              <%= label_tag "date_of_birth_#{@employee.date_of_birth}", "Record #{@employee.id}: " %> 
+                <span class="tag tag--red"><%=@employee.date_of_birth.strftime("%d/%m/%Y") %>
+              </span>
+            </div>
+            <div class="option">
+              <%= radio_button_tag :date_of_birth, @potential_duplicate.date_of_birth, id: "date_of_birth_potential_duplicate" %>
+              <%= label_tag "date_of_birth_#{@potential_duplicate.date_of_birth}", "Record #{@potential_duplicate.id}: " %> 
+                <span class="tag tag--red"><%=@potential_duplicate.date_of_birth.strftime("%d/%m/%Y") %>
+              </span>
+            </div>
           </div>
         </div>
+      <% end %>
 
-        <h3>Postal Code</h3>
-        <div class="record-container">
 
-          <div class="record one-half">
-          <%= radio_button_tag :postal_code, @employee.postal_code, checked: true %>  
-          <%= label_tag :postal_code, @employee.postal_code %>
-          </div>
-          <div class="record one-half">
-          <%= radio_button_tag :postal_code, @potential_duplicate.postal_code %>
-          <%= label_tag :postal_code, @potential_duplicate.postal_code %>
+
+      <% if @employee.postal_code != @potential_duplicate.postal_code %>
+        <div class="field-container">
+          <h3>Post code</h3>
+          <div class="options-container">
+            <div class="option">
+              <%= radio_button_tag :postal_code, @employee.postal_code, id: "postal_code_employee" %>
+              <%= label_tag "postal_code_#{@employee.postal_code}", "Record #{@employee.id}: " %> 
+                <span class="tag tag--red"><%=@employee.postal_code%>
+              </span>          </div>
+            <div class="option">
+              <%= radio_button_tag :postal_code, @potential_duplicate.postal_code, id: "postal_code_potential_duplicate" %>
+              <%= label_tag "postal_code_#{@potential_duplicate.postal_code}", "Record #{@potential_duplicate.id}: " %> 
+                <span class="tag tag--red"><%=@potential_duplicate.postal_code%>
+              </span>
+            </div>
           </div>
         </div>
-          
-          <%= hidden_field_tag :duplicate_id, @potential_duplicate.id %>
+      <% end %>
+
+      <%= hidden_field_tag :duplicate_id, @potential_duplicate.id %>
+
+      <fieldset>
+        <h3>Merging data</h3>
+        <div class="options-container">
+          <div class="option">          
+            <%= radio_button_tag :merge_action, 'merge' %>
+            <%= label_tag :merge_action_merge, "Merge records" %>
+          </div>
+          <div class="option">          
+            <%= radio_button_tag :merge_action, 'keep_unique' %>
+            <%= label_tag :merge_action_keep_unique, "These records are different. Do not merge." %>
+          </div>
+        </div>
+      </fieldset>
+      <br>
+      <div class="confirmation-option">          
+      <%= check_box_tag :confirm_action %>
+      <%= label_tag :confirm_action, "I confirm that by merging records, any history or archived data will be lost from the discarded record." %>
       </div>
-    </fieldset>
-
-  <fieldset>
-    <h3>Merging data</h3>
-    <%= radio_button_tag :merge_action, 'merge', checked: true %>
-    <%= label_tag :merge_action_merge, "Merge records" %>
-    <%= radio_button_tag :merge_action, 'keep_unique' %>
-    <%= label_tag :merge_action_keep_unique, "These records are different. Do not merge" %>
-    
-    <%= check_box_tag :confirm_action %>
-    <%= label_tag :confirm_action, "I confirm that by merging or creating a new record, the loss of any history or archived data will be lost from the discarded record." %>
-  </fieldset>
-
-  <%= submit_tag "Confirm selection", class: "button", name: "commit" %>  
+      <br>
+      <div class="button-group">
+      <%= submit_tag "Confirm selection", class: "button", name: "commit" %>  
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <h1>No duplicate data detected</h1>
 <% end %>

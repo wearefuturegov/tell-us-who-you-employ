@@ -39,8 +39,9 @@ $max-width: 1000px;
 @import "sort";
 @import "tables";
 
-// @TODO: need to genericise this
+// @TODO: need to genericise these
 @import "employee-edit";
+@import "duplicates";
 
 // temporarily removed so that status colors align with Outpost
 // @import "tags";
@@ -56,22 +57,4 @@ $max-width: 1000px;
 
 .skills tr.table-column {
   border-bottom: 1px solid #999999;
-}
-
-
-.record-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-.record {
-  border: 1px solid #cccccc;
-  padding: 10px;
-  border-radius: 5px;
-  width: 48%;
-}
-.record h3 {
-  margin: 0;
-  color: #333333;
-  font-size: 1em;
 }

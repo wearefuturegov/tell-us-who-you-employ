@@ -21,7 +21,7 @@
       <div class="alert">
           <h3>Potential duplicate record detected</h3>
           <p>We believe there could be another record that is a duplicate of this entry. These entries can be merged.</p>
-          <p>Potential duplicate record:</p>
+          <h3>Potential duplicate record: <%= "#{@potential_duplicate.forenames} #{@potential_duplicate.surname} - #{@potential_duplicate.job_title}, #{@potential_duplicate.service.name}"%></h3>
           <%= link_to 'Manage duplicates', manage_duplicates_admin_employee_path(@employee), class: "button button--secondary"%>
       </div>
     <% end %>
