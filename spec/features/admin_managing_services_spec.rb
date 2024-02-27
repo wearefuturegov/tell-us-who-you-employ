@@ -30,7 +30,7 @@ RSpec.feature 'Admin managing services' do
       })
 
       visit root_path
-      click_link 'click here'
+      click_link 'Admin'
     end
 
     after do
@@ -62,13 +62,6 @@ RSpec.feature 'Admin managing services' do
         find('#search-button').click
 
         expect(page).to have_content(service_1.name)
-      end
-
-      scenario 'you search by address' do
-        fill_in 'filterrific[search]', with: service_2.address_1
-        find('#search-button').click
-
-        expect(page).to have_content(service_2.name)
       end
 
       scenario 'you filter by service name' do

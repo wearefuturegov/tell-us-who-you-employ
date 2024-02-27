@@ -30,7 +30,7 @@ RSpec.feature 'Admin managing employees' do
       })
 
       visit root_path
-      click_link 'click here'
+      click_link 'Admin'
       click_button 'Sign in'
       visit admin_employees_path
     end

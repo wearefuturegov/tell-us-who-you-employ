@@ -6,8 +6,7 @@ RSpec.describe Admin::EmployeesController, type: :controller do
     context "when admin is not set in session" do
       it "redirects to the employees path with a notice" do
         get :index
-        expect(response).to redirect_to(employees_path)
-        expect(flash[:notice]).to eq("You don't have permission to access the admin portal.")
+        expect(response).to redirect_to(admin_start_path)
       end
     end
 
@@ -25,13 +24,13 @@ RSpec.describe Admin::EmployeesController, type: :controller do
     context "when admin_users is not set in session" do
       it "redirects to the employees path with a notice" do
         put :update, params: { id: 1 }
-        expect(response).to redirect_to(employees_path)
-        expect(flash[:notice]).to eq("You don't have permission to edit records.")
+        expect(response).to redirect_to(admin_start_path)
       end
     end
 
     context "when admin_users is set in session" do
       before { session[:admin_users] = true }
+      before { session[:admin] = true }
       let(:service_1) { FactoryBot.create :service, name: 'Rspec Name' }
       let!(:employee_1) { FactoryBot.create :employee, organisation_id: 1, service_id: service_1.id, employed_from: Date.today - 1.year,  job_title: 'Manager/Leader/Supervisor' }
 

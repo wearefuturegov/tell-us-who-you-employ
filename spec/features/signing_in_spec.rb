@@ -64,7 +64,7 @@ RSpec.feature 'Signing in' do
     expect(page).to have_content 'please list your services on our directory before you begin'
   end
 
-  scenario 'redirects to the admin portal and displays error message if the user is not admin' do
+  scenario 'redirects to the non-admin view' do
     OmniAuth.config.add_mock(:outpost, {
       uid: 12345,
       info: {
@@ -84,10 +84,10 @@ RSpec.feature 'Signing in' do
     })
 
     visit root_path
-    click_link 'click here'
+    click_link 'Admin'
     click_button 'Sign in'
 
-    expect(page).to have_content 'You don\'t have permission to access the admin portal.'
+    expect(page).to have_content 'If these records are accurate, carry on.'
   end
 
   scenario 'grants access to the admin portal if the user is an admin' do
@@ -110,7 +110,7 @@ RSpec.feature 'Signing in' do
     })
 
     visit root_path
-    click_link 'click here'
+    click_link 'Admin'
     click_button 'Sign in'
 
     expect(page).to have_content 'Provider employee details'

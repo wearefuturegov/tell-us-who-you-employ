@@ -163,7 +163,12 @@
 </div>
 
 <div class="form-actions">
-    <%= f.button "Continue", class: "button" %>
+  <div class="field checkbox">
+    <%= hidden_field_tag 'confirm_details', 'false' %>
+    <%= check_box_tag 'confirm_details', 'true', false, id: "confirm_details", class: "checkbox__input", style: "z-index: 10" %>
+    <%= label_tag :confirm_details, "All details are correct.", class: "checkbox__label" %>
+  </div>
+  <%= f.button "Continue", class: "button", id: "submit_form" %>
 </div>
 
 <% end %>

@@ -80,13 +80,13 @@ include PgSearch::Model
   end
 
 
-  def self.options_for_location
-    Service.find_each.map do |service|
-      service.full_address
-    end.uniq.sort.map do |service|
-      [service, service]
-    end
-  end
+  # def self.options_for_location
+  #   Service.find_each.map do |service|
+  #     service.full_address
+  #   end.uniq.sort.map do |service|
+  #     [service, service]
+  #   end
+  # end
 
 
   def self.options_for_sorted_by
@@ -96,26 +96,6 @@ include PgSearch::Model
       # ["Number of staff 0-9", "staff_count_asc"],
       # ["Number of staff 9-0", "staff_count_desc"],
     ]
-  end
-
-
-
-  # ----------
-  # other
-  # ----------
-
-  def full_address
-    [location_name, address_1, city, postal_code].compact.join(', ')
-  end
-
-
-
-  def self.order_by_full_address(direction = 'asc')
-    location_name = arel_table[:location_name]
-    address_1 = arel_table[:address_1]
-    order_query = Arel::Nodes::NamedFunction.new('COALESCE', [location_name, address_1])
-                    .send(direction == 'asc' ? :asc : :desc)
-    order(order_query)
   end
 
 end
