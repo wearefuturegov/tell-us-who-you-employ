@@ -11,6 +11,8 @@
       <%= f.label :service, "Provider", class: "visually-hidden" %>
       <%= f.select :service, @filterrific.select_options[:service], { include_blank: 'Filter by Provider' }, { class: "filters__select", data: { autosubmit: true }} %>
 
+      <%= f.label :with_employee_count_range, "Number of staff", class: "visually-hidden" %>
+      <%= f.select :with_employee_count_range, @filterrific.select_options[:with_employee_count_range], { include_blank: 'Filter by Number of staff' }, { class: "filters__select", data: { autosubmit: true }} %>
     </div>
   </details>
 
