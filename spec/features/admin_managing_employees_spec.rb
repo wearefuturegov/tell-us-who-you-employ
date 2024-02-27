@@ -247,7 +247,7 @@ RSpec.feature 'Admin managing employees' do
         click_link employee_1.forenames
         click_link 'Delete'
 
-        expect(page).to have_content('Employee was successfully deleted.')
+        expect(page).to have_content('Employee was successfully destroyed.')
       end
     end
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
-  let(:service) { FactoryBot.create :service }
+  let(:service) { FactoryBot.create :service, name: 'Service Name'}
 
   subject { described_class.new(
       surname: 'Lastname',
@@ -51,7 +51,7 @@ RSpec.describe Employee, type: :model do
   end
 
   describe '.status' do
-    let!(:service) { FactoryBot.create :service, name: 'Service Name' }
+    let!(:service) { FactoryBot.create :service, name: 'Service Name'}
     let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: true, service: service}
     let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, currently_employed: false, employed_to: Date.today - 1.month, service: service}
 
@@ -154,4 +154,38 @@ RSpec.describe Employee, type: :model do
       expect(Employee.options_for_service).to match_array([['Service 1', service_1.id], ['Service 2', service_2.id]])
     end
   end
+
+  describe '#check_for_duplicates' do
+  let!(:service_1) { FactoryBot.create :service, name: 'Service 1' }
+  let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, surname: 'Smith', date_of_birth: Date.today - 30.years }
+
+    context 'when there are no potential duplicates' do
+      it 'returns nil' do
+        expect(employee_1.check_for_duplicates).to be_nil
+      end
+    end
+
+    context 'when there are potential duplicates' do
+      let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, surname: 'Jones', date_of_birth: Date.today - 20.years }
+      let!(:employee_3) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, surname: 'Jones', date_of_birth: Date.today - 20.years }
+  
+      it 'identifies potential duplicates and creates duplicate records' do
+        employee_2.check_for_duplicates
+        expect(DuplicateRecord.count).to eq(2)
+      end
+    end
+  end
+
+  describe '#remove_associated_duplicate_records' do
+    let!(:service_1) { FactoryBot.create :service, name: 'Service 1'}
+    let!(:employee_1) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, surname: 'Smith', date_of_birth: Date.today - 30.years }
+    let!(:employee_2) { FactoryBot.create :employee, employed_from: Date.today - 1.year, service: service_1, surname: 'Smith', date_of_birth: Date.today - 30.years }
+    let!(:duplicate_record) { FactoryBot.create :duplicate_record, employee1: employee_1, employee2: employee_2}
+
+    it 'removes associated duplicate records upon employee destruction' do
+      employee_1.destroy
+      expect(DuplicateRecord.exists?(duplicate_record.id)).to be_falsey
+    end
+  end
+  
 end
