@@ -187,5 +187,76 @@ RSpec.describe Employee, type: :model do
       expect(DuplicateRecord.exists?(duplicate_record.id)).to be_falsey
     end
   end
-  
+
+  describe '.merge_records' do
+    let!(:service_1) { FactoryBot.create :service, name: 'Service 1' }
+    let!(:employee_1) { FactoryBot.create :employee, service: service_1, forenames: 'Joe', surname: 'Bloggs', date_of_birth: Date.today - 25.years, postal_code: 'AB12CD'}
+    let!(:duplicate) { FactoryBot.create :employee, service: service_1, forenames: 'Joe', surname: 'Bloggs', date_of_birth: Date.today - 30.years, postal_code: 'AB34EF'}
+    let(:params) { { date_of_birth: Date.today - 25.years } }
+
+    context 'when employee has a more recent updated_at timestamp' do
+      before do
+        duplicate.update(updated_at: Time.zone.now- 1.day)
+        employee_1.update(updated_at: Time.zone.now)
+      end
+
+      it 'retains the employee record and deletes the duplicate record' do
+        Employee.merge_records(employee_1, duplicate, params)
+        expect(employee_1.reload.marked_for_deletion).to be_nil
+        expect { duplicate.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        
+      end
+
+      it 'updates the attributes of the retained employee with the provided params' do
+        Employee.merge_records(employee_1, duplicate, params)
+        expect(employee_1.reload.marked_for_deletion).to be_nil
+
+        expect(employee_1.reload.date_of_birth).to eq(Date.today - 25.years)
+      end
+
+      it 'cleans up the duplicate records' do
+        expect(Employee).to receive(:clean_up_duplicates).with(employee_1, duplicate)
+        Employee.merge_records(employee_1, duplicate, params)
+      end
+
+      it 'destroys the removed employee record' do
+        expect {
+          Employee.merge_records(employee_1, duplicate, params)
+        }.to change { Employee.count }.by(-1)
+      end
+
+      it 'returns true' do
+        expect(Employee.merge_records(employee_1, duplicate, params)).to be_truthy
+      end
+    end
+
+    context 'when duplicate has a more recent updated_at timestamp' do
+      before do
+        employee_1.update(updated_at: Time.zone.now- 1.day)
+        employee_1.update(date_of_birth: Date.today - 30.years)
+        duplicate.update(updated_at: Time.zone.now)
+      end
+
+      it 'retains the duplicate record and deletes the employee record' do
+
+        Employee.merge_records(duplicate, employee_1, params)
+        expect { employee_1.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'cleans up the duplicate records' do
+        expect(Employee).to receive(:clean_up_duplicates).with(duplicate, employee_1)
+        Employee.merge_records(employee_1, duplicate, params)
+      end
+
+      it 'destroys the removed employee record' do
+        expect {
+          Employee.merge_records(employee_1, duplicate, params)
+        }.to change { Employee.count }.by(-1)
+      end
+
+      it 'returns true' do
+        expect(Employee.merge_records(employee_1, duplicate, params)).to be_truthy
+      end
+    end
+  end
 end
