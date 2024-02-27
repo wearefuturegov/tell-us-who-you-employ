@@ -1,8 +1,5 @@
 name: Run tests
 
-env:
-  NODE_OPTIONS: --openssl-legacy-provider
-
 on: [push]
 
 jobs:
