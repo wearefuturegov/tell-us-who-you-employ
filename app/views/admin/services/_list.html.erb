@@ -4,6 +4,7 @@
       <th class="visually-hidden">ID</th>
       <%= sort_column_by("Provider", "service") %>
       <th>Number of staff</th>
+      <%= sort_column_by("Last updated", "updated_at")%>
       <th class="visually-hidden">Actions</th>
     </tr>
   </thead>
@@ -17,6 +18,8 @@
         <td>
           <%= s.employees.count %>
         </td>
+        <td>
+          <%= s.updated_at.strftime("%d %b %Y") %>
         <td>
           <a href="<%= ENV["OAUTH_SERVER"] %>/admin/services/<%= s.id %>">Outpost service page</a>
         </td>
