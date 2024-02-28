@@ -241,31 +241,23 @@
         </div>
     </div>
 
-    <div class="collapsible" id="history">
-        <button class="collapsible__header" type="button">
-            <h2>
-              History
-            </h2>
-        </button>
-        <div class="collapsible__content">
-          <ul>
-            <% @employee.versions.each do |version| %>
-              <li>
-                Changed on: <%= version.created_at.strftime("%Y-%m-%d %H:%M:%S") %><br>
-                Changed by: <%= version.whodunnit || "Unknown" %><br> <!-- Directly display whodunnit -->
-                <% if version.changeset.present? %>
-                  Changes:
-                  <ul>
-                    <% version.changeset.each do |key, value| %>
-                      <li>
-                        <%= key.humanize %>: <%= value[0] %> -> <%= value[1] %>
-                      </li>
-                    <% end %>
-                  </ul>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
+      <div class="collapsible" id="history">
+          <button class="collapsible__header" type="button">
+              <h2>
+                History
+              </h2>
+          </button>
+          <div class="collapsible__content">
+            <ul>
+              <% @employee.versions.each do |version| %>
+                <li>
+                  <%= 'Record updated ' if version.event == 'update' %>
+                  <%= 'Record created ' if version.event == 'create' %>
+                  by <%= version.whodunnit || "Unknown User" %><br>
+                  Date: <%= version.created_at.strftime("%d-%m-%Y %H:%M:%S") %><br>
+                </li>
+              <% end %>
+            </ul>
 
         </div>
     </div>
