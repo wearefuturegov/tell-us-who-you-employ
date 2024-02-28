@@ -286,14 +286,24 @@
     </div>
 
     <div class="collapsible" id="history">
-        <button class="collapsible__header" type="button">
-            <h2>
-              History
-            </h2>
-        </button>
-        <div class="collapsible__content">
-
+      <button class="collapsible__header" type="button">
+          <h2>
+            History
+          </h2>
+      </button>
+      <div class="collapsible__content">
+        <ul>
+          <% @employee.versions.each do |version| %>
+            <li>
+              <%= 'Record updated ' if version.event == 'update' %>
+              <%= 'Record created ' if version.event == 'create' %>
+              by <%= version.whodunnit || "Unknown User" %><br>
+              Date: <%= version.created_at.strftime("%d-%m-%Y %H:%M:%S") %><br>
+            </li>
+          <% end %>
+        </ul>
         </div>
+      </div>
     </div>
   </div>
 </div>
