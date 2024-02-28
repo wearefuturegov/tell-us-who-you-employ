@@ -39,8 +39,9 @@ $max-width: 1000px;
 @import "sort";
 @import "tables";
 
-// @TODO: need to genericise this
+// @TODO: need to genericise these
 @import "employee-edit";
+@import "duplicates";
 
 // temporarily removed so that status colors align with Outpost
 // @import "tags";

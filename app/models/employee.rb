@@ -1,4 +1,6 @@
 class Employee < ApplicationRecord
+  after_save :check_for_duplicates
+  before_destroy :remove_associated_duplicate_records
   has_paper_trail
 
   # ----------
@@ -283,4 +285,62 @@ class Employee < ApplicationRecord
     end
   end
 
+  # ----------
+  # Duplicate checking
+  # ----------
+  def check_for_duplicates
+    duplicates = Employee.where(forenames: forenames, surname: surname)
+    .or(Employee.where(forenames: forenames, date_of_birth: date_of_birth))
+    .or(Employee.where(surname: surname, date_of_birth: date_of_birth))
+    .or(Employee.where(postal_code: postal_code, date_of_birth: date_of_birth))
+    .or(Employee.where(postal_code: postal_code, forenames: forenames))
+    .or(Employee.where(postal_code: postal_code, surname: surname))
+    .where.not(id: id)
+    create_duplicate_records(duplicates)
+  end
+
+  def create_duplicate_records(duplicates)
+    if duplicates.any?
+      duplicates.each do |duplicate|
+        DuplicateRecord.create(employee1: self, employee2: duplicate, reviewed: false)
+      end
+    end
+  end
+
+  def self.merge_records(employee, duplicate, params)
+    retained_employee, removed_employee = employee.updated_at > duplicate.updated_at ? [employee, duplicate] : [duplicate, employee]
+    updatable_attributes = %w[forenames surname date_of_birth postal_code]
+  
+    # Build the attributes hash for the update, using params if present, or retaining the existing value
+    update_attributes = updatable_attributes.each_with_object({}) do |attr, attrs|
+      attrs[attr] = params[attr].present? ? params[attr] : retained_employee.send(attr)
+    end
+  
+    Employee.transaction do
+      retained_employee.update!(update_attributes)
+      removed_employee.soft_delete
+      Employee.clean_up_duplicates(retained_employee, removed_employee)
+      removed_employee.destroy
+
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error "Error during merge_records: #{e.message}"
+    return false
+  end
+
+  def self.clean_up_duplicates(retained_employee, removed_employee)
+    removed_employee_records = DuplicateRecord.where('employee1_id = ? OR employee2_id = ?', removed_employee.id, removed_employee.id)
+    removed_employee_records.destroy_all
+
+    retained_employee_records = DuplicateRecord.where('employee1_id = ? OR employee2_id = ?', retained_employee.id, retained_employee.id)
+    retained_employee_records.update_all(reviewed: true, decision: 'resolved')
+
+  end
+
+  # ----------
+  # Before destroying employee, remove associated duplicate records
+  # ----------
+  def remove_associated_duplicate_records
+    DuplicateRecord.where("employee1_id = :id OR employee2_id = :id", id: self.id).destroy_all
+  end
 end

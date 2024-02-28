@@ -21,6 +21,10 @@ class Admin::EmployeesController < Admin::BaseController
 
   def show
     @employee = Employee.find(params[:id])
+    @is_potential_duplicate = check_potential_duplicate(@employee)
+    if @is_potential_duplicate
+      @potential_duplicate = potential_duplicate_record(@employee)
+    end
   end
 
   def edit
@@ -51,13 +55,50 @@ class Admin::EmployeesController < Admin::BaseController
     end
   end
   
-
-  def destroy
+  def delete
     @employee = Employee.find(params[:id])
     @employee.soft_delete
     redirect_to admin_employees_path, notice: 'Employee was successfully deleted.'
   end
 
+  def destroy
+    @employee = Employee.unscoped.find(params[:id])
+    @employee.destroy
+    redirect_to admin_employees_path, notice: 'Employee was successfully destroyed.'
+  end
+
+  def manage_duplicates
+    @employee = Employee.find(params[:id])
+    @potential_duplicate = potential_duplicate_record(@employee)
+  end
+
+  def merge
+    employee = Employee.find(params[:id])
+    duplicate = Employee.find(params[:duplicate_id])
+
+    recently_updated_employee = employee.updated_at > duplicate.updated_at ? employee : duplicate
+
+    case params[:merge_action]
+    when 'merge'
+      if params[:confirm_action] == '1'
+        DuplicateRecord.create(employee1: employee, employee2: duplicate, reviewed: true, decision: 'isDuplicate', review_date: Time.zone.now)
+        Employee.merge_records(employee, duplicate, params)
+        redirect_to admin_employee_path(recently_updated_employee), notice: 'Records merged successfully.'
+      else
+        redirect_to manage_duplicates_admin_employee_path(employee), alert: 'Please confirm the action to merge records.'
+      end
+    when 'keep_unique'
+      existing_record = DuplicateRecord.find_by(employee1_id: employee.id, employee2_id: duplicate.id) ||
+      DuplicateRecord.find_by(employee1_id: duplicate.id, employee2_id: employee.id)
+      if existing_record.present?
+      existing_record.update(reviewed: true, decision: 'isUnique', review_date: Time.zone.now)
+      else
+      DuplicateRecord.create(employee1: employee, employee2: duplicate, reviewed: true, decision: 'isUnique', review_date: Time.zone.now)
+      end
+      redirect_to admin_employee_path(recently_updated_employee), notice: 'Records have been marked as non-duplicates.'
+    end
+
+  end
   
   private
 
@@ -163,5 +204,19 @@ class Admin::EmployeesController < Admin::BaseController
 
   def set_services
     @services = Service.all.collect { |s| [s.name, s.id] }
+  end
+
+  def check_potential_duplicate(employee)
+    DuplicateRecord.where(employee1: employee, reviewed: false).or(DuplicateRecord.where(employee2: employee, reviewed: false)).exists?
+  end
+
+  def potential_duplicate_record(employee)
+    duplicate = Employee.where(forenames: employee.forenames, surname: employee.surname)
+    .or(Employee.where(forenames: employee.forenames, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(surname: employee.surname, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(postal_code: employee.postal_code, date_of_birth: employee.date_of_birth))
+    .or(Employee.where(postal_code: employee.postal_code, forenames: employee.forenames))
+    .or(Employee.where(postal_code: employee.postal_code, surname: employee.surname))
+    .where.not(id: employee.id).first
   end
 end
