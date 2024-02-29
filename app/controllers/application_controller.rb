@@ -25,6 +25,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user
+    if session[:first_name] && session[:last_name]
+      @current_user ||= [session[:first_name], session[:last_name]].join(' ')
+    else
+      nil
+    end
+  end
+  
+
+  def user_for_paper_trail
+    current_user
+  end
+
+
   # moved here from sessions_controller since an admin might also need to submit employee data
   # First check that the user is associated with an organisation and has listed
   # services; if they haven't, they can't use this service
