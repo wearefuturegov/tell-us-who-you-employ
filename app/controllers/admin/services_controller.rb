@@ -9,7 +9,8 @@ class Admin::ServicesController < Admin::BaseController
       persistence_id: false,
       select_options: {
         service: Service.options_for_service,
-        sorted_by: Service.options_for_sorted_by
+        sorted_by: Service.options_for_sorted_by,
+        with_employee_count_range: Service.options_for_number_of_staff
       },
     ) or return
     
