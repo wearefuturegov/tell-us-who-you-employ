@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 2024_02_28_104107) do
 
   create_table "services", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "versions", force: :cascade do |t|
