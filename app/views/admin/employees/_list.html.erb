@@ -37,7 +37,7 @@
           <%= link_to e.service.name.truncate(30), admin_service_path(e.service.id), title: e.service.name %>
         </td>
         <td>
-          <%= e.qualifications.join("<br>") if e.qualifications.present? %>
+          <%= safe_join(e.qualifications, tag(:br)) if e.qualifications.present? %>
         </td>
         <td><%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %></td>
         <td>
