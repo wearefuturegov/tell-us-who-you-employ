@@ -12,7 +12,7 @@ class Employee < ApplicationRecord
   # ----------
   # associations
   # ----------
-  belongs_to :service
+  belongs_to :service, touch: true
 
 
   # ----------

@@ -48,6 +48,8 @@ include PgSearch::Model
       order(services[:name].lower.send(direction))
     # when /^staff_count_/
       # order(employees[:qualifications].lower.send(direction))
+    when /^updated_at_/
+      order(services[:updated_at].send(direction))
     else
       raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
     end
