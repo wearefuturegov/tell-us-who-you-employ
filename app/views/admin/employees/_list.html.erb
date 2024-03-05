@@ -42,7 +42,7 @@
         <td><%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %></td>
         <td>
         <% if admin_users? %>
-          <a href="<%= edit_admin_employee_url(e) %>" class="edit" title="Edit <%= [e.forenames, e.surname].join(' ') %>, <%= e.job_title %> at <%= e.service.name %> "><span class="visually-hidden">Edit this employee</span></a>
+          <a href="<%= edit_admin_employee_url(e) %>" class="icon-edit" title="Edit <%= [e.forenames, e.surname].join(' ') %>, <%= e.job_title %> at <%= e.service.name %> "><span class="visually-hidden">Edit this employee</span></a>
         <% end %>
         </td>
       </tr>

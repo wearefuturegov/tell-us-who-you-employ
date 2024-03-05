@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@outpost-platform/outpost-design-library@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@outpost-platform/outpost-design-library/-/outpost-design-library-1.0.9.tgz#78be6f075c3a62864135a2a7a569e177e75ab6f7"
-  integrity sha512-A1uFA5n5GrsDnjyeEYEpXLNE8D7tbKDNJnJfUqs29+rJIOaYXhTun8vASILK7CqeJy0d5rySivM1sofRY3bS5A==
+"@outpost-platform/outpost-design-library@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@outpost-platform/outpost-design-library/-/outpost-design-library-1.0.11.tgz#119da66fa4f541660a440f8a3202d748ed20dc55"
+  integrity sha512-6rBZ7dyjxnNTFIqWCj70mfGH3kO8qk0HUFcDhI7o+AJ7ZHBs58uBjYHC/pPWKwnQMUEz5MUWq5acxWlkRa5JJw==

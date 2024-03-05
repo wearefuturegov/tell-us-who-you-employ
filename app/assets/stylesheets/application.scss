@@ -13,37 +13,53 @@ $max-width: 1000px;
 @import "@outpost-platform/outpost-design-library/beta-banner";
 @import "@outpost-platform/outpost-design-library/nav";
 @import "@outpost-platform/outpost-design-library/page-header";
+@import "@outpost-platform/outpost-design-library/shortcut-nav";
 @import "@outpost-platform/outpost-design-library/footer";
 
 // components
 @import "@outpost-platform/outpost-design-library/go-back";
 @import "@outpost-platform/outpost-design-library/buttons";
 @import "@outpost-platform/outpost-design-library/forms";
+// @import "@outpost-platform/outpost-design-library/big-numbers";
+@import "@outpost-platform/outpost-design-library/tags";
+// @import "@outpost-platform/outpost-design-library/task-list";
+// @import "@outpost-platform/outpost-design-library/poppables";
+// @import "@outpost-platform/outpost-design-library/user-circles";
 @import "@outpost-platform/outpost-design-library/tables";
+@import "@outpost-platform/outpost-design-library/collapsibles";
+// @import "@outpost-platform/outpost-design-library/help-tips";
+// @import "@outpost-platform/outpost-design-library/choices";
 @import "@outpost-platform/outpost-design-library/pagination";
+// @import "@outpost-platform/outpost-design-library/maps";
+@import "@outpost-platform/outpost-design-library/mini-search";
 @import "@outpost-platform/outpost-design-library/alerts";
 @import "@outpost-platform/outpost-design-library/notices";
 @import "@outpost-platform/outpost-design-library/errors";
+// @import "@outpost-platform/outpost-design-library/tagify";
+// @import "@outpost-platform/outpost-design-library/repeaters";
+// @import "@outpost-platform/outpost-design-library/stepper";
+// @import "@outpost-platform/outpost-design-library/todo";
+// @import "@outpost-platform/outpost-design-library/notes";
+// @import "@outpost-platform/outpost-design-library/tabs";
+// @import "@outpost-platform/outpost-design-library/snapshots";
+// @import "@outpost-platform/outpost-design-library/big-list";
 @import "@outpost-platform/outpost-design-library/confirmation";
-@import "@outpost-platform/outpost-design-library/radios";
-@import "@outpost-platform/outpost-design-library/tags";
-@import "@outpost-platform/outpost-design-library/mini-search";
 @import "@outpost-platform/outpost-design-library/filters";
-@import "@outpost-platform/outpost-design-library/collapsibles";
-@import "@outpost-platform/outpost-design-library/shortcut-nav";
+@import "@outpost-platform/outpost-design-library/radios";
+// @import "@outpost-platform/outpost-design-library/taxonomy-tree";
+// @import "@outpost-platform/outpost-design-library/feedback";
+// @import "@outpost-platform/outpost-design-library/read-only-field";
+// @import "@outpost-platform/outpost-design-library/app-switcher";
+// @import "@outpost-platform/outpost-design-library/wysiwyg";
+@import "@outpost-platform/outpost-design-library/breadcrumbs";
 
-@import "breadcrumbs";
 @import "page-title";
 @import "flow";
-@import "edit";
+@import "icon-edit";
 @import "sort";
-@import "tables";
 
 // @TODO: need to genericise this
 @import "employee-edit";
-
-// temporarily removed so that status colors align with Outpost
-// @import "tags";
 
 .table-action {
   margin-left: 10px;
