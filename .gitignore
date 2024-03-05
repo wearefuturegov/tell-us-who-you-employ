@@ -38,3 +38,6 @@
 
 # Ignore certs!
 certs/
+
+# misc
+.DS_Store
