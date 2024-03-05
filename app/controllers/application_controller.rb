@@ -51,15 +51,17 @@ class ApplicationController < ActionController::Base
     end
   end 
 
+  # 99% of the time this is the check you need
   def authenticate_admin!
     unless admin? 
       redirect_to admin_start_path
     end
   end
 
+  # use this for higher level privileges and editing data
   def user_admins_only!
     unless admin_users? 
-      redirect_to request.referer, notice: "You don't have permission to edit other users."
+      redirect_back fallback_location: admin_start_path, notice: "You don't have permission to edit other users."
     end
   end
 

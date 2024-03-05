@@ -1,4 +1,5 @@
 class Admin::EmployeesController < Admin::BaseController
+  before_action :user_admins_only!, only: [:invalid]
   before_action :set_employee, only: [:update]
   before_action :set_services, only: [:edit, :update]
 
@@ -25,6 +26,15 @@ class Admin::EmployeesController < Admin::BaseController
 
   def edit
     @employee = Employee.find(params[:id])
+  end
+
+  def invalid
+    @employees = Employee.all.reject(&:valid?)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @employees.to_json }
+    end
   end
 
 
