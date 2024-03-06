@@ -1,178 +1,116 @@
-<header class="page-header">
-  <%= link_to "Back", admin_employees_path, class: "go-back" %>
-  <p><strong>
-  <%= "#{@employee.job_title}, #{@employee.service.name}" %>
-  </strong></p>
-  <div class="employee-detail">
-    <p>
-      <%= "Record #{@employee.id}"%>
-    </p>
-    <% if admin_users? %>
-      <div class="edit-actions">
-        <%= link_to 'Edit', edit_admin_employee_path(@employee) %>
-        <%= link_to 'Delete record', admin_employee_path(@employee), method: :delete, data: { confirm: 'Are you sure?' } %>
+<% content_for :header do %>
+
+  <%# if @ofsted_item.present? %>
+  <!--<div class="notice">
+      <div class="notice__body">
+          <p>
+              This item has been marked as a duplicate
+          </p>
       </div>
-    <% end %>
-  </div>
+  </div>-->
+  <%# end %>
+
+  <%= render "admin/shared/dynamic-back-link", text: "Back to provider employee details", path: admin_employees_path %>
+  <h1 class="page-header__title two-thirds"><%= employee_display_name(@employee) %></h1>
+  <h2><%= employee_display_job_summary(@employee) %></h2>
+  <p class="text-light">Record <%= @employee.id %>  </p>
+<% end %>
+
+
+<header class="actions">
+  <% if admin_users? %><%= link_to 'Edit', edit_admin_employee_path(@employee), class: 'inline-button button--secondary' %>  <% end %>
+  <button class="inline-button actions__pull-right" data-open-all>Open all</button>
+  <button class="inline-button" data-close-all>Close all</button>
 </header>
+
 
 <div class="with-sidebar">
 
-  <div class="panel">
-    <div class="collapsible" id="personal-information">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Personal information
-          </h2>
-      </button>
-      <div class="collapsible__content">
-        <div class="field">
-          <strong>
-            <label class="field__label">First names</label>
-          </strong>
-            <p class="field__input"><%= @employee.forenames %></p>
-        </div>
+  <div>
 
-        <div class="field">
-          <strong>
-            <label class="field__label">Surname</label>
-          </strong>
-            <p class="field__input"><%= @employee.surname %></p>
-        </div>
-
-        <div class="field">
-          <strong>
-            <label class="field__label">Date of Birth</label>
-          </strong>
-            <p class="field__input"><%= @employee.date_of_birth.strftime("%d/%m/%Y") %></p>
-        </div>
-
-        <div class="field">
-          <strong>
-            <label class="field__label">Home address</label>
-          </strong>
-            <p class="field__input"><%= @employee.street_address %></p>
-        </div>
-
-        <div class="field">
-          <strong>
-            <label class="field__label">Post code</label>
-          </strong>
-            <p class="field__input"><%= @employee.postal_code %></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="collapsible" id="provider">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Provider
-          </h2>
-      </button>
-      <div class="collapsible__content">
-        <div class="field">
-          <strong>
-            <label class="field__label">Current Provider</label>
-          </strong>
-            <p class="field__input"><%= service_name_by_id(@employee.service_id) %></p>
-        </div>
-
-        <div class="field">
-          <strong>
-            <label class="field__label">Employed from</label>
-          </strong>
-            <p class="field__input"><%= @employee.employed_from.strftime("%d/%m/%Y") %></p>
-        </div>
-
-        <div class="checkbox field">
-          <strong>
-            <label class="field__label">Currently employed</label>
-          </strong>
-            <p class="field__input">
-                <%= @employee.currently_employed? ? 'Yes' : 'No' %>
-            </p>
-        </div>
-
-        <% if @employee.employed_to.present?%>
-        <div class="field">
-          <strong>
-            <label class="field__label">Employed to</label>
-          </strong>
-            <p class="field__input"><%= @employee.employed_to.strftime("%d/%m/%Y") %></p>
-        </div>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="collapsible" id="job-title">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Job title
-          </h2>
-      </button>
-      <div class="collapsible__content">
-        <div class="field">
-          <strong>
-            <label class="field__label">Job title</label>
-          </strong>
-            <p class="field__input"><%= @employee.job_title %></p>
-        </div>
-      </div>
-    </div>
+    <%= render "admin/shared/collapsible", name: "Personal information", id: "employee-personal-information" do %>
+      <%= render "admin/shared/field-static", label: "Forenames" do %>
+        <%= employee_display_forenames(@employee) %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Surname" do %>
+        <%= employee_display_surname(@employee) %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Date of birth" do %>
+        <%= @employee.date_of_birth.strftime("%d/%m/%Y") unless @employee.date_of_birth.nil? %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Home address" do %>
+        <%= @employee.street_address unless @employee.street_address.nil? %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Postcode" do %>
+        <%= @employee.postal_code unless @employee.postal_code.nil? %>
+      <% end %> 
+    <% end %>
 
 
-    <div class="collapsible" id="roles">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Roles
-          </h2>
-      </button>
-      <div class="collapsible__content">
-        <div class="field">
-          <strong>
-            <label class="field__label">Current roles</label>
-          </strong>
-            <p class="field__input">
-              <% if @employee.roles.present? %>
+
+    <%= render "admin/shared/collapsible", name: "Provider", id: "employee-provider-information" do %>
+      <%= render "admin/shared/field-static", label: "Current provider" do %>
+        <%= link_to service_name_by_id(@employee.service_id), admin_service_path(@employee.service_id) %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Employed from" do %>
+        <%= @employee.employed_from.strftime("%d/%m/%Y") unless @employee.employed_from.nil?  %>
+      <% end %> 
+      <%= render "admin/shared/field-static", label: "Currently employed" do %>
+        <%= @employee.currently_employed? ? 'Yes' : 'No' %>
+      <% end %> 
+      <% if @employee.employed_to.present? %>
+        <%= render "admin/shared/field-static", label: "Employed to" do %>
+          <%= @employee.employed_to.strftime("%d/%m/%Y") unless @employee.employed_to.nil?  %>
+        <% end %> 
+      <% end %> 
+    <% end %>
+
+
+    <%= render "admin/shared/collapsible", name: "Job title", id: "employee-job-title" do %>
+      <%= render "admin/shared/field-static", label: "Job title" do %>
+        <%= @employee.job_title unless @employee.job_title.nil? %>
+      <% end %> 
+    <% end %>
+
+
+    <%= render "admin/shared/collapsible", name: "Roles", id: "employee-roles" do %>
+      <%= render "admin/shared/field-static", label: "Current roles" do %>
+            <% if @employee.roles.present? %>
                 <% @employee.roles.each do |role| %>
                   <%= role %><br>
                 <% end %>
               <% else %>
                 No roles
               <% end %>
-            </p>
-        </div>
-      </div>
-    </div>
+      <% end %> 
+    <% end %>
 
-    <div class="collapsible" id="skills">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Skills
-          </h2>
-      </button>
-      <div class="collapsible__content">
 
+    <%= render "admin/shared/collapsible", name: "Skills", id: "employee-skills" do %>
+    <% if 
+        [@employee.has_dbs_check,
+        @employee.has_first_aid_training,
+        @employee.has_food_hygiene,
+        @employee.has_senco_training,
+        @employee.has_safeguarding,
+        @employee.has_senco_early_years].any? %>
         <table class="table--employee-info">
           <tr class="table-column">
             <th>Skill</th>
-            <th>Date Achieved</th>
+            <th>Date achieved</th>
           </tr>
-
           <% if @employee.has_dbs_check %>
             <tr class="table-column">
               <td>DBS check</td>
               <td><%= @employee.dbs_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
-
           <% if @employee.has_first_aid_training %>
             <tr class="table-column">
               <td>Paediatric First Aid training</td>
               <td><%= @employee.first_aid_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
-
           <% if @employee.has_food_hygiene %>
             <tr class="table-column">
               <td>Food Hygiene Qualification</td>
@@ -191,74 +129,57 @@
               <td><%= @employee.safeguarding_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
-            <% if @employee.has_senco_early_years %>
+          <% if @employee.has_senco_early_years %>
             <tr class="table-column">
               <td>Early Years Level 3 SENCO</td>
               <td><%= @employee.senco_early_years_achieved_on.strftime("%d/%m/%Y") %></td>
             </tr>
           <% end %>
         </table>
-      </div>
-    </div>
+          <% else %>
+            <p>No skills added</p>
+          <% end %>
+    <% end %>
+    
 
-    <div class="collapsible" id="qualifications">
-      <button class="collapsible__header" type="button">
-          <h2>
-            Qualifications
-          </h2>
-      </button>
-      <div class="collapsible__content">
-        <div class="field">
-          <strong>
-            <label class="field__label">Qualifications</label>
-          </strong>
-            <p class="field__input">
-              <% if @employee.qualifications.present? %>
-                <% @employee.qualifications.each do |qualification| %>
-                  <%= qualification %><br>
-                <% end %>
-              <% else %>
-                No qualifications
-              <% end %>
-            </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="panel">
-    <div class="collapsible" id="status">
-        <button class="collapsible__header" type="button">
-            <h2>
-              Status
-            </h2>
-        </button>
-        <div class="collapsible__content">
-          <p>The records status shows whether they are actively in their current role or not.</p>
-          <div class="tag margin-top--md <%= @employee.currently_employed? ? 'bg--active color--active border--active' : 'bg--inactive color--inactive border--inactive' %>">
-            <%= @employee.currently_employed? ? 'Active' : 'Inactive' %>
-          </div>
-        </div>
-    </div>
 
-    <div class="collapsible" id="history">
-        <button class="collapsible__header" type="button">
-            <h2>
-              History
-            </h2>
-        </button>
-        <div class="collapsible__content">
-          <ul>
-            <% @employee.versions.each do |version| %>
-              <li>
-                <%= 'Record updated ' if version.event == 'update' %>
-                <%= 'Record created ' if version.event == 'create' %>
-                by <%= version.whodunnit || "Unknown User" %><br>
-                Date: <%= version.created_at.strftime("%d-%m-%Y %H:%M:%S") %><br>
-              </li>
-            <% end %>
-          </ul>
+    <%= render "admin/shared/collapsible", name: "Qualifications", id: "employee-qualifications" do %>
+     <% if @employee.qualifications.present? %>
+        <table class="table--employee-info">
+          <tr class="table-column">
+            <th>Qualification</th>
+          </tr>
+        <% @employee.qualifications.each do |qualification| %>
+         <tr class="table-column">
+              <td><%= qualification %></td>
+            </tr>
+        <% end %>
+        </table>
+      <% else %>
+        <p>No qualifications added</p>
+      <% end %>
+    <% end %>
+    
+
+
+    <% if admin_users? %>
+      <div class="danger-zone">
+          <h2>Danger zone</h2>
+          <p>Permanently deleted employees will be removed after 30 days. They can't be recovered by anyone.</p>
+          <%= link_to 'Delete employee', admin_employee_path(@employee), class: 'button button--danger', method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
-    </div>
+    <% end %>
+
   </div>
+
+  <aside class="with-sidebar__sidebar">
+    <%= render "admin/shared/collapsible", name: "Status", id: "employee-status" do %>
+      <%= render "admin/employees/data/status", object: @employee %>
+    <% end %>
+
+    <%= render "admin/shared/collapsible", name: "History", id: "employee-history" do %>
+      <%= render "admin/employees/data/history", object: @employee %>
+    <% end %>
+  </aside>
+
 </div>

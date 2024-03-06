@@ -3,15 +3,8 @@ include Filterrific
 module ApplicationHelper
 
   def service_name_by_id(id)
-    if session[:services]
-      result = session[:services].find{|s| s["id"] === id }
-      return result["name"] if result
-    else 
       result = Service.where(id: id).pluck(:name)
       return result.join(' ')  if result
-    end
-  
-    return id
   end
 
 
@@ -132,4 +125,46 @@ module ApplicationHelper
   def body_class
     'flow-content' unless controller_path.start_with?('admin/')
   end
+
+  def short_time_ago_in_words(val)
+    time_ago_in_words(val).gsub("about ", "")
+end
+
+  def pretty_event(event)
+    case event
+    when "create"
+        "Created"
+    when "update"
+        "Updated"
+    when "destroy"
+        "Deleted"        
+    when "archive"
+        "Archived"
+    when "restore"
+        "Restored"
+    when "import"
+        "Imported"
+    when "approve"
+        "Approved"
+    else
+        event.capitalize
+    end
+end
+
+  def stepper_class(event)
+    case event
+    when "ofsted_create"
+        "stepper__step--solid"   
+    when "create"
+        "stepper__step--solid"   
+    when "archive"
+        "stepper__step--cross"
+    when "import"
+        "stepper__step--solid"
+    when "approve"
+        "stepper__step--tick"
+    end
+end
+
+
 end

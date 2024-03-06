@@ -1,87 +1,22 @@
 <%= form_for @employee, html: {class: "two-thirds"} do |f| %>
 
-<% if @employee.errors.any? %>
-<div class="error">
-    <h2 class="error__title"><%= pluralize(@employee.errors.count, "error") %> stopped this employee being saved:</h2>
-    <ul class="error__list">
-        <% @employee.errors.full_messages.each do |e| %>
-        <li><%= e %></li>
-        <% end %>
-    </ul>
-</div>
-<% end %>
 
-<div class="field-group field-group--two-cols">
-    <div class="field field--required" >
-        <%= f.label :surname, class: "field__label" %>
-        <%= f.text_field :surname, required: true, class: "field__input" %>
-    </div>
+<%= render "shared/errors", model: @employee %>
 
-    <div class="field field--required">
-        <%= f.label :forenames, class: "field__label" %>
-        <%= f.text_field :forenames, required: true, class: "field__input" %>
-    </div>
-</div>
-
-<div class="field-group field-group--no-top-margin">
-    <div class="field field--required">
-        <%= f.label :street_address, "Home address", class: "field__label" %>
-        <%= f.text_field :street_address, required: true, class: "field__input" %>
-    </div>
-
-    <div class="field field--required">
-        <%= f.label :postal_code, "Home postcode", class: "field__label" %>
-        <%= f.text_field :postal_code, required: true, class: "field__input" %>
-    </div>
-
-    <div class="field field--required">
-        <%= f.label :date_of_birth, class: "field__label" %>
-        <%= f.date_field :date_of_birth, class: "field__input" %>
-    </div>
-</div>
+ <%= render "employees/editors/personal-information", f: f %>
 
 <div class="field-group">
 
 <h2>About their employment</h2>
 
-<div class="field">
-    <%= f.label :service_id, "Which service do they work at?", class: "field__label" %>
-    <%= f.select :service_id, session[:services].map{ |s| [s["name"], s["id"]]}, class: "field__input" %>
-</div>
+ <%= render "employees/editors/provider", f: f, label: "Which service do they work at?" %>
 
-<div class="field field--required">
-    <%= f.label :job_title, "Job title", class: "field__label" %>
-    <%= f.select :job_title, accepted_job_titles, required: true, class: "field__input" %>
-</div>
+ <%= render "employees/editors/job-title", f: f %>
 
 
-<fieldset class="field-group field-group--two-cols">
-    <legend class="field-group__legend">Roles</legend>
-    
-        <% accepted_roles.each_with_index do |qual, i| %>
-            <div class="field checkbox">
-                <%= f.check_box :roles, { multiple: true, class: "checkbox__input", id: "employee_roles_#{i}" }, qual, nil %>
-                <%= f.label "roles_#{i}", qual, class: "checkbox__label" %>
-            </div>
-        <% end %>
-</fieldset>
+ <%= render "employees/editors/roles", f: f %>
 
-<div class="field-group field-group--two-cols">
-    <div class="field field--required" >
-        <%= f.label :employed_from, "When did their employment start?", class: "field__label" %>
-        <%= f.date_field :employed_from, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-    </div>
-
-    <div class="field">
-        <%= f.label :employed_to, "When did their employment finish?", class: "field__label" %>
-        <%= f.date_field :employed_to, class: "field__input" , min: Date.today - 80.years, max: Date.today%>
-    </div>
-</div>
-
-<div class="checkbox field">
-    <%= f.check_box :currently_employed, {class: "checkbox__input"} %>
-    <%= f.label :currently_employed, "Is this person currently employed?", class: "checkbox__label" %>
-</div>
+ <%= render "employees/editors/employment", f: f %>
 
 </div>
 
@@ -89,85 +24,13 @@
 
 <h2>About their skills</h2>
 
-<div class="checkbox field">
-    <%= f.check_box :has_food_hygiene, {class: "checkbox__input"} %>
-    <%= f.label :has_food_hygiene, "Does this person have food hygiene qualification?", class: "checkbox__label" %>
-</div>
+ <%= render "employees/editors/skills", f: f %>
 
-<div class="field">
-    <%= f.label :food_hygiene_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :food_hygiene_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
+ <%= render "employees/editors/qualifications", f: f %>
 
-<div class="checkbox field">
-    <%= f.check_box :has_dbs_check, {class: "checkbox__input"} %>
-    <%= f.label :has_dbs_check, "Does this person hold a DBS check?", class: "checkbox__label" %>
-</div>
-
-<div class="field">
-    <%= f.label :dbs_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :dbs_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
-
-<div class="checkbox field">
-    <%= f.check_box :has_first_aid_training, {class: "checkbox__input"} %>
-    <%= f.label :has_first_aid_training, "Does this person have paediatric first aid training?", class: "checkbox__label" %>
-</div>
-
-<div class="field">
-    <%= f.label :first_aid_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :first_aid_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
-
-<div class="checkbox field">
-    <%= f.check_box :has_senco_training, {class: "checkbox__input"} %>
-    <%= f.label :has_senco_training, "Does this person have SENCO training?", class: "checkbox__label" %>
-</div>
-
-<div class="field">
-    <%= f.label :senco_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
-
-<div class="checkbox field">
-    <%= f.check_box :has_senco_early_years, {class: "checkbox__input"} %>
-    <%= f.label :has_senco_early_years, "Does this person have early years level 3 SENCO?", class: "checkbox__label" %>
-</div>
-
-<div class="field">
-    <%= f.label :senco_early_years_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :senco_early_years_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
-
-<div class="checkbox field">
-    <%= f.check_box :has_safeguarding, {class: "checkbox__input"} %>
-    <%= f.label :has_safeguarding, "Does this person have (Other Safeguarding) Safeguarding for all training?", class: "checkbox__label" %>
-</div>
-
-<div class="field">
-    <%= f.label :safeguarding_achieved_on, "If so, when did they achieve it?", class: "field__label" %>
-    <%= f.date_field :safeguarding_achieved_on, class: "field__input", min: Date.today - 80.years, max: Date.today %>
-</div>
-
-
-<fieldset class="field-group field-group--two-cols">
-    <legend class="field-group__legend">What qualifications does this person have?</legend>
-
-    <% accepted_qualifications.each_with_index do |qual, i| %>
-    <div class="field checkbox">
-        <%= f.check_box :qualifications, { multiple: true, class: "checkbox__input", id: "employee_qualifications_#{i}" }, qual, nil %>
-        <%= f.label "qualifications_#{i}", qual, class: "checkbox__label" %>
-    </div>
-    <% end %>
-</fieldset>
 </div>
 
 <div class="form-actions">
-  <div class="field checkbox">
-    <%= hidden_field_tag 'confirm_details', 'false' %>
-    <%= check_box_tag 'confirm_details', 'true', false, id: "confirm_details", class: "checkbox__input", style: "z-index: 10" %>
-    <%= label_tag :confirm_details, "All details are correct.", class: "checkbox__label" %>
-  </div>
   <%= f.button "Continue", class: "button", id: "submit_form" %>
 </div>
 

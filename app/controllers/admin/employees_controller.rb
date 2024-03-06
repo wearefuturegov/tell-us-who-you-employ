@@ -22,10 +22,22 @@ class Admin::EmployeesController < Admin::BaseController
 
   def show
     @employee = Employee.find(params[:id])
+    if @employee.versions.length > 4
+      @versions = @employee.versions.first(3)
+      @versions.push(@employee.versions.last)
+    else
+      @versions = @employee.versions
+    end
   end
 
   def edit
     @employee = Employee.find(params[:id])
+    if @employee.versions.length > 4
+      @versions = @employee.versions.first(3)
+      @versions.push(@employee.versions.last)
+    else
+      @versions = @employee.versions
+    end
   end
 
   def invalid

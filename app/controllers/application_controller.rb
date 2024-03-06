@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   
 
   def user_for_paper_trail
-    current_user
+    session.nil? ? 'Unknown' : session[:uid] 
   end
 
 

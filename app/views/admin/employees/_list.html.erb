@@ -25,25 +25,25 @@
       <tr>
         <!--<td><span class="table__small"><%= e.id %></span></td>-->
         <td>
-          <strong><%= link_to e.forenames.truncate(30), admin_employee_path(e), title: e.forenames %></strong>
+            <strong><%= link_to employee_display_forenames(e).truncate(30), admin_employee_path(e), title: employee_display_forenames(e) %></strong>
         </td>
         <td>
-          <%= link_to e.surname.truncate(30), admin_employee_path(e), title: e.surname %>
+            <%= link_to employee_display_surname(e).truncate(30), admin_employee_path(e), title: employee_display_surname(e) %>
         </td>
         <td>
           <%= e.job_title %>
         </td>
         <td>
-          <%= link_to e.service.name.truncate(30), admin_service_path(e.service.id), title: e.service.name %>
+            <%= link_to e.service.name.truncate(30), admin_service_path(e.service.id), title: e.service.name %>
         </td>
         <td>
           <%= safe_join(e.qualifications, tag(:br)) if e.qualifications.present? %>
         </td>
-        <td><%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %></td>
         <td>
-        <% if admin_users? %>
-          <a href="<%= edit_admin_employee_url(e) %>" class="icon-edit" title="Edit <%= [e.forenames, e.surname].join(' ') %>, <%= e.job_title %> at <%= e.service.name %> "><span class="visually-hidden">Edit this employee</span></a>
-        <% end %>
+          <%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %>
+        </td>
+        <td>
+        <%= edit_employee_link(e) %>
         </td>
       </tr>
     <% end %>

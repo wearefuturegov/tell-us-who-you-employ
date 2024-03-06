@@ -13,8 +13,10 @@
 ActiveRecord::Schema.define(version: 2024_02_28_104107) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
+  enable_extension "postgres_fdw"
 
   create_table "employees", force: :cascade do |t|
     t.string "surname"

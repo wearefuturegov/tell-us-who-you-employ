@@ -37,7 +37,7 @@ $max-width: 1000px;
 @import "@outpost-platform/outpost-design-library/errors";
 // @import "@outpost-platform/outpost-design-library/tagify";
 // @import "@outpost-platform/outpost-design-library/repeaters";
-// @import "@outpost-platform/outpost-design-library/stepper";
+@import "@outpost-platform/outpost-design-library/stepper";
 // @import "@outpost-platform/outpost-design-library/todo";
 // @import "@outpost-platform/outpost-design-library/notes";
 // @import "@outpost-platform/outpost-design-library/tabs";
@@ -58,18 +58,6 @@ $max-width: 1000px;
 @import "icon-edit";
 @import "sort";
 
-// @TODO: need to genericise this
-@import "employee-edit";
-
-.table-action {
-  margin-left: 10px;
-}
-
-// @TODO document where these are used
-.qualifications tr.table-column {
-  border-bottom: 1px solid #999999;
-}
-
-.skills tr.table-column {
-  border-bottom: 1px solid #999999;
+.text-light {
+  color: $grey3;
 }

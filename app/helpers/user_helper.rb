@@ -1,7 +1,7 @@
 module UserHelper 
 
   # Returns the user's display name first_name last_name
-  def user_display_name
+  def user_session_display_name()
     if session[:first_name] && session[:last_name]
       [session[:first_name], session[:last_name]].join(' ')
     else
