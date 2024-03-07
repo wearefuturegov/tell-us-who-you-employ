@@ -1,5 +1,4 @@
 <div class="field">
-    <% label = local_assigns[:label] || "Service" %>
-    <%= f.label :service_id, label, class: "field__label" %>
+    <%= f.label :service_id, "Which service do they work at?", class: "field__label" %>
     <%= f.select :service_id, session[:services].map{ |s| [s["name"], s["id"]]}, class: "field__input" %>
 </div>

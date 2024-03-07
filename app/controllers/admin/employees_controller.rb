@@ -12,7 +12,7 @@ class Admin::EmployeesController < Admin::BaseController
         job_title: Employee.options_for_job_title,
         status: Employee.options_for_status,
         qualifications: Employee.options_for_qualifications,
-        service: Employee.options_for_service,
+        with_service_id: Service.options_for_service,
         sorted_by: Employee.options_for_sorted_by,
       },
     ) or return
@@ -41,7 +41,7 @@ class Admin::EmployeesController < Admin::BaseController
   end
 
   def invalid
-    @employees = Employee.all.reject(&:valid?)
+    @employees = Employee.all.includes(:service).reject(&:valid?)
 
     respond_to do |format|
       format.html

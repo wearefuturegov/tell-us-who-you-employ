@@ -4,8 +4,10 @@
       <li class="stepper__step <%= stepper_class(v.event) %>">
         <div>
           <%= pretty_event(v.event)&.humanize %>
-          <% if v.whodunnit.present? %>
-            by <strong><%= v.whodunnit %></strong>
+          <% if v.user_name.present? %>
+            by <strong><%= link_to v.user_name, user_admin_outpost_profile(v.whodunnit) %></strong>
+          <% elsif v.whodunnit.present? %>
+            by <strong><%= link_to v.whodunnit, user_admin_outpost_profile(v.whodunnit) %></strong>
           <% else %>
             by system
           <% end %>

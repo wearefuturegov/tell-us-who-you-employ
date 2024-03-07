@@ -1,5 +1,10 @@
 class Employee < ApplicationRecord
-  has_paper_trail
+  has_paper_trail(
+    meta: {
+      service_id: :service_id
+    }
+  )
+
 
   # ----------
   # validations
@@ -7,6 +12,58 @@ class Employee < ApplicationRecord
   attr_accessor :skip_validations
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
+
+
+  def accepted_job_titles 
+    [
+      "Acting Deputy Manager/Leader/Supervisor",
+      "Acting Manager/Leader/Supervisor",
+      "Apprentice/Intern",
+      "Assistant Childminder",
+      "Chair Person",
+      "Childminder",
+      "Cleaner/Caretaker/Catering",
+      "Deputy Manager/Leader/Supervisor",
+      "Finance/Administrator/Secretary",
+      "Lead Practitioner",
+      "Manager/Leader/Supervisor",
+      "Nanny",
+      "Not Applicable",
+      "Nursery/Pre-School Assistant",
+      "On Maternity Leave",
+      "Owner/Proprietor/Director",
+      "Playworker",
+      "Room Leader/Supervisor",
+      "Treasurer",
+      "Volunteer"
+    ]
+  end
+
+
+  def accepted_roles
+    [
+      "Designated Behaviour Management Lead",
+      "Designated Safeguarding Lead",
+      "Designated SENCO",
+      "First Aider",
+      "Ofsted Registered Contact",
+      "Practice Leader"    
+    ]
+  end
+
+
+  def accepted_qualifications
+    [
+      "Level 2",
+      "Level 3",
+      "Level 4",
+      "Level 5",
+      "Level 6",
+      "EYPS",
+      "QTS",
+      "EYC"
+    ]
+  end
 
 
   # ----------
@@ -47,26 +104,29 @@ class Employee < ApplicationRecord
   scope :sorted_by, ->(sort_option) {
     direction = /desc$/.match?(sort_option) ? "desc" : "asc"
     employees = Employee.arel_table
+    services = Service.arel_table
     case sort_option.to_s
-    when /^recent/
-      order(employees[:updated_at].send('asc')) 
+    when /^updated_at_/
+      order(employees[:updated_at].send(direction)) 
     when /^forenames_/
       order(employees[:forenames].lower.send(direction))
     when /^surname_/
       order(employees[:surname].lower.send(direction))
     when /^job_title_/
-      # order(employees[:job_title].lower.send(direction))
+      order(employees[:job_title].lower.send(direction))
     when /^service_/
-      # order(employees[:service].lower.send(direction))
-    when /^qualifications_/
-      # order(employees[:qualifications].lower.send(direction))
+      joins(:service).order(services[:name].send(direction))
     when /^status_/
-      # order(employees[:currently_employed].send(direction))
+      order(employees[:currently_employed].send(direction))
     when /^created_at_/
       order(employees[:created_at].send(direction)) 
     else
       raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
     end
+  }
+
+  scope :with_service_id, ->(service_ids) {
+    where(id: [*service_ids]) if service_ids
   }
 
 
@@ -89,22 +149,17 @@ class Employee < ApplicationRecord
     where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
   }
   
-  scope :service, -> (service_id) {
-    where(service_id: service_id) if service_id
-  }
-
-
   # ----------
   # filtering
   # ----------
 
   filterrific(
-    default_filter_params: { sorted_by: "recent" },
+    default_filter_params: { sorted_by: "updated_at_desc" },
     available_filters: [
       :job_title,
       :status,
       :qualifications,
-      :service,
+      :with_service_id,
       :search,
       :sorted_by
     ]
@@ -120,12 +175,6 @@ class Employee < ApplicationRecord
     sort_direction = ['asc', 'desc'].include?(direction.downcase) ? direction.downcase : 'asc'
     order_query = Arel.sql("CASE WHEN array_length(roles, 1) IS NULL THEN 0 ELSE array_length(roles, 1) END #{sort_direction}")
     order(order_query)
-  end
-
-  def self.options_for_service()
-    Employee.distinct.pluck(:service_id).map do |service_id|
-      [Service.find(service_id).name, service_id]
-    end
   end
 
   def self.options_for_status 
@@ -175,24 +224,22 @@ class Employee < ApplicationRecord
 
   def self.options_for_sorted_by
     [
-      ["Recently updated", "recent"],
+      ["Most recently updated", "updated_at_desc"],
+      ["Least recently updated", "updated_at_asc"],
+      ["Oldest added", "created_at_asc"],
+      ["Newest added", "created_at_desc"],
       ["Forename A-Z", "forenames_asc"],
       ["Forename Z-A", "forenames_desc"],
       ["Surname A-Z", "surname_asc"],
       ["Surname Z-A", "surname_desc"],
       ["Job title A-Z", "job_title_asc"],
       ["Job title Z-A", "job_title_desc"],
-      # ["Provider A-Z", "service_asc"],
-      # ["Provider Z-A", "service_desc"],
-      # ["Qualifications A-Z", "qualifications_asc"],
-      # ["Qualifications Z-A", "qualifications_desc"],
-      # ["Status A-Z", "status_asc"],
-      # ["Status Z-A", "status_desc"],
-      ["Oldest added", "created_at_asc"],
-      ["Newest added", "created_at_desc"],
+      ["Provider A-Z", "service_desc"],
+      ["Provider Z-A", "service_asc"],
+      ["Status A-Z", "status_desc"],
+      ["Status Z-A", "status_asc"],
     ]
   end
-
 
 
 

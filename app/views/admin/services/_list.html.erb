@@ -3,8 +3,8 @@
     <tr>
       <th class="visually-hidden">ID</th>
       <%= sort_column_by("Provider", "service") %>
-      <th>Number of staff</th>
-      <%= sort_column_by("Last updated", "updated_at")%>
+      <%= sort_column_by("Staff count", "staff_count")%>
+      <%= sort_column_by("Last staff update", "employee_updated_at")%>
       <th class="visually-hidden">Actions</th>
     </tr>
   </thead>
@@ -13,13 +13,13 @@
       <tr>
         <td><span class="table__small"><%= s.id %></span></td>
         <td>
-          <strong><%= link_to s.name, admin_service_path(s) %></strong>
+          <strong><%= link_to s[:name], admin_service_path(s) %></strong>
         </td>
         <td>
           <%= s.employees.count %>
         </td>
         <td>
-          <%= s.updated_at.strftime("%d %b %Y") %>
+          <%= s.last_employees_update.strftime("%d %b %Y") %>
         <td>
           <a href="<%= ENV["OAUTH_SERVER"] %>/admin/services/<%= s.id %>">Outpost service page</a>
         </td>

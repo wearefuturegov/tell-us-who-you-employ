@@ -14,4 +14,9 @@ module UserHelper
     [ENV['OAUTH_SERVER'], 'users/edit'].join('/')
   end
 
+
+  def user_admin_outpost_profile(user_id)
+    [ENV['OAUTH_SERVER'], 'admin/users', user_id].join('/') unless user_id.nil?
+  end
+
 end

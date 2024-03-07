@@ -38,6 +38,29 @@ class EmployeesController < ApplicationController
     end
   end
 
+  # helps us to track any possible service name changes when it comes to auditing
+  # nb outpost has most of this data saved already, so we can use it to track changes
+  def info_for_paper_trail
+    get_service_name = Proc.new do 
+      if params[:employee].present? && params[:employee][:service_id].present?
+        service = session[:services]
+        service = session[:services].find { |s| s["id"] == params[:employee][:service_id].to_i }
+        if service
+          service["name"]
+        else
+          "Unknown service name"
+        end
+      else
+        "Unknown service name"
+      end
+    end
+
+    { 
+      service_name: get_service_name.call(),
+      user_name: [session[:first_name], session[:last_name]].join(' '),
+    }
+  end
+
   private
 
   def set_employees

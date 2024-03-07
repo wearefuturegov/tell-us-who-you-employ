@@ -1,4 +1,4 @@
 <div class="field field--required">
     <%= f.label :job_title, "Job title", class: "field__label" %>
-    <%= f.select :job_title, accepted_job_titles, required: true, class: "field__input" %>
+    <%= f.select :job_title, @employee.accepted_job_titles, required: true, class: "field__input" %>
 </div>

@@ -8,15 +8,12 @@
   <thead>
     <tr>
       <!--<th class="visually-hidden">ID</th>-->
-      <%= sort_column_by("First name", "forenames") %>
-      <%= sort_column_by("Last name", "surname") %>
+      <%= sort_column_by("Forenames", "forenames") %>
+      <%= sort_column_by("Surame", "surname") %>
       <%= sort_column_by("Job title", "job_title") %>
-      <%#= sort_column_by("Provider", "provider") %>
-      <th>Provider</th>
-      <%#= sort_column_by("Qualifications", "qualifications") %>
+      <%= sort_column_by("Provider", "service") %>
       <th>Qualifications</th>
-      <%#= sort_column_by("Status", "status") %>
-      <th>Status</th>
+      <%= sort_column_by("Status", "status") %>
       <th class="visually-hidden">Actions</th>
     </tr>
   </thead>

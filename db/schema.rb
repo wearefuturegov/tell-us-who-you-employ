@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_28_104107) do
+ActiveRecord::Schema.define(version: 2024_03_07_151957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -62,6 +62,9 @@ ActiveRecord::Schema.define(version: 2024_02_28_104107) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.string "service_name"
+    t.integer "service_id"
+    t.string "user_name"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

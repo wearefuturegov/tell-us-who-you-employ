@@ -26,10 +26,9 @@ module EmployeeHelper
 
   def edit_employee_link(e, text = '')
     if admin_users?
-      "<a href=\"#{edit_admin_employee_url(e)}\" class=\"icon-edit\" title=\"Edit #{employee_display_name(e)}, #{e.job_title} at #{e.service.name} \">#{text}<span class=\"visually-hidden\">Edit this employee</span></a>".html_safe
+      "<a href=\"#{edit_admin_employee_url(e)}\" class=\"icon-edit\" title=\"Edit #{employee_display_name(e)} \">#{text}<span class=\"visually-hidden\">Edit this employee</span></a>".html_safe
     end 
   end
-
 
   # Childminder, Rainbow Nursery or NULL, Rainbow Nursery
   def employee_display_job_summary(employee) 
