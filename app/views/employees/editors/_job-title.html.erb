@@ -1,3 +1,12 @@
+<% if not @employee.accepted_job_titles.include? @employee.job_title %>
+    <div class="error">
+        <h2 class="error__title">This employee's previous job title is no longer valid</h2>
+        <ul class="error__list">
+                <li>This employees job title "<%= @employee.job_title %>" is no longer valid you will need to select from the following list</li>
+        </ul>
+    </div>
+<% end %>
+
 <div class="field field--required">
     <%= f.label :job_title, "Job title", class: "field__label" %>
     <%= f.select :job_title, @employee.accepted_job_titles, required: true, class: "field__input" %>

@@ -12,7 +12,7 @@ class Employee < ApplicationRecord
   attr_accessor :skip_validations
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
-
+  validates :job_title, inclusion: { in: :accepted_job_titles, message: "%{value} is not a valid job title" }, unless: :skip_validations
 
   def accepted_job_titles 
     [
