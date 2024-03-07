@@ -131,7 +131,12 @@ class Employee < ApplicationRecord
 
 
   scope :job_title, -> (job_title) {
-    where(job_title: job_title)
+    if job_title == "INVALID"
+      instance = new
+      where.not(job_title: instance.accepted_job_titles)
+    else
+      where(job_title: job_title)
+    end
   }
   
   scope :status, -> (status) {
@@ -146,7 +151,11 @@ class Employee < ApplicationRecord
   }
 
   scope :qualifications, -> (selected_qualifications) {
-    where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
+    if selected_qualifications.include?("NONE") 
+      where("qualifications = '{}'")
+    else 
+      where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
+    end
   }
   
   # ----------
@@ -185,42 +194,22 @@ class Employee < ApplicationRecord
   end
 
   def self.options_for_job_title 
-    [
-      ['Acting Deputy Manager/Leader/Supervisor', 'Acting Deputy Manager/Leader/Supervisor'],
-      ['Acting Manager/Leader/Supervisor', 'Acting Manager/Leader/Supervisor'],
-      ['Apprentice/Intern', 'Apprentice/Intern'],
-      ['Assistant Childminder', 'Assistant Childminder'],
-      ['Chair Person', 'Chair Person'],
-      ['Childminder', 'Childminder'],
-      ['Cleaner/Caretaker/Catering', 'Cleaner/ Caretaker/Catering'],
-      ['Deputy Manager/Leader/Supervisor', 'Deputy Manager/Leader/Supervisor'],
-      ['Finance/Administration/Secretary', 'Finance/Administration/Secretary'],
-      ['Lead Practitioner', 'Lead Practitioner'],
-      ['Manager/Leader/Supervisor', 'Manager/Leader/Supervisor'],
-      ['Nanny', 'Nanny'],
-      ['Not Applicable', 'Not Applicable'],
-      ['Nursery/Pre-School Assistant', 'Nursery/Pre-School Assistant'],
-      ['On maternity leave', 'On maternity leave'],
-      ['Owner/Proprietor/Director', 'Owner/Proprietor/Director'],
-      ['Playworker', 'Playworker'],
-      ['Room Leader/Supervisor', 'Room Leader/Supervisor'],
-      ['Treasurer', 'Treasurer'],
-      ['Volunteer', 'Volunteer']
-    ]
+    instance = new
+    accepted_job_titles = instance.accepted_job_titles.map { |job_title| [job_title, job_title] }
+    any_unaccepted_job_titles = Employee.where.not(job_title: instance.accepted_job_titles)
+    if any_unaccepted_job_titles
+      accepted_job_titles + [['INVALID', 'INVALID']]
+    else
+      accepted_job_titles
+    end
   end
 
   def self.options_for_qualifications
-    [
-      ['Level 2', 'Level 2'],
-      ['Level 3', 'Level 3'],
-      ['Level 4', 'Level 4'],
-      ['Level 5', 'Level 5'],
-      ['Level 6', 'Level 6'],
-      ['EYPS', 'EYPS'],
-      ['QTS', 'QTS'],
-      ['EYC', 'EYC'],
-    ]
+    instance = new
+    qualifications = instance.accepted_qualifications.map { |qualifications| [qualifications, qualifications] }
+    qualifications + [['No qualifications', 'NONE']]
   end
+  
 
   def self.options_for_sorted_by
     [
