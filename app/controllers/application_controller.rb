@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     session[:admin_users] === true
   end
 
+  # admin_users maps to admins who have 'can manage users' role in outpost (they will also have admin: true)
+  def superadmin?
+    session[:superadmin] === true
+  end
 
   def authenticate_user!
     unless session[:uid]
@@ -57,6 +61,14 @@ class ApplicationController < ActionController::Base
       redirect_to admin_start_path
     end
   end
+
+  # for utility purposes 
+  def authenticate_superadmin!
+    unless superadmin? 
+      redirect_to admin_start_path
+    end
+  end
+  
 
   # use this for higher level privileges and editing data
   def user_admins_only!

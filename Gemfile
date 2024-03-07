@@ -66,3 +66,5 @@ gem "sentry-rails"
 gem 'filterrific'
 gem 'kaminari'
 gem 'pg_search'
+
+gem "httparty", "~> 0.21.0"

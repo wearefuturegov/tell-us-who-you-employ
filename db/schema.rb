@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_07_151957) do
+ActiveRecord::Schema.define(version: 2024_03_07_182354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 2024_03_07_151957) do
     t.boolean "has_safeguarding"
     t.date "safeguarding_achieved_on"
     t.datetime "marked_for_deletion"
+  end
+
+  create_table "service_syncs", force: :cascade do |t|
+    t.integer "uid"
+    t.integer "number_changed"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "services", force: :cascade do |t|

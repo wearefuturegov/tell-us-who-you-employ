@@ -1,5 +1,3 @@
-require 'service'
-
 class Admin::ServicesController < Admin::BaseController
   def index
 

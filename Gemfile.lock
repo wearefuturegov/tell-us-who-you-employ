@@ -119,6 +119,9 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.5)
@@ -345,6 +348,7 @@ DEPENDENCIES
   factory_bot_rails
   ffaker
   filterrific
+  httparty (~> 0.21.0)
   jbuilder (~> 2.5)
   kaminari
   launchy
@@ -375,4 +379,4 @@ RUBY VERSION
    ruby 3.0.3p157
 
 BUNDLED WITH
-   2.4.22
+   2.3.25

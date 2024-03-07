@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
     # role info
     readonly_admin = auth_hash.extra.raw_info.admin || false
     admin_users = auth_hash.extra.raw_info.admin_users || false
+    superadmin = auth_hash.extra.raw_info.superadmin || false
 
     # set user session info
     session[:organisation_id] = org_id
@@ -21,13 +22,23 @@ class SessionsController < ApplicationController
     session[:last_name] = last_name
   
 
+
+
     # service info
     persist_services_from_session if session[:services].present?
 
     # role session info
     session[:admin] = readonly_admin
     session[:admin_users] = admin_users
+    session[:superadmin] = superadmin
     
+    if readonly_admin === true
+      # set the access token
+      # @TODO methods to refresh this
+      auth = request.env['omniauth.auth']
+      session[:access_token] = auth['credentials']['token']
+    end
+
     if readonly_admin === true
       redirect_to admin_start_path
     else 
