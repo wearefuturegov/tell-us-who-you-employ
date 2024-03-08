@@ -65,14 +65,24 @@ class Admin::DuplicatesController < Admin::BaseController
 
   def set_employee_ids
 
-    @primary_employee_id = params[:primary_employee_id] || @duplicate_employees.first.id
-    @secondary_employee_id = params[:secondary_employee_id] || @duplicate_employees.first.id
+    if @duplicate_employees.count > 0
+      default_employee_id = @duplicate_employees.first.id
+    else 
+      default_employee_id = 0
+    end
+
+
+    @primary_employee_id = params[:primary_employee_id] || default_employee_id
+    @secondary_employee_id = params[:secondary_employee_id] || default_employee_id
   
     if !params[:primary_employee_id] && !params[:secondary_employee_id]
       redirect_to admin_duplicates_primary_secondary_path(@primary_employee_id, @secondary_employee_id)
     elsif params[:primary_employee_id] && !params[:secondary_employee_id]
       redirect_to admin_duplicates_primary_secondary_path(@primary_employee_id, @secondary_employee_id)
     end
+
+
+
   end
 
     

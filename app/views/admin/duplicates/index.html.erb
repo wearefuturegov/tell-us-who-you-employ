@@ -1,5 +1,8 @@
 <h1 class="page-header__title">Compare employee records</h1>
 
+
+<% if @duplicate_employees.count > 0 %>
+
 <%= form_with(url: admin_duplicates_path, method: :post, local: true) do |f| %>
 <div class="half-and-half">
   <div class="panel">
@@ -57,5 +60,11 @@
     <%= link_to 'Cancel', :back %>
 </div>
 
+
+<% end %>
+
+<% else %>
+
+<p>No duplicate employees found.</p>
 
 <% end %>
