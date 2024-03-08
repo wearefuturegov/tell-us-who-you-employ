@@ -1,5 +1,11 @@
 class Employee < ApplicationRecord
-  has_paper_trail
+  before_destroy :remove_associated_duplicate_records
+  has_paper_trail(
+    meta: {
+      service_id: :service_id
+    }
+  )
+
 
   # ----------
   # validations
@@ -7,13 +13,65 @@ class Employee < ApplicationRecord
   attr_accessor :skip_validations
   validates_presence_of :surname, :forenames, :employed_from, :date_of_birth, :street_address, :postal_code, :job_title, unless: :skip_validations
   validate :employed_to_or_currently_employed, :has_food_hygiene_qualification_or_achieved_on, :has_dbs_check_or_achieved_on, :has_first_aid_training_or_achieved_on, :has_senco_or_achieved_on, :has_senco_early_years_or_achieved_on, :has_safeguarding_or_achieved_on, unless: :skip_validations
+  validates :job_title, inclusion: { in: :accepted_job_titles, message: "%{value} is not a valid job title" }, unless: :skip_validations
+
+  def accepted_job_titles 
+    [
+      "Acting Deputy Manager/Leader/Supervisor",
+      "Acting Manager/Leader/Supervisor",
+      "Apprentice/Intern",
+      "Assistant Childminder",
+      "Chair Person",
+      "Childminder",
+      "Cleaner/Caretaker/Catering",
+      "Deputy Manager/Leader/Supervisor",
+      "Finance/Administrator/Secretary",
+      "Lead Practitioner",
+      "Manager/Leader/Supervisor",
+      "Nanny",
+      "Not Applicable",
+      "Nursery/Pre-School Assistant",
+      "On Maternity Leave",
+      "Owner/Proprietor/Director",
+      "Playworker",
+      "Room Leader/Supervisor",
+      "Treasurer",
+      "Volunteer"
+    ]
+  end
+
+
+  def accepted_roles
+    [
+      "Designated Behaviour Management Lead",
+      "Designated Safeguarding Lead",
+      "Designated SENCO",
+      "First Aider",
+      "Ofsted Registered Contact",
+      "Practice Leader"    
+    ]
+  end
+
+
+  def accepted_qualifications
+    [
+      "Level 2",
+      "Level 3",
+      "Level 4",
+      "Level 5",
+      "Level 6",
+      "EYPS",
+      "QTS",
+      "EYC"
+    ]
+  end
 
 
   # ----------
   # associations
   # ----------
   belongs_to :service, touch: true
-
+  has_one :duplicate
 
   # ----------
   # callbacks
@@ -47,21 +105,20 @@ class Employee < ApplicationRecord
   scope :sorted_by, ->(sort_option) {
     direction = /desc$/.match?(sort_option) ? "desc" : "asc"
     employees = Employee.arel_table
+    services = Service.arel_table
     case sort_option.to_s
-    when /^recent/
-      order(employees[:updated_at].send('asc')) 
+    when /^updated_at_/
+      order(employees[:updated_at].send(direction)) 
     when /^forenames_/
       order(employees[:forenames].lower.send(direction))
     when /^surname_/
       order(employees[:surname].lower.send(direction))
     when /^job_title_/
-      # order(employees[:job_title].lower.send(direction))
+      order(employees[:job_title].lower.send(direction))
     when /^service_/
-      # order(employees[:service].lower.send(direction))
-    when /^qualifications_/
-      # order(employees[:qualifications].lower.send(direction))
+      joins(:service).order(services[:name].send(direction))
     when /^status_/
-      # order(employees[:currently_employed].send(direction))
+      order(employees[:currently_employed].send(direction))
     when /^created_at_/
       order(employees[:created_at].send(direction)) 
     else
@@ -69,9 +126,18 @@ class Employee < ApplicationRecord
     end
   }
 
+  scope :with_service_id, ->(service_ids) {
+    where(id: [*service_ids]) if service_ids
+  }
+
 
   scope :job_title, -> (job_title) {
-    where(job_title: job_title)
+    if job_title == "INVALID"
+      instance = new
+      where.not(job_title: instance.accepted_job_titles)
+    else
+      where(job_title: job_title)
+    end
   }
   
   scope :status, -> (status) {
@@ -86,25 +152,24 @@ class Employee < ApplicationRecord
   }
 
   scope :qualifications, -> (selected_qualifications) {
-    where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
+    if selected_qualifications.include?("NONE") 
+      where("qualifications = '{}'")
+    else 
+      where("qualifications && ARRAY[?]::varchar[]", Array(selected_qualifications))
+    end
   }
   
-  scope :service, -> (service_id) {
-    where(service_id: service_id) if service_id
-  }
-
-
   # ----------
   # filtering
   # ----------
 
   filterrific(
-    default_filter_params: { sorted_by: "recent" },
+    default_filter_params: { sorted_by: "updated_at_desc" },
     available_filters: [
       :job_title,
       :status,
       :qualifications,
-      :service,
+      :with_service_id,
       :search,
       :sorted_by
     ]
@@ -122,12 +187,6 @@ class Employee < ApplicationRecord
     order(order_query)
   end
 
-  def self.options_for_service()
-    Employee.distinct.pluck(:service_id).map do |service_id|
-      [Service.find(service_id).name, service_id]
-    end
-  end
-
   def self.options_for_status 
     [
       ['Active', 'active'],
@@ -136,63 +195,41 @@ class Employee < ApplicationRecord
   end
 
   def self.options_for_job_title 
-    [
-      ['Acting Deputy Manager/Leader/Supervisor', 'Acting Deputy Manager/Leader/Supervisor'],
-      ['Acting Manager/Leader/Supervisor', 'Acting Manager/Leader/Supervisor'],
-      ['Apprentice/Intern', 'Apprentice/Intern'],
-      ['Assistant Childminder', 'Assistant Childminder'],
-      ['Chair Person', 'Chair Person'],
-      ['Childminder', 'Childminder'],
-      ['Cleaner/Caretaker/Catering', 'Cleaner/ Caretaker/Catering'],
-      ['Deputy Manager/Leader/Supervisor', 'Deputy Manager/Leader/Supervisor'],
-      ['Finance/Administration/Secretary', 'Finance/Administration/Secretary'],
-      ['Lead Practitioner', 'Lead Practitioner'],
-      ['Manager/Leader/Supervisor', 'Manager/Leader/Supervisor'],
-      ['Nanny', 'Nanny'],
-      ['Not Applicable', 'Not Applicable'],
-      ['Nursery/Pre-School Assistant', 'Nursery/Pre-School Assistant'],
-      ['On maternity leave', 'On maternity leave'],
-      ['Owner/Proprietor/Director', 'Owner/Proprietor/Director'],
-      ['Playworker', 'Playworker'],
-      ['Room Leader/Supervisor', 'Room Leader/Supervisor'],
-      ['Treasurer', 'Treasurer'],
-      ['Volunteer', 'Volunteer']
-    ]
+    instance = new
+    accepted_job_titles = instance.accepted_job_titles.map { |job_title| [job_title, job_title] }
+    any_unaccepted_job_titles = Employee.where.not(job_title: instance.accepted_job_titles)
+    if any_unaccepted_job_titles
+      accepted_job_titles + [['INVALID', 'INVALID']]
+    else
+      accepted_job_titles
+    end
   end
 
   def self.options_for_qualifications
-    [
-      ['Level 2', 'Level 2'],
-      ['Level 3', 'Level 3'],
-      ['Level 4', 'Level 4'],
-      ['Level 5', 'Level 5'],
-      ['Level 6', 'Level 6'],
-      ['EYPS', 'EYPS'],
-      ['QTS', 'QTS'],
-      ['EYC', 'EYC'],
-    ]
+    instance = new
+    qualifications = instance.accepted_qualifications.map { |qualifications| [qualifications, qualifications] }
+    qualifications + [['No qualifications', 'NONE']]
   end
+  
 
   def self.options_for_sorted_by
     [
-      ["Recently updated", "recent"],
+      ["Most recently updated", "updated_at_desc"],
+      ["Least recently updated", "updated_at_asc"],
+      ["Oldest added", "created_at_asc"],
+      ["Newest added", "created_at_desc"],
       ["Forename A-Z", "forenames_asc"],
       ["Forename Z-A", "forenames_desc"],
       ["Surname A-Z", "surname_asc"],
       ["Surname Z-A", "surname_desc"],
       ["Job title A-Z", "job_title_asc"],
       ["Job title Z-A", "job_title_desc"],
-      # ["Provider A-Z", "service_asc"],
-      # ["Provider Z-A", "service_desc"],
-      # ["Qualifications A-Z", "qualifications_asc"],
-      # ["Qualifications Z-A", "qualifications_desc"],
-      # ["Status A-Z", "status_asc"],
-      # ["Status Z-A", "status_desc"],
-      ["Oldest added", "created_at_asc"],
-      ["Newest added", "created_at_desc"],
+      ["Provider A-Z", "service_desc"],
+      ["Provider Z-A", "service_asc"],
+      ["Status A-Z", "status_desc"],
+      ["Status Z-A", "status_asc"],
     ]
   end
-
 
 
 
@@ -209,6 +246,12 @@ class Employee < ApplicationRecord
     update(marked_for_deletion: nil)
   end
 
+  # ----------
+  # Before destroying employee, remove associated duplicate records
+  # ----------
+  def remove_associated_duplicate_records
+    Duplicates.where("employee_id = :id", id: self.id).destroy_all
+  end
 
 
   # ----------

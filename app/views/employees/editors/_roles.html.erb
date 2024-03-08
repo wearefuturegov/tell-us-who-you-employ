@@ -1,0 +1,9 @@
+<fieldset class="field-group field-group--two-cols">
+    <legend class="field-group__legend">Roles</legend>
+        <% @employee.accepted_roles.each_with_index do |qual, i| %>
+            <div class="field checkbox">
+                <%= f.check_box :roles, { multiple: true, class: "checkbox__input", id: "employee_roles_#{i}" }, qual, nil %>
+                <%= f.label "roles_#{i}", qual, class: "checkbox__label" %>
+            </div>
+        <% end %>
+</fieldset>

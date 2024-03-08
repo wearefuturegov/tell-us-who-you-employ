@@ -6,16 +6,16 @@
     <div class="filters__body">
 
       <%= f.label :sorted_by, "Sort by", class: "visually-hidden" %>
-      <%= f.select :sorted_by, @filterrific.select_options[:sorted_by], {include_blank: 'Sorted by'}, { class: "filters__select visually-hidden",  data: { autosubmit: true } } %>
+      <%= f.select :sorted_by, @filterrific.select_options[:sorted_by], {include_blank: 'Sorted by'}, { class: "filters__select dvisually-hidden",  data: { autosubmit: true } } %>
       
       <%= f.label :job_title, "Job title", class: "visually-hidden" %>
-      <%= f.select :job_title, @filterrific.select_options[:job_title], {include_blank: 'Filter by Role'}, { class: "filters__select",  data: { autosubmit: true } } %>
+      <%= f.select :job_title, @filterrific.select_options[:job_title], {include_blank: 'Filter by Job title'}, { class: "filters__select",  data: { autosubmit: true } } %>
 
       <%= f.label :qualifications, "Qualification", class: "visually-hidden" %>
       <%= f.select :qualifications, @filterrific.select_options[:qualifications], {include_blank: 'Filter by Qualification'}, { class: "filters__select", data: { autosubmit: true } } %>
       
       <%= f.label :service, "Provider", class: "visually-hidden" %>
-      <%= f.select :service, @filterrific.select_options[:service], { include_blank: 'Filter by Provider' }, { class: "filters__select", data: { autosubmit: true }  } %>
+      <%= f.select :with_service_id, @filterrific.select_options[:with_service_id], { include_blank: 'Filter by Provider' }, { class: "filters__select", data: { autosubmit: true }  } %>
 
       <%= f.label :status, "Status", class: "visually-hidden" %>
       <%= f.select :status, @filterrific.select_options[:status], {include_blank: 'Filter by Status'}, { class: "filters__select", data: { autosubmit: true } } %>

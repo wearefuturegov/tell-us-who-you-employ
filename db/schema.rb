@@ -10,11 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_28_104107) do
+ActiveRecord::Schema.define(version: 2024_03_07_232409) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
+  enable_extension "postgres_fdw"
+
+  create_table "duplicates", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.boolean "is_duplicate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_duplicates_on_employee_id"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.string "surname"
@@ -47,6 +57,13 @@ ActiveRecord::Schema.define(version: 2024_02_28_104107) do
     t.datetime "marked_for_deletion"
   end
 
+  create_table "service_syncs", force: :cascade do |t|
+    t.integer "uid"
+    t.integer "number_changed"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, default: -> { "CURRENT_TIMESTAMP" }, null: false
@@ -60,7 +77,11 @@ ActiveRecord::Schema.define(version: 2024_02_28_104107) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.string "service_name"
+    t.integer "service_id"
+    t.string "user_name"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "duplicates", "employees"
 end

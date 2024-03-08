@@ -17,3 +17,4 @@
 //= require collapsible
 //= require edit-employee
 //= require filters
+//= require duplicates

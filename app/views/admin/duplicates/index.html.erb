@@ -1,0 +1,70 @@
+<h1 class="page-header__title">Compare employee records</h1>
+
+
+<% if @duplicate_employees.count > 0 %>
+
+<%= form_with(url: admin_duplicates_path, method: :post, local: true) do |f| %>
+<div class="half-and-half">
+  <div class="panel">
+  
+  <div class="field">
+    <%= f.label :primary_employee, "Primary Employee", class: "field__label" %>
+    <%= f.select :primary_employee, options_from_collection_for_select(@duplicate_employees, 'id', ->(e) { "#{e.id} #{employee_display_name(e)}" }, @primary_employee_id), class: "field__input" %>
+  </div>
+
+  <div data-employee-id="<%= @primary_employee_id %>"></div>
+  
+  
+  </div>
+  <div class="panel">
+
+
+
+  <div class="field">
+    <%= f.label :secondary_employee, "Secondary Employee", class: "field__label" %>
+    <%= f.select :secondary_employee, options_from_collection_for_select(@duplicate_employees, 'id', ->(e) { "#{e.id} #{employee_display_name(e)}" }, @secondary_employee_id), {}, class: "field__input" %>
+  </div>
+
+    <div data-employee-id="<%= @secondary_employee_id %>"></div>
+  
+  
+  </div>
+</div>
+
+
+<div class="danger-zone">
+    <h2>Ready to continue?</h2>
+        <fieldset class="field-group field">
+        <legend class="field-group__legend">Please confirm the action you would like to take, changes are <strong>irreversable</strong>.</legend>
+            <div class="radio">
+                <%= f.radio_button :confirm_choice, :confirm_merge, required: true, class: "radio__input" %>
+                <%= f.label "confirm_choice_confirm_merge", "<span>I would like to <strong>overwrite</strong> <span data-primary-employee>primary employee</span>'s records with <span data-secondary-employee>secondary employee</span>'s records <br />and <strong>delete</strong> <span data-secondary-employee>secondary employee</span></span>".html_safe, class: "radio__label" %>
+            </div>
+            <div class="radio">
+                <%= f.radio_button :confirm_choice, :confirm_delete, required: true, class: "radio__input" %>
+                <%= f.label "confirm_choice_confirm_delete", "<span>I would like to <strong>delete</strong> <span data-secondary-employee>secondary employee</span>'s records</span>".html_safe, class: "radio__label" %>
+            </div>
+    </fieldset>
+    
+
+    <p>When you <strong>merge</strong> or <strong>delete</strong> records, <span data-primary-employee>primary employee</span> will still be marked as a duplicate in case of multiple duplicates. </p>
+
+    <div class="field checkbox">
+      <%= f.check_box :confirm_primary_not_duplicate, class: "checkbox__input" %>
+      <%= f.label :confirm_primary_not_duplicate, "<span>Mark <span data-primary-employee>primary employee</span>'s record as no longer being a duplicate</span>".html_safe, class: "checkbox__label" %>
+    </div>
+
+       
+
+    <%= f.submit "Amend records", class: "button button--danger", data: { confirm: 'Are you sure?' }  %>
+    <%= link_to 'Cancel', :back %>
+</div>
+
+
+<% end %>
+
+<% else %>
+
+<p>No duplicate employees found.</p>
+
+<% end %>

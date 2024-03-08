@@ -3,15 +3,8 @@ include Filterrific
 module ApplicationHelper
 
   def service_name_by_id(id)
-    if session[:services]
-      result = session[:services].find{|s| s["id"] === id }
-      return result["name"] if result
-    else 
       result = Service.where(id: id).pluck(:name)
       return result.join(' ')  if result
-    end
-  
-    return id
   end
 
 
@@ -65,57 +58,6 @@ module ApplicationHelper
   end 
 
 
-  
-
-  def accepted_job_titles 
-    [
-      "Acting Deputy Manager/Leader/Supervisor",
-      "Acting Manager/Leader/Supervisor",
-      "Apprentice/Intern",
-      "Assistant Childminder",
-      "Chair Person",
-      "Childminder",
-      "Cleaner/Caretaker/Catering",
-      "Deputy Manager/Leader/Supervisor",
-      "Finance/Administrator/Secretary",
-      "Lead Practitioner",
-      "Manager/Leader/Supervisor",
-      "Nanny",
-      "Not Applicable",
-      "Nursery/Pre-School Assistant",
-      "On Maternity Leave",
-      "Owner/Proprietor/Director",
-      "Playworker",
-      "Room Leader/Supervisor",
-      "Treasurer",
-      "Volunteer"
-    ]
-  end
-
-  def accepted_roles
-    [
-      "Designated Behaviour Management Lead",
-      "Designated Safeguarding Lead",
-      "Designated SENCO",
-      "First Aider",
-      "Ofsted Registered Contact",
-      "Practice Leader"    
-    ]
-  end
-
-
-  def accepted_qualifications
-    [
-      "Level 2",
-      "Level 3",
-      "Level 4",
-      "Level 5",
-      "Level 6",
-      "EYPS",
-      "QTS",
-      "EYC"
-    ]
-  end
 
   def status_tag(status)
     if status.downcase === "active"
@@ -132,4 +74,46 @@ module ApplicationHelper
   def body_class
     'flow-content' unless controller_path.start_with?('admin/')
   end
+
+  def short_time_ago_in_words(val)
+    time_ago_in_words(val).gsub("about ", "")
+end
+
+  def pretty_event(event)
+    case event
+    when "create"
+        "Created"
+    when "update"
+        "Updated"
+    when "destroy"
+        "Deleted"        
+    when "archive"
+        "Archived"
+    when "restore"
+        "Restored"
+    when "import"
+        "Imported"
+    when "approve"
+        "Approved"
+    else
+        event.capitalize
+    end
+end
+
+  def stepper_class(event)
+    case event
+    when "ofsted_create"
+        "stepper__step--solid"   
+    when "create"
+        "stepper__step--solid"   
+    when "archive"
+        "stepper__step--cross"
+    when "import"
+        "stepper__step--solid"
+    when "approve"
+        "stepper__step--tick"
+    end
+end
+
+
 end

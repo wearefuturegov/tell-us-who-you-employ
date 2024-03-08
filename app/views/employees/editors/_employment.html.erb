@@ -1,0 +1,17 @@
+
+<div class="field-group field-group--two-cols">
+    <div class="field field--required" >
+        <%= f.label :employed_from, "When did their employment start?", class: "field__label" %>
+        <%= f.date_field :employed_from, class: "field__input", min: Date.today - 80.years, max: Date.today %>
+    </div>
+
+    <div class="field">
+        <%= f.label :employed_to, "When did their employment finish?", class: "field__label" %>
+        <%= f.date_field :employed_to, class: "field__input" , min: Date.today - 80.years, max: Date.today%>
+    </div>
+</div>
+
+<div class="checkbox field">
+    <%= f.check_box :currently_employed, {class: "checkbox__input"} %>
+    <%= f.label :currently_employed, "Is this person currently employed?", class: "checkbox__label" %>
+</div>

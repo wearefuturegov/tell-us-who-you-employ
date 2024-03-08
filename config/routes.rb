@@ -17,8 +17,18 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "", to: "login#index", as: "start" #alias for the admin start page 
-    resources :employees
+    resources :employees do
+      collection do
+        get 'invalid'
+      end
+      member do
+        post 'mark_as_duplicate'
+      end
+    end
     resources :services
+    get 'duplicates', to: 'duplicates#index', as: 'duplicates'
+    get 'duplicates/:primary_employee_id', to: 'duplicates#index'
+    get 'duplicates/:primary_employee_id/:secondary_employee_id', to: 'duplicates#index', as: 'duplicates_primary_secondary'
   end
 
 end

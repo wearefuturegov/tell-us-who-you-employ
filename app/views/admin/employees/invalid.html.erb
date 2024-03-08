@@ -1,0 +1,56 @@
+<h1 class="page-header__title">Invalid employees</h1>
+<p>Certain employees from previous versions of the system have been marked as invalid. This is because they are missing required information. 
+Please review the list below and we can update the records as necessary.</p>
+<p><%= link_to 'Download as json', invalid_admin_employees_path(:format => :json) %></p>
+
+
+<% if @employees.present? %>
+<div class="table-holder">
+  <table class="table test-employees">
+    <caption>
+      A list of all invalid employees 
+    </caption>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Provider</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th>Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @employees.each do |e| %>
+      <% if not e.valid? %>
+        <tr>
+          <td><span class="table__small"><%= e.id %></span></td>
+          <td>
+              <strong><%= link_to e.forenames, admin_employee_path(e) %></strong>
+          </td>
+          <td>
+            <%= link_to e.surname, admin_employee_path(e), title: e.surname %>
+          </td>
+          <td>
+              <%= link_to e.service.name.truncate(30), admin_service_path(e.service.id), title: e.service.name %>
+          </td>
+          <td>
+              <%= e.created_at.strftime("%d-%m-%Y %H:%M:%S") %>
+          </td>
+          <td>
+              <%= e.updated_at.strftime("%d-%m-%Y %H:%M:%S") %>
+          </td>
+          <td>
+            <%= e.errors.full_messages.to_sentence %>
+          </td>
+        </tr>
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%#= paginate @employees %>
+<% else %>
+  <p class="no-results no-results--big">No invalid employees found</p>
+<% end %>

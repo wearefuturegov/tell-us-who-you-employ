@@ -1,0 +1,4 @@
+<div class="field">
+    <%= f.label :service_id, "Current provider", class: "field__label" %>
+    <%= f.collection_select :service_id, @services, :last, :first, {}, class: "field__input" %>
+</div>

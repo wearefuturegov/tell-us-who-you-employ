@@ -1,29 +1,31 @@
-<header class="page-header">
-  <%= link_to "Back", admin_services_path, class: "go-back" %>
-  <h1 class="page-header__title"><%= @service.name %></h1>
-  <p><strong>
-    <%#= [@service.location_name, @service.address_1, @service.city, @service.postal_code].reject(&:blank?).join(', ') %>
-  </strong></p>
-  <% if @senco.present? %>
-    <p><%= link_to admin_employee_path(@senco.id) do %>
-      <strong>SENCO:</strong> <%= "#{@senco.forenames} #{@senco.surname}" %>
-    </p>
-    <% end %>
-  <% else %>
-    <strong>SENCO:</strong> n/a
-  <% end %>
-  <% if @safeguarding_lead.present? %>
-    <%= link_to admin_employee_path(@safeguarding_lead.id) do %>
-      <p>
-      <strong>Designated Safety Lead:</strong> <%= "#{@safeguarding_lead.forenames} #{@safeguarding_lead.surname}" %>
-      </p>
-    <% end %>
-  <% else %>
+<% content_for :header do %>
+
+  <%# if @ofsted_item.present? %>
+  <!--<div class="notice">
+      <div class="notice__body">
+          <p>
+              This item has been marked as a duplicate
+          </p>
+      </div>
+  </div>-->
+  <%# end %>
+
+  <%= render "admin/shared/dynamic-back-link", text: "Back to services", path: admin_services_path %>
+  <h1 class="page-header__title two-thirds"><%= @service.name %></h1>
+    <p><a href=href="<%= ENV["OAUTH_SERVER"] %>/admin/services/<%= @service.id %>">View service in Outpost</a></p>
+   
     <p>
-    <strong>Designated Safety Lead:</strong> n/a
+      <strong>SENCO:</strong> 
+      <% if @senco.present? %><%= link_to employee_display_name(@senco), admin_employee_path(@senco.id)  %><% else %>
+      n/a<% end %>
     </p>
-  <% end %>
-</header>
+    <p>
+      <strong>Designated Safety Lead:</strong> 
+      <% if @safeguarding_lead.present? %><%= link_to employee_display_name(@safeguarding_lead), admin_employee_path(@safeguarding_lead.id)  %><% else %>
+      n/a<% end %>
+    </p>
+
+<% end %>
 
 <%= render "admin/employees/filters" %>
 
