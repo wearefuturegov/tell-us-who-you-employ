@@ -10,6 +10,10 @@
                 <span class="site-nav__current">Services</span>
             <% end %>
 
+            <%= link_to_unless_current "Duplicates", admin_duplicates_path, class: "site-nav__link" do %>
+                <span class="site-nav__current">Duplicates</span>
+            <% end %>
+
             <div class="site-nav__pull-right">
                 <a href="<%= ENV['OAUTH_SERVER'] %>" class="site-nav__link" target="_blank">Outpost</a>
             </div>

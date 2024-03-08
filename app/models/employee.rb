@@ -1,4 +1,5 @@
 class Employee < ApplicationRecord
+  before_destroy :remove_associated_duplicate_records
   has_paper_trail(
     meta: {
       service_id: :service_id
@@ -70,7 +71,7 @@ class Employee < ApplicationRecord
   # associations
   # ----------
   belongs_to :service, touch: true
-
+  has_one :duplicate
 
   # ----------
   # callbacks
@@ -245,6 +246,12 @@ class Employee < ApplicationRecord
     update(marked_for_deletion: nil)
   end
 
+  # ----------
+  # Before destroying employee, remove associated duplicate records
+  # ----------
+  def remove_associated_duplicate_records
+    Duplicates.where("employee_id = :id", id: self.id).destroy_all
+  end
 
 
   # ----------

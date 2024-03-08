@@ -40,7 +40,10 @@
           <%= status_tag(e.currently_employed? ? 'Active' : 'Inactive') %>
         </td>
         <td>
-        <%= edit_employee_link(e) %>
+        <div class="actions-inline">
+          <%= edit_employee_link(e) %>
+          <%= flag_duplicate_link(e) %>
+        </div>
         </td>
       </tr>
     <% end %>

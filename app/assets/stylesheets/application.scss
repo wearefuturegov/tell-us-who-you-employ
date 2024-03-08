@@ -56,8 +56,16 @@ $max-width: 1000px;
 @import "page-title";
 @import "flow";
 @import "icon-edit";
+@import "icon-flag";
 @import "sort";
+@import "diff-list";
 
 .text-light {
   color: $grey3;
+}
+
+.actions-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

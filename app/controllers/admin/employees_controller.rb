@@ -17,16 +17,21 @@ class Admin::EmployeesController < Admin::BaseController
       },
     ) or return
     
-    @employees = @filterrific.find.page(params[:page]).includes(:service).per(20)
+    @employees = @filterrific.find.page(params[:page]).includes(:service, :duplicate).per(20)
   end
 
   def show
-    @employee = Employee.find(params[:id])
+    @employee = Employee.includes(:duplicate).find(params[:id])
     if @employee.versions.length > 4
       @versions = @employee.versions.first(3)
       @versions.push(@employee.versions.last)
     else
       @versions = @employee.versions
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @employee }
     end
   end
 
@@ -72,7 +77,16 @@ class Admin::EmployeesController < Admin::BaseController
       redirect_to admin_employees_path, alert: 'Employee not found.'
     end
   end
-  
+
+  def mark_as_duplicate
+    duplicate = Duplicate.find_or_create_by(employee_id: params[:id])
+    if duplicate
+      duplicate.toggle!(:is_duplicate)
+      redirect_back fallback_location: admin_employee_path(params[:id]), notice: "Employee updated."
+    else
+      redirect_back fallback_location: admin_employee_path(params[:id]), alert: 'An error occured while marking employee as duplicate.' 
+    end 
+  end
 
   def destroy
     @employee = Employee.find(params[:id])

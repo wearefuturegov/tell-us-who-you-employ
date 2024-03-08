@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_07_204733) do
+ActiveRecord::Schema.define(version: 2024_03_07_232409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgres_fdw"
+
+  create_table "duplicates", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.boolean "is_duplicate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_duplicates_on_employee_id"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.string "surname"
@@ -75,4 +83,5 @@ ActiveRecord::Schema.define(version: 2024_03_07_204733) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "duplicates", "employees"
 end

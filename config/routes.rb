@@ -21,8 +21,14 @@ Rails.application.routes.draw do
       collection do
         get 'invalid'
       end
+      member do
+        post 'mark_as_duplicate'
+      end
     end
     resources :services
+    get 'duplicates', to: 'duplicates#index', as: 'duplicates'
+    get 'duplicates/:primary_employee_id', to: 'duplicates#index'
+    get 'duplicates/:primary_employee_id/:secondary_employee_id', to: 'duplicates#index', as: 'duplicates_primary_secondary'
   end
 
 end

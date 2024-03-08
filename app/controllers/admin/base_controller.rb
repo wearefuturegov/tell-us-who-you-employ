@@ -6,12 +6,9 @@ class Admin::BaseController < ApplicationController
   private
 
   def update_services
-    logger.debug ServiceSync.last_sync
 
     last_sync = ServiceSync.last_sync
     if last_sync && last_sync.updated_at < 1.week.ago || last_sync.nil?
-      logger.debug "no sync or happenened less than 1 week ago"
-
       # Get all unique service_ids from the services table
       serviceids = Service.pluck(:id).uniq
       employeeids = Employee.pluck(:service_id).uniq
@@ -46,7 +43,7 @@ class Admin::BaseController < ApplicationController
     access_token = session[:access_token]
     headers = { "Authorization" => "Bearer #{access_token}" }
     service_ids.each_slice(20) do |group|
-        # logger.debug "fetching from api for group #{group.join(',')}"
+        logger.debug "fetching from api for group #{group.join(',')}"
         response = HTTParty.get("#{ENV['OAUTH_SERVER']}/api/v1/services?format=mini&ids=#{group.join(',')}", headers: headers)
         break unless response.success?
         if response.parsed_response['content'].present? && response.parsed_response['content'].length > 0

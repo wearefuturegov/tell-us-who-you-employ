@@ -1,14 +1,18 @@
 <% content_for :header do %>
 
-  <%# if @ofsted_item.present? %>
-  <!--<div class="notice">
-      <div class="notice__body">
+
+  <% if @employee.duplicate && @employee.duplicate.is_duplicate %>
+      <div class="notice">
+        <div class="notice__body">
           <p>
-              This item has been marked as a duplicate
+            This item has been marked as a potential duplicate of another record. 
           </p>
+          <p>
+          To merge or delete records please go to the <%= link_to 'duplicates page', admin_duplicates_path %>.
+          </p>
+        </div>
       </div>
-  </div>-->
-  <%# end %>
+  <% end %>  
 
   <%= render "admin/shared/dynamic-back-link", text: "Back to provider employee details", path: admin_employees_path %>
   <h1 class="page-header__title two-thirds"><%= employee_display_name(@employee) %></h1>
@@ -180,6 +184,15 @@
     <%= render "admin/shared/collapsible", name: "History", id: "employee-history" do %>
       <%= render "admin/employees/data/history", object: @employee %>
     <% end %>
+
+    <%= render "admin/shared/collapsible", name: "Duplicate", id: "employee-duplicate" do %>  
+    <strong>
+      <%= flag_duplicate_link(@employee, @employee.duplicate && @employee.duplicate.is_duplicate ? "Mark as not a duplicate" : "Mark as a duplicate") %>
+    </strong>
+    <% end %>
+
+
+    
   </aside>
 
 </div>
